@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="debugger\debugRDBGRequestResponse\MiscRDbgGetAPIVerResponseTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="debugger\debugRDBGRequestResponse\RDBGAttachDebugUIRequestTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

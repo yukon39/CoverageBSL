@@ -3,9 +3,9 @@
 namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
 {
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")]
-    class MiscRDbgGetAPIVerResponse : IRDBGResponse
+    public class MiscRDbgGetAPIVerResponse : IRDBGResponse
     {
         [XmlElement(ElementName = "version")]
-        public string Version { get; }
+        public string Version;
     }
 }
