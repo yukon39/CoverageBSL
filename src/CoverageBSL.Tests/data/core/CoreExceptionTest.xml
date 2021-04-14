@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/e1csys/vrscore/exception.xslt?sysver=8.3.17.1549"?>
+<exception xmlns="http://v8.1c.ru/8.2/virtual-resource-system"
+    xmlns:d1p1="http://v8.1c.ru/8.1/data/core"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:type="d1p1:Exception"
+    clsid="5372caa7-07b9-4767-9776-53b510236d93">
+  <d1p1:descr>
+    Ошибка преобразования данных XDTO:
+    КонецСвойства: envStateVersion	Форма: Элемент	Тип: {http://v8.1c.ru/8.1/data/core}UUID
+  </d1p1:descr>
+  <d1p1:data>
+    77u/ew0KezUzNzJjYWE3LTA3YjktNDc2Ny05Nzc2LTUzYjUxMDIzNmQ5Mywi0J7R
+    iNC40LHQutCwINC/0YDQtdC+0LHRgNCw0LfQvtCy0LDQvdC40Y8g0LTQsNC90L3R
+    i9GFIFhEVE86DQrQmtC+0L3QtdGG0KHQstC+0LnRgdGC0LLQsDogZW52U3RhdGVW
+    ZXJzaW9uCdCk0L7RgNC80LA6INCt0LvQtdC80LXQvdGCCdCi0LjQvzoge2h0dHA6
+    Ly92OC4xYy5ydS84LjEvZGF0YS9jb3JlfVVVSUQiLA0KezAwMDAwMDAwLTAwMDAt
+    MDAwMC0wMDAwLTAwMDAwMDAwMDAwMH0sImNvcmU4My5kbGw6MHgwMDAwMDAwMDAw
+    MENGNkI2IGRiZ2Jhc2UuZGxsOjB4MDAwMDAwMDAwMDAxNzE0MSBkYmdiYXNlLmRs
+    bDoweDAwMDAwMDAwMDAwMTcyMUMgZGJnYmFzZS5kbGw6MHgwMDAwMDAwMDAwMDJG
+    Mzk3IGRiZ2Jhc2UuZGxsOjB4MDAwMDAwMDAwMDAyRjY5NSBkYmd0Z3Nydi5kbGw6
+    MHgwMDAwMDAwMDAwMDRGMkIzIGRiZ3Rnc3J2LmRsbDoweDAwMDAwMDAwMDAwMjhF
+    OTggZGJncy5leGU6MHgwMDAwMDAwMDAwMDEzRkRGIGRiZ3MuZXhlOjB4MDAwMDAw
+    MDAwMDAxMzM0RiBjb3JlODMuZGxsOjB4MDAwMDAwMDAwMDIxNkZGQiBjb3JlODMu
+    ZGxsOjB4MDAwMDAwMDAwMDIxNzAyQyBjb3JlODMuZGxsOjB4MDAwMDAwMDAwMDIx
+    MzIxRCB1bmtub3duOjB4MDAwMDAwMDAwMDAwMDAwMCB1bmtub3duOjB4MDAwMDAw
+    MDAwMDAwMDAwMCBLRVJORUwzMi5ETEw6MHgwMDAwMDAwMDAwMDAwMDAwIHVua25v
+    d246MHgwMDAwMDAwMDAwMDAwMDAwICIsIjAwMDAwMDAwMDAwMDAwMCIsMDAwMDAw
+    MDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwfSwxMX0=
+  </d1p1:data>
+</exception>
