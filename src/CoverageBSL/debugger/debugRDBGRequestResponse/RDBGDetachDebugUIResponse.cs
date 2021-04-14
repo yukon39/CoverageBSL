@@ -2,11 +2,11 @@
 
 namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
 {
-
+    [XmlRoot(ElementName = "response", Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")]
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")]
-    class RDBGDetachDebugUIResponse : IRDBGResponse
+    public class RDBGDetachDebugUIResponse : IRDBGResponse
     {
         [XmlElement(ElementName = "result")]
-        public bool Result { get; }
+        public bool Result;
     }
 }
