@@ -9,16 +9,13 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
         public static string Serialize(object o, XmlRootAttribute RootAttribute)
         {
-            var Namespaces = new XmlSerializerNamespaces();
-            Namespaces.Add("cfg", "http://v8.1c.ru/8.1/data/enterprise/current-config");
-            Namespaces.Add("v8", "http://v8.1c.ru/8.1/data/core");
-            Namespaces.Add("debugRDBGRequestResponse", "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse");
+            var namespaces = Namespaces();
 
             var T = o.GetType();
             var Serializer = new XmlSerializer(T, RootAttribute);
 
             var Writer = new StringWriter();
-            Serializer.Serialize(Writer, o, Namespaces);
+            Serializer.Serialize(Writer, o, namespaces);
             return Writer.ToString();
         }
 
@@ -42,5 +39,18 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             ElementName = "response",
             Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData"
         };
+
+        public static XmlSerializerNamespaces Namespaces()
+        {
+            var namespaces = new XmlSerializerNamespaces();
+            namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            namespaces.Add("cfg", "http://v8.1c.ru/8.1/data/enterprise/current-config");
+            namespaces.Add("v8", "http://v8.1c.ru/8.1/data/core");
+            namespaces.Add("debugAutoAttach", "http://v8.1c.ru/8.3/debugger/debugAutoAttach");
+            namespaces.Add("debugRDBGRequestResponse", "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse");
+            namespaces.Add("debugRTEFilter", "http://v8.1c.ru/8.3/debugger/debugRTEFilter");
+
+            return namespaces;
+        }
     }
 }
