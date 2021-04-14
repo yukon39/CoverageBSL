@@ -2,6 +2,7 @@
 using com.github.yukon39.CoverageBSL.debugger.debugAutoAttach;
 using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
 using com.github.yukon39.CoverageBSL.debugger.debugDBGUICommands;
+using com.github.yukon39.CoverageBSL.debugger.debugMeasure;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,15 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
         public readonly Guid DebugSession;
         private readonly HTTPDebugClient Client;
         private bool Attached = false;
+
+        public delegate void TargetStartedHandler(DebugTargetId TargetID);
+        public event TargetStartedHandler TargetStarted;
+
+        public delegate void TargetQuitHandler(DebugTargetId TargetID);
+        public event TargetQuitHandler TargetQuit;
+
+        public delegate void MeasureProcessingHandler(PerformanceInfoMain TargetID);
+        public event MeasureProcessingHandler MeasureProcessing;
 
         public HTTPDebugSession(HTTPDebugClient client, string infobaseAlias)
         {
@@ -98,7 +108,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             Client.Execute<RDBGAttachDetachDebugTargetsResponse>(Request, RequestParameters);
         }
 
-        public void InitSettings(HTTPServerInitialDebugSettingsData Data)
+        public void InitSettings(HTTPServerInitialDebugSettingsData data)
         {
             var RequestParameters = new RequestParameters
             {
@@ -110,7 +120,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias,
-                data = Data
+                Data = data
             };
 
             Client.Execute<RDBGSetInitialDebugSettingsResponse>(Request, RequestParameters);
@@ -118,22 +128,22 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             //Logger.LogDebug("InitSettings successful");
         }
 
-        public void SetAutoAttachSettings(DebugAutoAttachSettings AutoAttachSettings)
+        public void SetAutoAttachSettings(DebugAutoAttachSettings autoAttachSettings)
         {
-            var RequestParameters = new RequestParameters
+            var requestParameters = new RequestParameters
             {
                 Command = "setAutoAttachSettings"
             };
 
-            var Request = new RDBGSetAutoAttachSettingsRequest
+            var request = new RDBGSetAutoAttachSettingsRequest
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias,
 
-                autoAttachSettings = AutoAttachSettings
+                AutoAttachSettings = autoAttachSettings
             };
 
-            Client.Execute<RDBGSetAutoAttachSettingsResponse>(Request, RequestParameters);
+            Client.Execute<RDBGSetAutoAttachSettingsResponse>(request, requestParameters);
 
             //Logger.LogDebug("SetAutoAttachSettings successful");
         }
@@ -172,6 +182,34 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             //Logger.LogDebug("Ping result size is {size}", Result.Count);
 
             return Result;
+        }
+
+        private void Loop()
+        {
+            if (Attached)
+            {
+                Ping().ForEach(x => { InvokeEvent(x); });
+            }
+        }
+
+        private void InvokeEvent(DBGUIExtCmdInfoBase Command)
+        {
+            switch (Command)
+            {
+                case DBGUIExtCmdInfoStarted StartEvent:
+                    AttachDebugTarget(StartEvent.TargetID);
+                    TargetStarted?.Invoke(StartEvent.TargetID);
+                    break;
+
+                case DBGUIExtCmdInfoQuit QuitEvent:
+                    DetachDebugTarget(QuitEvent.TargetID);
+                    TargetQuit?.Invoke(QuitEvent.TargetID);
+                    break;
+
+                case DBGUIExtCmdInfoMeasure MeasureEvent:
+                    MeasureProcessing?.Invoke(MeasureEvent.Measure);
+                    break;
+            }
         }
     }
 }

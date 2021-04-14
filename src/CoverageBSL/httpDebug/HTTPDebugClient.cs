@@ -1,7 +1,11 @@
-﻿using com.github.yukon39.CoverageBSL.debugger;
+﻿using com.github.yukon39.CoverageBSL.data;
+using com.github.yukon39.CoverageBSL.data.core;
+using com.github.yukon39.CoverageBSL.debugger;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL.httpDebug
 {
@@ -27,8 +31,6 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             var Request = new RDBGTestRequest();
 
             Execute<RDBGTestResponse>(Request, RequestParameters);
-
-            //Logger.LogDebug("Test successful");
         }
 
         public string ApiVersion()
@@ -53,18 +55,44 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
         public T Execute<T>(IRDBGRequest request, RequestParameters requestParameters)
         {
-            var CommandURL = string.Format("{0}/e1crdbg/{1}", DebugServerURL, requestParameters.ToString());
+            var CommandURL = string.Format("{0}e1crdbg/{1}", DebugServerURL, requestParameters.ToString());
 
-            var Content = HTTPDebugSerializer.Serialize(request);
+            var RequestContent = HTTPDebugSerializer.Serialize(request);
 
-            var HTTPContent = new StringContent(Content);
-            HTTPContent.Headers.Add("Content-Type", "application/xml; charset=utf-8");
-            HTTPContent.Headers.Add("Accept", "application/xml");
-            HTTPContent.Headers.Add("Accept-Encoding", "gzip");
+            var ResponseContent = HttpResponseContent(CommandURL, RequestContent).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            Client.PostAsync(CommandURL, HTTPContent);
+            if (string.IsNullOrEmpty(ResponseContent))
+            {
+                return Activator.CreateInstance<T>();
+            }
+            else
+            {
+                return HTTPDebugSerializer.Deserialize<T>(ResponseContent);
+            }
+        }
 
-            return Activator.CreateInstance<T>();
+        private static async Task<string> HttpResponseContent(string url, string requestContent)
+        {
+
+            var Content = new StringContent(requestContent, Encoding.UTF8, "application/xml");
+            //Content.Headers.ContentType = new("application/xml; charset=utf-8");
+
+            var HttpRequest = new HttpRequestMessage(HttpMethod.Post, url);
+            HttpRequest.Content = Content;
+            HttpRequest.Headers.Accept.Add(new("application/xml"));
+            HttpRequest.Headers.AcceptEncoding.Add(new("gzip"));
+
+            var HttpResponse = await Client.SendAsync(HttpRequest);
+
+            var ResponseContentString = await HttpResponse.Content.ReadAsStringAsync();
+            if (!HttpResponse.IsSuccessStatusCode)
+            {
+                var exception = HTTPDebugSerializer.Deserialize<CoreException>(ResponseContentString);
+                var description = ErrorProcessingManager.BriefErrorDescription(exception);
+                throw new Exception(description);
+            }
+
+            return ResponseContentString;
         }
 
         public static IDebuggerClient Build(Uri debugServerURL) => new HTTPDebugClient(debugServerURL);
