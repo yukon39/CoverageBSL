@@ -32,6 +32,9 @@
     <None Update="debugger\debugRDBGRequestResponse\RDBGAttachDetachDebugTargetsRequest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="debugger\debugRDBGRequestResponse\RDBGSetInitialDebugSettingsRequest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

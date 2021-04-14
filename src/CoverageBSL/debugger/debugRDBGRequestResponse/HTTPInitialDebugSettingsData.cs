@@ -11,7 +11,7 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
     public class HTTPInitialDebugSettingsData
     {
         [XmlElement(ElementName = "inacessibleModuleID")]
-        public List<BSLModuleIdInternal> InacessibleModuleID;
+        public readonly List<BSLModuleIdInternal> InacessibleModuleID = new();
 
         [XmlElement(ElementName = "envStateVersion")]
         public Guid EnvStateVersion;

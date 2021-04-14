@@ -1,7 +1,12 @@
-﻿namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
+﻿using System.Xml.Serialization;
+
+namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
 {
-    class RDBGSetInitialDebugSettingsRequest : RDbgBaseRequest, IRDBGRequest
+    [XmlRoot(ElementName = "request", Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")]
+    [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")]
+    public class RDBGSetInitialDebugSettingsRequest : RDbgBaseRequest, IRDBGRequest
     {
-        public HTTPServerInitialDebugSettingsData data { get; set; }
+        [XmlElement(ElementName = "data")]
+        public HTTPServerInitialDebugSettingsData Data;
     }
 }
