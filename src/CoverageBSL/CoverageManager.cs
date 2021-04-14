@@ -1,16 +1,16 @@
 ﻿using com.github.yukon39.CoverageBSL.debugger;
 using com.github.yukon39.CoverageBSL.debugger.debugAutoAttach;
 using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
-using com.github.yukon39.CoverageBSL.debugger.debugDBGUICommands;
-using com.github.yukon39.CoverageBSL.debugger.debugMeasure;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
 using com.github.yukon39.CoverageBSL.httpDebug;
+using ScriptEngine.Machine.Contexts;
 using System;
 using System.Collections.Generic;
 
 namespace com.github.yukon39.CoverageBSL
 {
-    public class CoverageManager
+    [ContextClass(typeName: "МенеджерПокрытия", typeAlias: "CoverageManager")]
+    public class CoverageManager : AutoContext<CoverageManager>
     {
         private IDebuggerClient Client;
         private IDebuggerSession Session;
@@ -18,22 +18,19 @@ namespace com.github.yukon39.CoverageBSL
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
         private readonly List<string> AreaNames = new();
 
-        public delegate void TargetStartedHandler(DebugTargetId TargetID);
-        public event TargetStartedHandler TargetStarted;
+        [ScriptConstructor(Name = "По умолчанию")]
+        public static CoverageManager Constructor() => new();
 
-        public delegate void TargetQuitHandler(DebugTargetId TargetID);
-        public event TargetQuitHandler TargetQuit;
-
-        public delegate void MeasureProcessingHandler(PerformanceInfoMain TargetID);
-        public event MeasureProcessingHandler MeasureProcessing;
-
-        public void Configure(Uri debuggerURI)
+        [ContextMethod("Настроить", "Configure")]
+        public string Configure(string debuggerURI)
         {
-            Client = HTTPDebugClient.Build(debuggerURI);
-            Client.Test();
+            var DebuggetURI = new Uri(debuggerURI);
+            Client = HTTPDebugClient.Build(DebuggetURI);
+            return Client.ApiVersion();
         }
 
-        public void Attach(string infobaseAlias, char[] Password)
+        [ContextMethod("Подключить", "Attach")]
+        public AttachDebugUIResult Attach(string infobaseAlias, string Password)
         {
             var Options = new DebuggerOptions();
             var Data = new HTTPServerInitialDebugSettingsData();
@@ -44,25 +41,25 @@ namespace com.github.yukon39.CoverageBSL
 
             Session = Client.CreateSession(infobaseAlias);
 
-            Session.Attach(Password, Options);
-            Session.InitSettings(Data);
-            Session.ClearBreakOnNextStatement();
-            Session.SetAutoAttachSettings(AutoAttachSettings);
+            char[] EmptyPassword = Array.Empty<char>();
+
+            var AttachResult = Session.Attach(EmptyPassword, Options);
+            if (AttachResult == AttachDebugUIResult.Registered)
+            {
+                Session.InitSettings(Data);
+                Session.ClearBreakOnNextStatement();
+                Session.SetAutoAttachSettings(AutoAttachSettings);
+            }
+
+            return AttachResult;
         }
 
+        [ContextMethod("Отключить", "Detach")]
         public void Detach()
         {
             if (Session.IsAttached())
             {
                 Session.Detach();
-            }
-        }
-
-        private void Loop()
-        {
-            if (Session.IsAttached())
-            {
-                Session.Ping().ForEach(x => { InvokeEvent(x); });
             }
         }
 
@@ -74,25 +71,5 @@ namespace com.github.yukon39.CoverageBSL
             DebugTargetType.Server,
             DebugTargetType.ServerEmulation
         };
-
-        private void InvokeEvent(DBGUIExtCmdInfoBase Command)
-        {
-            switch (Command)
-            {
-                case DBGUIExtCmdInfoStarted StartEvent:
-                    Session.AttachDebugTarget(StartEvent.TargetID);
-                    TargetStarted?.Invoke(StartEvent.TargetID);
-                    break;
-
-                case DBGUIExtCmdInfoQuit QuitEvent:
-                    Session.DetachDebugTarget(QuitEvent.TargetID);
-                    TargetQuit?.Invoke(QuitEvent.TargetID);
-                    break;
-
-                case DBGUIExtCmdInfoMeasure MeasureEvent:
-                    MeasureProcessing?.Invoke(MeasureEvent.Measure);
-                    break;
-            }
-        }
     }
 }

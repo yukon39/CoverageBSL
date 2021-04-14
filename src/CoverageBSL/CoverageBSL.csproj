@@ -5,4 +5,8 @@
     <RootNamespace>com.github.yukon39.CoverageBSL</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OneScript" Version="1.5.0" />
+  </ItemGroup>
+
 </Project>
