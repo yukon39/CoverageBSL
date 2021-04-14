@@ -2,11 +2,7 @@
 using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
 {
@@ -29,7 +25,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             Console.Write(XmlString);
 
             // Then
-            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString, 
+            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString,
                     HTTPDebugSerializer.RootAttributeRequest);
             Assert.AreEqual(Request.InfoBaseAlias, Object.InfoBaseAlias);
             Assert.AreEqual(Request.IdOfDebuggerUI, Object.IdOfDebuggerUI);
@@ -46,7 +42,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString, 
+            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString,
                 HTTPDebugSerializer.RootAttributeRequest);
 
             // Then
