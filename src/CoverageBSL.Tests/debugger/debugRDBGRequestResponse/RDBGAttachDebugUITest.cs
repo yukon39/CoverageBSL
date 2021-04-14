@@ -25,12 +25,12 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var XmlString = HTTPDebugSerializer.Serialize(Request, HTTPDebugSerializer.RootAttributeRequest);
+            var XmlString = HTTPDebugSerializer.Serialize(Request);
             Console.Write(XmlString);
 
             // Then
 
-            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(XmlString, HTTPDebugSerializer.RootAttributeRequest);
+            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(XmlString);
             Assert.AreEqual(Request.InfoBaseAlias, Object.InfoBaseAlias);
             Assert.AreEqual(Request.IdOfDebuggerUI, Object.IdOfDebuggerUI);
             Assert.AreEqual(Request.Options.ForegroundAbility, Object.Options.ForegroundAbility);
@@ -45,7 +45,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(XmlString, HTTPDebugSerializer.RootAttributeRequest);
+            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(XmlString);
 
             // Then
             Assert.AreEqual(Request.InfoBaseAlias, "DefAlias");
@@ -63,11 +63,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var XmlString = HTTPDebugSerializer.Serialize(Response, HTTPDebugSerializer.RootAttributeResponse);
+            var XmlString = HTTPDebugSerializer.Serialize(Response);
             Console.Write(XmlString);
 
             // Then
-            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(XmlString, HTTPDebugSerializer.RootAttributeResponse);
+            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(XmlString);
             Assert.AreEqual(Response.Result, Object.Result);
         }
 
@@ -80,7 +80,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(XmlString, HTTPDebugSerializer.RootAttributeResponse);
+            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(XmlString);
 
             // Then
             Assert.AreEqual(Request.Result, AttachDebugUIResult.Registered);

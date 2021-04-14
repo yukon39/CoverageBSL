@@ -21,12 +21,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             Request.ID.Add(new() { ID = Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720") });
 
             // When
-            var XmlString = HTTPDebugSerializer.Serialize(Request, HTTPDebugSerializer.RootAttributeRequest);
+            var XmlString = HTTPDebugSerializer.Serialize(Request);
             Console.Write(XmlString);
 
             // Then
-            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString,
-                    HTTPDebugSerializer.RootAttributeRequest);
+            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString);
             Assert.AreEqual(Request.InfoBaseAlias, Object.InfoBaseAlias);
             Assert.AreEqual(Request.IdOfDebuggerUI, Object.IdOfDebuggerUI);
             Assert.AreEqual(Request.Attach, Object.Attach);
@@ -42,8 +41,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString,
-                HTTPDebugSerializer.RootAttributeRequest);
+            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString);
 
             // Then
             Assert.AreEqual(Request.InfoBaseAlias, "DefAlias");

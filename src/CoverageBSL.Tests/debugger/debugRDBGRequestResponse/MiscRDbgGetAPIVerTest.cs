@@ -18,11 +18,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var XmlString = HTTPDebugSerializer.Serialize(Response, HTTPDebugSerializer.RootAttributeResponse);
+            var XmlString = HTTPDebugSerializer.Serialize(Response);
             Console.Write(XmlString);
 
             // Then
-            var Object = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(XmlString, HTTPDebugSerializer.RootAttributeResponse);
+            var Object = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(XmlString);
             Assert.AreEqual(Response.Version, Object.Version);
         }
 
@@ -35,7 +35,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(XmlString, HTTPDebugSerializer.RootAttributeResponse);
+            var Request = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(XmlString);
 
             // Then
             Assert.AreEqual(Request.Version, "8.3.17");

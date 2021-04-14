@@ -27,11 +27,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var xmlString = HTTPDebugSerializer.Serialize(request, null);
+            var xmlString = HTTPDebugSerializer.Serialize(request);
             Console.Write(xmlString);
 
             // Then
-            var o = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString, null);
+            var o = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
             Assert.AreEqual(request.InfoBaseAlias, o.InfoBaseAlias);
             Assert.AreEqual(request.IdOfDebuggerUI, o.IdOfDebuggerUI);
             Assert.AreEqual(request.Data.RTEProcessing.StopOnErrors, o.Data.RTEProcessing.StopOnErrors);
@@ -45,7 +45,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", "RDBGAttachDetachDebugTargetsRequest.xml");
 
             // When
-            var request = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString, null);
+            var request = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
 
             // Then
             Assert.AreEqual(request.InfoBaseAlias, "DefAlias");

@@ -5,40 +5,24 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 {
     public static class HTTPDebugSerializer
     {
-        public static string Serialize(object o) => Serialize(o, RootAttributeRequest);
-
-        public static string Serialize(object o, XmlRootAttribute RootAttribute)
+        public static string Serialize(object o)
         {
             var namespaces = Namespaces();
 
             var T = o.GetType();
-            var Serializer = new XmlSerializer(T, RootAttribute);
+            var Serializer = new XmlSerializer(T);
 
             var Writer = new StringWriter();
             Serializer.Serialize(Writer, o, namespaces);
             return Writer.ToString();
         }
 
-        public static T Deserialize<T>(string xmlString) => Deserialize<T>(xmlString, RootAttributeResponse);
-
-        public static T Deserialize<T>(string xmlString, XmlRootAttribute RootAttribute)
+          public static T Deserialize<T>(string xmlString)
         {
-            var Serializer = new XmlSerializer(typeof(T), RootAttribute);
+            var Serializer = new XmlSerializer(typeof(T));
             var Reader = new StringReader(xmlString);
             return (T)Serializer.Deserialize(Reader);
         }
-
-        public static XmlRootAttribute RootAttributeRequest => new()
-        {
-            ElementName = "request",
-            Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData"
-        };
-
-        public static XmlRootAttribute RootAttributeResponse => new()
-        {
-            ElementName = "response",
-            Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData"
-        };
 
         public static XmlSerializerNamespaces Namespaces()
         {

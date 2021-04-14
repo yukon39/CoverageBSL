@@ -17,7 +17,7 @@ namespace CoverageBSL.Tests.data.core
             var XmlString = File.ReadAllText(XmlFile);
 
             // When
-            var coreException = HTTPDebugSerializer.Deserialize<CoreException>(XmlString, null);
+            var coreException = HTTPDebugSerializer.Deserialize<CoreException>(XmlString);
 
             // Then
             Assert.AreEqual(coreException.CLSID, Guid.Parse("5372caa7-07b9-4767-9776-53b510236d93"));
