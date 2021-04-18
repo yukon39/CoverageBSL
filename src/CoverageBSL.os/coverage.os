@@ -8,4 +8,6 @@ Message("Version: " + Version);
 Result = CoverageManager.Attach("DefAlias", "");
 Message("Result: " + Result);
 
+Sleep(50000);
+
 CoverageManager.Detach();

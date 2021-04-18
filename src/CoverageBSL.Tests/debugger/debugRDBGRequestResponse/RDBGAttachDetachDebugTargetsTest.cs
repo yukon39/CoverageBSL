@@ -2,7 +2,6 @@
 using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 using System;
-using System.IO;
 
 namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
 {
@@ -12,31 +11,31 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
         public void TestRequestSerialization()
         {
             // Given
-            var Request = new RDBGAttachDetachDebugTargetsRequest
+            var request = new RDBGAttachDetachDebugTargetsRequest
             {
                 InfoBaseAlias = "DefAlias",
                 IdOfDebuggerUI = Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"),
                 Attach = true
             };
-            Request.ID.Add(new() { ID = Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720") });
+            request.ID.Add(new() { ID = Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720") });
 
             // When
-            var XmlString = HTTPDebugSerializer.Serialize(Request);
-            Console.Write(XmlString);
+            var xmlString = HTTPDebugSerializer.Serialize(request);
+            Console.Write(xmlString);
 
             // Then
-            var Object = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString);
-            Assert.AreEqual(Request.InfoBaseAlias, Object.InfoBaseAlias);
-            Assert.AreEqual(Request.IdOfDebuggerUI, Object.IdOfDebuggerUI);
-            Assert.AreEqual(Request.Attach, Object.Attach);
-            Assert.AreEqual(Request.ID[0].ID, Object.ID[0].ID);
+            var xmlRequest = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(xmlString);
+            Assert.AreEqual(request.InfoBaseAlias, xmlRequest.InfoBaseAlias);
+            Assert.AreEqual(request.IdOfDebuggerUI, xmlRequest.IdOfDebuggerUI);
+            Assert.AreEqual(request.Attach, xmlRequest.Attach);
+            Assert.AreEqual(request.ID[0].ID, xmlRequest.ID[0].ID);
         }
 
         [Test]
         public void TestRequestDeserialization()
         {
             // Given
-            var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", 
+            var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse",
                 "RDBGAttachDetachDebugTargetsRequest.xml");
 
             // When

@@ -2,7 +2,6 @@
 using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 using System;
-using System.IO;
 
 namespace CoverageBSL.Tests.data.core
 {
@@ -12,12 +11,10 @@ namespace CoverageBSL.Tests.data.core
         public void TestDeserialization()
         {
             // Given
-            var XmlFile = Path.Join(TestContext.CurrentContext.TestDirectory,
-                    "data", "core", "CoreExceptionTest.xml");
-            var XmlString = File.ReadAllText(XmlFile);
+            var xmlString = UtilsTest.XmlString("data", "core", "CoreExceptionTest.xml");
 
             // When
-            var coreException = HTTPDebugSerializer.Deserialize<CoreException>(XmlString);
+            var coreException = HTTPDebugSerializer.Deserialize<CoreException>(xmlString);
 
             // Then
             Assert.AreEqual(coreException.CLSID, Guid.Parse("5372caa7-07b9-4767-9776-53b510236d93"));
