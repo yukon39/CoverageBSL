@@ -6,6 +6,8 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugBaseData
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")]
     public class DebugTargetId : DebugTargetIdLight
     {
+        private readonly DebugTargetIdLight _TargetIdLight = new();
+
         [XmlElement(ElementName = "seanceId")]
         public Guid SeanceId;
 
@@ -29,5 +31,13 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugBaseData
 
         [XmlElement(ElementName = "targetType")]
         public DebugTargetType TargetType;
+
+        [XmlIgnore]
+        public DebugTargetIdLight TargetIdLight { 
+            get {
+                _TargetIdLight.ID = ID;
+                return _TargetIdLight;
+            }
+        }
     }
 }

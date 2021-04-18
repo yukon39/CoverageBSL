@@ -7,6 +7,6 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugBaseData
     public class DebugTargetIdLight
     {
         [XmlElement(ElementName = "id")]
-        public Guid ID;
+        public Guid ID { get; set; }
     }
 }
