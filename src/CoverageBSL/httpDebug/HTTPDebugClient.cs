@@ -87,7 +87,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             var ResponseContentString = await HttpResponse.Content.ReadAsStringAsync();
             if (!HttpResponse.IsSuccessStatusCode)
             {
-                var exception = HTTPDebugSerializer.Deserialize<CoreException>(ResponseContentString);
+                var exception = HTTPDebugSerializer.Deserialize<VRSException>(ResponseContentString);
                 var description = ErrorProcessingManager.BriefErrorDescription(exception);
                 throw new Exception(description);
             }
