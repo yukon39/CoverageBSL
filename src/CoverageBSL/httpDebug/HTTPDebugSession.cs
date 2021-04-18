@@ -123,7 +123,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             };
             Request.ID.AddRange(targets);
 
-            Client.Execute<RDBGAttachDetachDebugTargetsResponse>(Request, RequestParameters);
+            Client.Execute<RDBGEmptyResponse>(Request, RequestParameters);
         }
 
         public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName)
@@ -165,7 +165,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                 Data = data
             };
 
-            Client.Execute<RDBGSetInitialDebugSettingsResponse>(Request, RequestParameters);
+            Client.Execute<RDBGEmptyResponse>(Request, RequestParameters);
 
             //Logger.LogDebug("InitSettings successful");
         }
@@ -185,7 +185,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                 AutoAttachSettings = autoAttachSettings
             };
 
-            Client.Execute<RDBGSetAutoAttachSettingsResponse>(request, requestParameters);
+            Client.Execute<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("SetAutoAttachSettings successful");
         }
@@ -203,7 +203,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                 InfoBaseAlias = InfobaseAlias
             };
 
-            Client.Execute<RDBGClearBreakOnNextStatementResponse>(Request, RequestParameters);
+            Client.Execute<RDBGEmptyResponse>(Request, RequestParameters);
 
             //Logger.LogDebug("ClearBreakOnNextStatement successful");
         }

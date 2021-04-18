@@ -30,7 +30,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
             var Request = new RDBGTestRequest();
 
-            Execute<RDBGTestResponse>(Request, RequestParameters);
+            Execute<RDBGEmptyResponse>(Request, RequestParameters);
         }
 
         public string ApiVersion()
