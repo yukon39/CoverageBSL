@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace com.github.yukon39.CoverageBSL.debugger.debugDBGUICommands
 {
+    [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugDBGUICommands")]
     public abstract class DBGUIExtCmdInfoBase
     {
         [XmlElement(ElementName = "cmdIDNum")]
@@ -19,8 +20,7 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugDBGUICommands
 
         [XmlElement(ElementName = "requestQueueID")]
         public string requestQueueID;
-
-
+        
         public DBGUIExtCmdInfoBase() : this(DBGUIExtCmds.Unknown)
         {
 
