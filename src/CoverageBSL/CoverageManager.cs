@@ -49,6 +49,8 @@ namespace com.github.yukon39.CoverageBSL
                 Session.InitSettings(Data);
                 Session.ClearBreakOnNextStatement();
                 Session.SetAutoAttachSettings(AutoAttachSettings);
+
+                Session.AttachedTargetsStates(null).ForEach(x => Session.AttachDebugTarget(x.TargetID.TargetIdLight));
             }
 
             return AttachResult;
