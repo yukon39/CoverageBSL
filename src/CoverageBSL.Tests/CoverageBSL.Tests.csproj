@@ -20,6 +20,15 @@
     <None Update="data\core\CoreExceptionTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\core\VRSExceptionTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="debugger\debugDBGUICommands\DBGUIExtCmdInfoQuitTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="debugger\debugDBGUICommands\DBGUIExtCmdInfoStartedTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="debugger\debugRDBGRequestResponse\MiscRDbgGetAPIVerResponseTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -30,6 +39,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="debugger\debugRDBGRequestResponse\RDBGAttachDetachDebugTargetsRequest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="debugger\debugRDBGRequestResponse\RDBGGetDbgAllTargetStatesResponseTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="debugger\debugRDBGRequestResponse\RDBGSetInitialDebugSettingsRequest.xml">

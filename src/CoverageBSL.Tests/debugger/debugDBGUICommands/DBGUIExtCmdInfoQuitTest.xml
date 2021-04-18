@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+          xmlns:bsch="http://v8.1c.ru/8.2/data/bsl"
+          xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+          xmlns:debugBreakpoints="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+          xmlns:debugCalculations="http://v8.1c.ru/8.3/debugger/debugCalculations"
+          xmlns:debugDBGUICommands="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+          xmlns:debugMeasure="http://v8.1c.ru/8.3/debugger/debugMeasure"
+          xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+          xmlns:debugRTEInfo="http://v8.1c.ru/8.3/debugger/debugRTEInfo"
+          xmlns:v8="http://v8.1c.ru/8.1/data/core"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoQuit">
+    <debugDBGUICommands:cmdIDNum>2</debugDBGUICommands:cmdIDNum>
+    <debugDBGUICommands:cmdID>targetQuit</debugDBGUICommands:cmdID>
+    <debugDBGUICommands:targetID>
+      <id>98559065-1032-4ba1-9a0f-01960d455043</id>
+      <seanceId>111dd7fa-4bad-4af6-8231-179ce0528116</seanceId>
+      <seanceNo>2</seanceNo>
+      <infoBaseInstanceID>5771ee17-a046-42bd-8342-0389549dca93</infoBaseInstanceID>
+      <infoBaseAlias>DefAlias</infoBaseAlias>
+      <isServerInfoBase>undefined</isServerInfoBase>
+      <configVersion>d7d1ef6e8b26604ab00c2f26b1300fd300000000</configVersion>
+      <targetType>ServerEmulation</targetType>
+    </debugDBGUICommands:targetID>
+  </debugRDBGRequestResponse:result>
+</response>

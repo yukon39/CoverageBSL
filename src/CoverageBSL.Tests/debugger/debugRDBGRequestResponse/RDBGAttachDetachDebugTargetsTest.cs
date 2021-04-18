@@ -36,19 +36,17 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
         public void TestRequestDeserialization()
         {
             // Given
-            var XmlFile = Path.Join(TestContext.CurrentContext.TestDirectory,
-                    "debugger", "debugRDBGRequestResponse", "RDBGAttachDetachDebugTargetsRequest.xml");
-            var XmlString = File.ReadAllText(XmlFile);
+            var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", 
+                "RDBGAttachDetachDebugTargetsRequest.xml");
 
             // When
-            var Request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(XmlString);
+            var request = HTTPDebugSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(xmlString);
 
             // Then
-            Assert.AreEqual(Request.InfoBaseAlias, "DefAlias");
-            Assert.AreEqual(Request.IdOfDebuggerUI, Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
-            Assert.True(Request.Attach);
-            Assert.AreEqual(Request.ID[0].ID, Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720"));
+            Assert.AreEqual(request.InfoBaseAlias, "DefAlias");
+            Assert.AreEqual(request.IdOfDebuggerUI, Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
+            Assert.True(request.Attach);
+            Assert.AreEqual(request.ID[0].ID, Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720"));
         }
-
     }
 }
