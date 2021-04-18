@@ -230,6 +230,28 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             return Result;
         }
 
+        public void SetMeasureMode(Guid measureMode)
+        {
+            var requestParameters = new RequestParameters
+            {
+                Command = "setMeasureMode",
+                DebugID = DebugSession
+            };
+
+            var request = new RDBGSetMeasureModeRequest()
+            {
+                IdOfDebuggerUI = DebugSession,
+                InfoBaseAlias = InfobaseAlias
+            };
+
+            if(measureMode != Guid.Empty)
+            {
+                request.MeasureModeSeanceID = measureMode;
+            }
+
+            Client.Execute<RDBGEmptyResponse>(request, requestParameters);
+        }
+
         private void Loop()
         {
             lock(this) {

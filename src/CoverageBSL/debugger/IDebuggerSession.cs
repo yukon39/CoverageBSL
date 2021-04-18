@@ -2,6 +2,7 @@
 using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
 using com.github.yukon39.CoverageBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
+using System;
 using System.Collections.Generic;
 
 namespace com.github.yukon39.CoverageBSL.debugger
@@ -27,5 +28,7 @@ namespace com.github.yukon39.CoverageBSL.debugger
         public void ClearBreakOnNextStatement();
 
         public List<DBGUIExtCmdInfoBase> Ping();
+
+        public void SetMeasureMode(Guid measureMode);
     }
 }

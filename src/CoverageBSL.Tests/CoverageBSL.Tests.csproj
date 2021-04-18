@@ -23,6 +23,9 @@
     <None Update="data\core\VRSExceptionTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="debugger\debugDBGUICommands\DBGUIExtCmdInfoMeasureTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="debugger\debugDBGUICommands\DBGUIExtCmdInfoQuitTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
