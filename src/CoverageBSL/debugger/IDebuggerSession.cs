@@ -18,6 +18,8 @@ namespace com.github.yukon39.CoverageBSL.debugger
 
         public void DetachDebugTarget(DebugTargetIdLight target);
 
+        public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName);
+       
         public void InitSettings(HTTPServerInitialDebugSettingsData Data);
 
         public void SetAutoAttachSettings(DebugAutoAttachSettings AutoAttachSettings);

@@ -6,15 +6,17 @@ using com.github.yukon39.CoverageBSL.debugger.debugMeasure;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace com.github.yukon39.CoverageBSL.httpDebug
 {
-    class HTTPDebugSession : IDebuggerSession
+    class HTTPDebugSession : IDebuggerSession, IDisposable
     {
         public readonly string InfobaseAlias;
         public readonly Guid DebugSession;
         private readonly HTTPDebugClient Client;
         private bool Attached = false;
+        private Timer Timer;
 
         public delegate void TargetStartedHandler(DebugTargetId TargetID);
         public event TargetStartedHandler TargetStarted;
@@ -59,7 +61,15 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
             //Logger.LogDebug("Debug attach result is {result}", Result);
 
-            Attached = Result.Equals(AttachDebugUIResult.Registered);
+            lock(this)
+            {
+                Attached = Result.Equals(AttachDebugUIResult.Registered);
+
+                if (Attached)
+                {
+                    StartTimer();
+                }
+            }
 
             return Result;
         }
@@ -78,12 +88,20 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                 InfoBaseAlias = InfobaseAlias
             };
 
-            var Response = Client.Execute<RDBGDetachDebugUIResponse>(Request, RequestParameters);
-            var Result = Response.Result;
+            lock(this)
+            {
+                var Response = Client.Execute<RDBGDetachDebugUIResponse>(Request, RequestParameters);
 
+                Attached = false;
+
+                StopTimer();
+
+            }
+
+            //var Result = Response.Result;
             //Logger.LogDebug("Debug detach result is {result}", Result);
 
-            return Result;
+            return true;
         }
 
         public void AttachDebugTarget(DebugTargetIdLight target) => AttachDetachDebugTargets(new() { target }, true);
@@ -106,6 +124,30 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             Request.ID.AddRange(targets);
 
             Client.Execute<RDBGAttachDetachDebugTargetsResponse>(Request, RequestParameters);
+        }
+
+        public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName)
+        {
+            var requestParameters = new RequestParameters
+            {
+                Command = "getDbgAllTargetStates"
+            };
+
+            var request = new RDBGGetDbgAllTargetStatesRequest
+            {
+                IdOfDebuggerUI = DebugSession,
+                InfoBaseAlias = InfobaseAlias,
+            };
+
+            if (!string.IsNullOrEmpty(areaName))
+            {
+                request.DebugAreaName = areaName;
+            }
+
+            var response = Client.Execute<RDBGGetDbgAllTargetStatesResponse>(request, requestParameters);
+            var items = response.Item;
+
+            return items;
         }
 
         public void InitSettings(HTTPServerInitialDebugSettingsData data)
@@ -174,7 +216,11 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                 DebugID = DebugSession
             };
 
-            var Request = new RDBGPingDebugUIRequest();
+            var Request = new RDBGPingDebugUIRequest() 
+            {
+                IdOfDebuggerUI = DebugSession,
+                InfoBaseAlias = InfobaseAlias
+            };
 
             var Response = Client.Execute<RDBGPingDebugUIResponse>(Request, RequestParameters);
             var Result = Response.Result;
@@ -186,9 +232,11 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
         private void Loop()
         {
-            if (Attached)
-            {
-                Ping().ForEach(x => { InvokeEvent(x); });
+            lock(this) {
+                if (Attached)
+                {
+                    Ping().ForEach(x => { InvokeEvent(x); });
+                }
             }
         }
 
@@ -197,12 +245,12 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             switch (Command)
             {
                 case DBGUIExtCmdInfoStarted StartEvent:
-                    AttachDebugTarget(StartEvent.TargetID);
+                    AttachDebugTarget(StartEvent.TargetID.TargetIdLight);
                     TargetStarted?.Invoke(StartEvent.TargetID);
                     break;
 
                 case DBGUIExtCmdInfoQuit QuitEvent:
-                    DetachDebugTarget(QuitEvent.TargetID);
+                    DetachDebugTarget(QuitEvent.TargetID.TargetIdLight);
                     TargetQuit?.Invoke(QuitEvent.TargetID);
                     break;
 
@@ -210,6 +258,28 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
                     MeasureProcessing?.Invoke(MeasureEvent.Measure);
                     break;
             }
+        }
+
+        private void StartTimer()
+        {
+            StopTimer();
+            
+            var period = TimeSpan.FromSeconds(1);
+            Timer = new Timer((e) => { Loop(); }, null, period, period);
+        }
+
+        private void StopTimer()
+        {
+            if (Timer is Timer)
+            {
+                Timer.Dispose();
+            }
+            Timer = null;
+        }
+
+        public void Dispose()
+        {
+            StopTimer();
         }
     }
 }
