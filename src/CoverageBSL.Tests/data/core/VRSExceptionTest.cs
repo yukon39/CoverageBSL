@@ -1,4 +1,4 @@
-﻿using com.github.yukon39.CoverageBSL.data.core;
+﻿using com.github.yukon39.DebugBSL.data.core;
 using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 using System;

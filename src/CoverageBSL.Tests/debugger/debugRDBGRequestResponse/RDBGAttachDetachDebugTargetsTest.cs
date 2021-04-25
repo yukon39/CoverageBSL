@@ -1,5 +1,6 @@
-﻿using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
-using com.github.yukon39.CoverageBSL.httpDebug;
+﻿using com.github.yukon39.CoverageBSL.httpDebug;
+using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 using System;
 
@@ -17,7 +18,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
                 IdOfDebuggerUI = Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"),
                 Attach = true
             };
-            request.ID.Add(new() { ID = Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720") });
+            request.ID.Add(new DebugTargetIdLight() { ID = Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720") });
 
             // When
             var xmlString = HTTPDebugSerializer.Serialize(request);

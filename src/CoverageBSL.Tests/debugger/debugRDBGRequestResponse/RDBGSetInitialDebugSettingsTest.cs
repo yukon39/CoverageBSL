@@ -1,5 +1,6 @@
-﻿using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
-using com.github.yukon39.CoverageBSL.httpDebug;
+﻿using com.github.yukon39.CoverageBSL.httpDebug;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
+using com.github.yukon39.DebugBSL.debugger.debugRTEFilter;
 using NUnit.Framework;
 using System;
 
@@ -16,9 +17,9 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             {
                 InfoBaseAlias = "DefAlias",
                 IdOfDebuggerUI = Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"),
-                Data = new()
+                Data = new HTTPServerInitialDebugSettingsData()
                 {
-                    RTEProcessing = new()
+                    RTEProcessing = new RteFilterStorage()
                     {
                         StopOnErrors = true,
                         AnalyzeErrorStr = true
