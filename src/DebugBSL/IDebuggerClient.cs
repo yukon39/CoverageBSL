@@ -1,11 +1,16 @@
-﻿namespace com.github.yukon39.DebugBSL
+﻿using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
+using System.Threading.Tasks;
+
+namespace com.github.yukon39.DebugBSL
 {
     public interface IDebuggerClient
     {
-        public void Test();
+        Task TestAsync();
 
-        public string ApiVersion();
+        Task<string> ApiVersionAsync();
 
-        public IDebuggerClientSession CreateSession(string infobaseAlias);
+        Task<T> ExecuteAsync<T>(IRDBGRequest request, IDebuggerClientRequestParameters parameters) where T : IRDBGResponse;
+
+        IDebuggerClientSession CreateSession(string infobaseAlias);
     }
 }

@@ -8,37 +8,37 @@ using System.Collections.Generic;
 
 namespace com.github.yukon39.DebugBSL
 {
+
+    public delegate void TargetStartedHandler(DebugTargetId TargetID);
+    public delegate void TargetQuitHandler(DebugTargetId TargetID);
+    public delegate void MeasureProcessingHandler(PerformanceInfoMain TargetID);
+
     public interface IDebuggerClientSession
     {
-        public delegate void TargetStartedHandler(DebugTargetId TargetID);
-        public event TargetStartedHandler TargetStarted;
+        event TargetStartedHandler TargetStarted;
+        event TargetQuitHandler TargetQuit;
+        event MeasureProcessingHandler MeasureProcessing;
 
-        public delegate void TargetQuitHandler(DebugTargetId TargetID);
-        public event TargetQuitHandler TargetQuit;
+        bool IsAttached();
 
-        public delegate void MeasureProcessingHandler(PerformanceInfoMain TargetID);
-        public event MeasureProcessingHandler MeasureProcessing;
+        AttachDebugUIResult Attach(char[] Password, DebuggerOptions Options);
 
-        public bool IsAttached();
+        bool Detach();
 
-        public AttachDebugUIResult Attach(char[] Password, DebuggerOptions Options);
+        void AttachDebugTarget(DebugTargetIdLight target);
 
-        public bool Detach();
+        void DetachDebugTarget(DebugTargetIdLight target);
 
-        public void AttachDebugTarget(DebugTargetIdLight target);
+        List<DbgTargetStateInfo> AttachedTargetsStates(string areaName);
 
-        public void DetachDebugTarget(DebugTargetIdLight target);
+        void InitSettings(HTTPServerInitialDebugSettingsData Data);
 
-        public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName);
+        void SetAutoAttachSettings(DebugAutoAttachSettings AutoAttachSettings);
 
-        public void InitSettings(HTTPServerInitialDebugSettingsData Data);
+        void ClearBreakOnNextStatement();
 
-        public void SetAutoAttachSettings(DebugAutoAttachSettings AutoAttachSettings);
+        List<DBGUIExtCmdInfoBase> Ping();
 
-        public void ClearBreakOnNextStatement();
-
-        public List<DBGUIExtCmdInfoBase> Ping();
-
-        public void SetMeasureMode(Guid measureMode);
+        void SetMeasureMode(Guid measureMode);
     }
 }
