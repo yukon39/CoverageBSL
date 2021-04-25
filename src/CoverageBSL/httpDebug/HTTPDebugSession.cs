@@ -236,13 +236,9 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             var request = new RDBGSetMeasureModeRequest()
             {
                 IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias
+                InfoBaseAlias = InfobaseAlias,
+                MeasureModeSeanceID = measureMode
             };
-
-            if (measureMode != Guid.Empty)
-            {
-                request.MeasureModeSeanceID = measureMode;
-            }
 
             Execute<RDBGEmptyResponse>(request, requestParameters);
         }
