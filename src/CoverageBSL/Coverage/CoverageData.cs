@@ -3,7 +3,7 @@ using ScriptEngine.Machine.Contexts;
 
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
-    [ContextClass(typeName: "CoverageData", typeAlias: "ДанныеОтладки")]
+    [ContextClass(typeName: "CoverageData", typeAlias: "ДанныеПокрытия")]
     public class CoverageData : AutoContext<CoverageData>
     {
         [ContextProperty("TotalDurability")]
@@ -12,6 +12,6 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         public int TotalLines { get; set; }
 
         [ContextProperty("Data")]
-        public MapImpl Data { get; set; }
+        public MapImpl Data { get; } = new MapImpl();
     }
 }

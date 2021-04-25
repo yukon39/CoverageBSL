@@ -118,7 +118,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         private void ProcessPerformanceInfoModule(PerformanceInfoModule module)
         {
             var moduleBSL = new CoverageModuleId(module.ModuleID);
-            var linesCoverage = (MapImpl)coverageData.Data.Retrieve(moduleBSL);
+            var linesCoverage = coverageData.Data.Retrieve(moduleBSL) as MapImpl;
             if (linesCoverage == null)
             {
                 linesCoverage = new MapImpl();

@@ -4,7 +4,7 @@ using ScriptEngine.Machine.Contexts;
 
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
-    [ContextClass(typeName: "CoverageModuleId", typeAlias: "ИдентификаторМодуляОтладки")]
+    [ContextClass(typeName: "CoverageModuleId", typeAlias: "ИдентификаторМодуляПокрытия")]
     public class CoverageModuleId : AutoContext<CoverageModuleId>
     {
         public CoverageModuleId(BSLModuleIdInternal bslModuleId)
@@ -14,7 +14,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             ExtensionName = bslModuleId.ExtensionName;
             ExtId = bslModuleId.ExtId;
             ObjectID = new GuidWrapper(bslModuleId.ObjectID.ToString());
-            PropertyID = new GuidWrapper(bslModuleId.ObjectID.ToString());
+            PropertyID = new GuidWrapper(bslModuleId.PropertyID.ToString());
             Version = bslModuleId.Version;
         }
 
@@ -32,7 +32,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
 
         [ContextProperty("PropertyID")]
         public GuidWrapper PropertyID { get; }
-        
+
         [ContextProperty("ExtId")]
         public int ExtId { get; }
 
