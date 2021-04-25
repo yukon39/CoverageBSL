@@ -1,11 +1,12 @@
-﻿using System;
+﻿using com.github.yukon39.DebugBSL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace com.github.yukon39.CoverageBSL.httpDebug
 {
-    class RequestParameters
+    class RequestParameters : IDebuggerClientRequestParameters
     {
         private readonly Dictionary<string, string> Parameters;
 
@@ -40,7 +41,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             var Result = new StringBuilder();
             Result.Append(Resource);
             Result.Append('?');
-            Result.Append(string.Join('&', URLParams));
+            Result.Append(string.Join("&", URLParams));
 
             return Result.ToString();
         }

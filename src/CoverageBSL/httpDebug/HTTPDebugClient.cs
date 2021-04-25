@@ -1,9 +1,10 @@
-﻿using com.github.yukon39.DebugBSL.data;
+﻿using com.github.yukon39.DebugBSL;
+using com.github.yukon39.DebugBSL.data;
 using com.github.yukon39.DebugBSL.data.core;
-using com.github.yukon39.CoverageBSL.debugger;
-using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,55 +12,55 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 {
     class HTTPDebugClient : IDebuggerClient
     {
-        private static readonly HttpClient Client = new();
+        private static readonly HttpClient Client = new HttpClient();
 
-        private Uri DebugServerURL;
+        private readonly Uri DebugServerURL;
 
         private HTTPDebugClient(Uri debugServerURL)
         {
             DebugServerURL = debugServerURL;
         }
 
-        public void Test()
+        public async Task TestAsync()
         {
-            var RequestParameters = new RequestParameters
+            var requestParameters = new RequestParameters
             {
                 Resource = "rdbgTest",
                 Command = "test"
             };
 
-            var Request = new RDBGTestRequest();
+            var request = new RDBGTestRequest();
 
-            Execute<RDBGEmptyResponse>(Request, RequestParameters);
+            await ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
 
-        public string ApiVersion()
+        public async Task<string> ApiVersionAsync()
         {
-            var RequestParameters = new RequestParameters
+            var requestParameters = new RequestParameters
             {
                 Command = "getRDbgAPIVer"
             };
 
-            var Request = new MiscRDbgGetAPIVerRequest();
+            var request = new MiscRDbgGetAPIVerRequest();
 
-            var Response = Execute<MiscRDbgGetAPIVerResponse>(Request, RequestParameters);
-            var Version = Response.Version;
+            var response = await ExecuteAsync<MiscRDbgGetAPIVerResponse>(request, requestParameters);
+            var version = response.Version;
 
-            return Version;
+            return version;
         }
 
-        public IDebuggerSession CreateSession(string infobaseAlias)
+        public IDebuggerClientSession CreateSession(string infobaseAlias)
         {
             return new HTTPDebugSession(this, infobaseAlias);
         }
 
-        public T Execute<T>(IRDBGRequest request, RequestParameters requestParameters)
+        public async Task<T> ExecuteAsync<T>(IRDBGRequest request, IDebuggerClientRequestParameters parameters) where T : IRDBGResponse
         {
-            var CommandURL = string.Format("{0}e1crdbg/{1}", DebugServerURL, requestParameters.ToString());
+            var CommandURL = string.Format("{0}e1crdbg/{1}", DebugServerURL, parameters.ToString());
 
             var RequestContent = HTTPDebugSerializer.Serialize(request);
 
-            var ResponseContent = HttpResponseContent(CommandURL, RequestContent).ConfigureAwait(false).GetAwaiter().GetResult();
+            var ResponseContent = await HttpResponseContent(CommandURL, RequestContent);
 
             if (string.IsNullOrEmpty(ResponseContent))
             {
@@ -79,8 +80,8 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
 
             var HttpRequest = new HttpRequestMessage(HttpMethod.Post, url);
             HttpRequest.Content = Content;
-            HttpRequest.Headers.Accept.Add(new("application/xml"));
-            HttpRequest.Headers.AcceptEncoding.Add(new("gzip"));
+            HttpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+            HttpRequest.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
             var HttpResponse = await Client.SendAsync(HttpRequest);
 
