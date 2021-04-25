@@ -204,7 +204,14 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             //Logger.LogDebug("ClearBreakOnNextStatement successful");
         }
 
-        public List<DBGUIExtCmdInfoBase> Ping()
+        public void Ping()
+        {
+            PingMutex.WaitOne();
+            PingInternal().ForEach(x => { InvokeEvent(x); });
+            PingMutex.ReleaseMutex();
+        }
+
+        private List<DBGUIExtCmdInfoBase> PingInternal()
         {
             var RequestParameters = new RequestParameters
             {
@@ -247,7 +254,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
         {
             if (Attached && PingMutex.WaitOne(TimeSpan.FromMilliseconds(500)))
             {
-                Ping().ForEach(x => { InvokeEvent(x); });
+                PingInternal().ForEach(x => { InvokeEvent(x); });
                 PingMutex.ReleaseMutex();
             }
         }

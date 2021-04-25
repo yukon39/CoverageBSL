@@ -1,6 +1,5 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
-using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
@@ -37,7 +36,7 @@ namespace com.github.yukon39.DebugBSL
 
         void ClearBreakOnNextStatement();
 
-        List<DBGUIExtCmdInfoBase> Ping();
+        void Ping();
 
         void SetMeasureMode(Guid measureMode);
     }

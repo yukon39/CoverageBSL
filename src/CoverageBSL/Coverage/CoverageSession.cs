@@ -92,6 +92,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         public CoverageData StopPerformanceMeasure()
         {
             DebuggerSession.SetMeasureMode(Guid.Empty);
+            DebuggerSession.Ping();
             return coverageData;
         }
 
