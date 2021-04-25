@@ -21,7 +21,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugMeasure
         public int PerformanceFrequency;
 
         [XmlElement(ElementName = "moduleData")]
-        public readonly List<PerformanceInfoModule> ModuleData = new();
+        public readonly List<PerformanceInfoModule> ModuleData = new List<PerformanceInfoModule>();
 
         [XmlElement(ElementName = "sessionID")]
         public Guid SessionID;

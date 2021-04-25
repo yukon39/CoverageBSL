@@ -11,6 +11,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugMeasure
         public BSLModuleIdInternal ModuleID;
 
         [XmlElement(ElementName = "lineInfo")]
-        public readonly List<PerformanceInfoLine> LineInfo = new();
+        public readonly List<PerformanceInfoLine> LineInfo = new List<PerformanceInfoLine>();
     }
 }

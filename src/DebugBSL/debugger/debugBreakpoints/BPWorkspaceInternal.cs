@@ -7,6 +7,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBreakpoints
     public class BPWorkspaceInternal
     {
         [XmlElement(ElementName = "moduleBPInfo")]
-        public readonly List<ModuleBPInfoInternal> ModuleBPInfo = new();
+        public readonly List<ModuleBPInfoInternal> ModuleBPInfo = new List<ModuleBPInfoInternal>();
     }
 }

@@ -7,12 +7,12 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRTEFilter
     public class RteFilterStorage
     {
         [XmlElement(ElementName = "strTemplate")]
-        public readonly List<RteFilterItem> StrTemplate = new();
+        public List<RteFilterItem> StrTemplate { get; } = new List<RteFilterItem>();
 
         [XmlElement(ElementName = "stopOnErrors")]
-        public bool StopOnErrors;
+        public bool StopOnErrors { get; set; }
 
         [XmlElement(ElementName = "analyzeErrorStr")]
-        public bool AnalyzeErrorStr;
+        public bool AnalyzeErrorStr { get; set; }
     }
 }

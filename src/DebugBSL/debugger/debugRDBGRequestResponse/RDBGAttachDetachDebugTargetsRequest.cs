@@ -12,6 +12,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
         public bool Attach;
 
         [XmlElement(ElementName = "id")]
-        public readonly List<DebugTargetIdLight> ID = new();
+        public readonly List<DebugTargetIdLight> ID = new List<DebugTargetIdLight>();
     }
 }

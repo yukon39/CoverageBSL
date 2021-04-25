@@ -14,7 +14,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugArea
         public bool UseMaskOfDSArea;
 
         [XmlElement(ElementName = "dsPairInfo")]
-        public readonly List<DebugAreaDSPairInfo> DSPairInfo = new();
+        public readonly List<DebugAreaDSPairInfo> DSPairInfo = new List<DebugAreaDSPairInfo>();
 
         [XmlElement(ElementName = "useMaskOfTargetTypes")]
         public bool UseMaskOfTargetTypes;
@@ -26,6 +26,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugArea
         public bool useMaskOfUsers;
 
         [XmlElement(ElementName = "userInfo")]
-        public readonly List<DebugAreaUserInfo> UserInfo = new();
+        public readonly List<DebugAreaUserInfo> UserInfo = new List<DebugAreaUserInfo>();
     }
 }

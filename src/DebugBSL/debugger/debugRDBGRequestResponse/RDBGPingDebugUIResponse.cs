@@ -12,6 +12,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
     public class RDBGPingDebugUIResponse : IRDBGResponse
     {
         [XmlElement(ElementName = "result")]
-        public readonly List<DBGUIExtCmdInfoBase> Result = new();
+        public readonly List<DBGUIExtCmdInfoBase> Result = new List<DBGUIExtCmdInfoBase>();
     }
 }

@@ -11,6 +11,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBreakpoints
         public BSLModuleIdInternal ID;
 
         [XmlElement(ElementName = "bpInfo")]
-        public readonly List<BreakpointInfo> BPInfo = new();
+        public readonly List<BreakpointInfo> BPInfo = new List<BreakpointInfo>();
     }
 }

@@ -9,9 +9,9 @@ namespace com.github.yukon39.DebugBSL.debugger.debugAutoAttach
     {
 
         [XmlElement(ElementName = "targetType")]
-        public readonly List<DebugTargetType> TargetType = new();
+        public readonly List<DebugTargetType> TargetType = new List<DebugTargetType>();
 
         [XmlElement(ElementName = "areaName")]
-        public readonly List<string> AreaName = new();
+        public readonly List<string> AreaName = new List<string>();
     }
 }

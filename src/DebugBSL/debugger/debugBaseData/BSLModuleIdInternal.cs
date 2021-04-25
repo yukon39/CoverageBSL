@@ -7,24 +7,24 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBaseData
     public class BSLModuleIdInternal
     {
         [XmlElement(ElementName = "type")]
-        public BSLModuleType Type;
+        public BSLModuleType Type { get; set; }
 
         [XmlElement(ElementName = "url")]
-        public string URL;
+        public string URL { get; set; }
 
         [XmlElement(ElementName = "extensionName")]
-        public string ExtensionName;
+        public string ExtensionName { get; set; }
 
         [XmlElement(ElementName = "objectID")]
-        public Guid ObjectID;
+        public Guid ObjectID { get; set; }
 
         [XmlElement(ElementName = "propertyID")]
-        public Guid PropertyID;
+        public Guid PropertyID { get; set; }
 
         [XmlElement(ElementName = "extId")]
-        public int ExtId;
+        public int ExtId { get; set; }
 
         [XmlElement(ElementName = "version")]
-        public string Version;
+        public string Version { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRTEFilter
     public class RteFilterItem
     {
         [XmlElement(ElementName = "include")]
-        public bool Include;
+        public bool Include { get; set; }
 
         [XmlElement(ElementName = "str")]
-        public string Str;
+        public string Str { get; set; }
     }
 }

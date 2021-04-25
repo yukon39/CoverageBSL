@@ -6,7 +6,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBaseData
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")]
     public class DebugTargetId : DebugTargetIdLight
     {
-        private readonly DebugTargetIdLight _TargetIdLight = new();
+        private readonly DebugTargetIdLight _TargetIdLight = new DebugTargetIdLight();
 
         [XmlElement(ElementName = "seanceId")]
         public Guid SeanceId;

@@ -9,6 +9,6 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
     public class RDBGGetDbgAllTargetStatesResponse : IRDBGResponse
     {
         [XmlElement(ElementName = "item")]
-        public readonly List<DbgTargetStateInfo> Item = new();
+        public readonly List<DbgTargetStateInfo> Item = new List<DbgTargetStateInfo>();
     }
 }

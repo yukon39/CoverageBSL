@@ -9,7 +9,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
     public class HTTPServerInitialDebugSettingsData : HTTPInitialDebugSettingsData
     {
         [XmlElement(ElementName = "debugAreaInfo")]
-        public readonly List<DebugAreaInfo> DebugAreaInfo = new();
+        public readonly List<DebugAreaInfo> DebugAreaInfo = new List<DebugAreaInfo>();
 
         [XmlElement(ElementName = "autoAttachSettings")]
         public DebugAutoAttachSettings AutoAttachSettings;
