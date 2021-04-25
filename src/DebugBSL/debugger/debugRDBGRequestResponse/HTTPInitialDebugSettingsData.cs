@@ -1,11 +1,11 @@
-﻿using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
-using com.github.yukon39.CoverageBSL.debugger.debugBreakpoints;
-using com.github.yukon39.CoverageBSL.debugger.debugRTEFilter;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+using com.github.yukon39.DebugBSL.debugger.debugBreakpoints;
+using com.github.yukon39.DebugBSL.debugger.debugRTEFilter;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse
+namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
 {
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")]
     public class HTTPInitialDebugSettingsData
