@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.debugger.debugMeasure
+namespace com.github.yukon39.DebugBSL.debugger.debugMeasure
 {
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugMeasure")]
     public class PerformanceInfoLine
@@ -12,10 +12,10 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugMeasure
         public int Frequency;
 
         [XmlElement(ElementName = "Durability")]
-        public double Durability;
+        public long Durability;
 
         [XmlElement(ElementName = "PureDurability")]
-        public double PureDurability;
+        public long PureDurability;
 
         [XmlElement(ElementName = "ServerCallSignal")]
         public byte ServerCallSignal;

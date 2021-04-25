@@ -1,9 +1,9 @@
-﻿using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.debugger.debugMeasure
+namespace com.github.yukon39.DebugBSL.debugger.debugMeasure
 {
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugMeasure")]
     public class PerformanceInfoMain
@@ -12,7 +12,7 @@ namespace com.github.yukon39.CoverageBSL.debugger.debugMeasure
         public DebugTargetId TargetID;
 
         [XmlElement(ElementName = "totalDurability")]
-        public double TotalDurability;
+        public long TotalDurability;
 
         [XmlElement(ElementName = "totalIndepServerWorkTime")]
         public double TotalIndepServerWorkTime;

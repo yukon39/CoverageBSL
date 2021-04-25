@@ -1,8 +1,8 @@
-﻿using com.github.yukon39.CoverageBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.debugger.debugArea
+namespace com.github.yukon39.DebugBSL.debugger.debugArea
 {
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugArea")]
     public class DebugAreaInfo
