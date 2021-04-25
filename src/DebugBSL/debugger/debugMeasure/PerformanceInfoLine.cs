@@ -5,19 +5,19 @@ namespace com.github.yukon39.DebugBSL.debugger.debugMeasure
     [XmlType(Namespace = "http://v8.1c.ru/8.3/debugger/debugMeasure")]
     public class PerformanceInfoLine
     {
-        [XmlElement(ElementName = "LineNo")]
-        public int LineNo;
+        [XmlElement(ElementName = "lineNo")]
+        public int LineNo { get; set; }
 
-        [XmlElement(ElementName = "Frequency")]
-        public int Frequency;
+        [XmlElement(ElementName = "frequency")]
+        public int Frequency { get; set; }
 
-        [XmlElement(ElementName = "Durability")]
-        public long Durability;
+        [XmlElement(ElementName = "durability")]
+        public long Durability { get; set; }
 
-        [XmlElement(ElementName = "PureDurability")]
-        public long PureDurability;
+        [XmlElement(ElementName = "pureDurability")]
+        public long PureDurability { get; set; }
 
-        [XmlElement(ElementName = "ServerCallSignal")]
-        public byte ServerCallSignal;
+        [XmlElement(ElementName = "serverCallSignal")]
+        public byte ServerCallSignal { get; set; }
     }
 }
