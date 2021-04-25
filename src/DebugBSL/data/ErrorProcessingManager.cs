@@ -1,6 +1,6 @@
-﻿using com.github.yukon39.CoverageBSL.data.core;
+﻿using com.github.yukon39.DebugBSL.data.core;
 
-namespace com.github.yukon39.CoverageBSL.data
+namespace com.github.yukon39.DebugBSL.data
 {
     public static class ErrorProcessingManager
     {

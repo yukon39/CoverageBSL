@@ -9,4 +9,8 @@
     <PackageReference Include="OneScript" Version="1.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DebugBSL\DebugBSL.csproj" />
+  </ItemGroup>
+
 </Project>

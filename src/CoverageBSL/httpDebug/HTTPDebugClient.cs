@@ -1,5 +1,5 @@
-﻿using com.github.yukon39.CoverageBSL.data;
-using com.github.yukon39.CoverageBSL.data.core;
+﻿using com.github.yukon39.DebugBSL.data;
+using com.github.yukon39.DebugBSL.data.core;
 using com.github.yukon39.CoverageBSL.debugger;
 using com.github.yukon39.CoverageBSL.debugger.debugRDBGRequestResponse;
 using System;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.data.core
+namespace com.github.yukon39.DebugBSL.data.core
 {
     [XmlType(TypeName = "GenericException", Namespace = "http://v8.1c.ru/8.1/data/core")]
     public abstract class GenericException

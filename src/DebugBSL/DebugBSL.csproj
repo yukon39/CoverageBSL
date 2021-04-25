@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>com.github.yukon39.DebugBSL</RootNamespace>
+  </PropertyGroup>
+
+</Project>
