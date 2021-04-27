@@ -1,27 +1,21 @@
-﻿using com.github.yukon39.DebugBSL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace com.github.yukon39.DebugClientBSL
 {
-    class RequestParameters : IDebuggerClientRequestParameters
+    class RequestParameters
     {
-        private readonly Dictionary<string, string> Parameters;
+        private readonly Dictionary<string, string> Parameters = new Dictionary<string, string>();
 
-        public RequestParameters()
-        {
-            Parameters = new Dictionary<string, string>();
-            Resource = "rdbg";
-        }
+        public RequestParameters(Uri rootUrl, string command) : this(rootUrl, command, "rdbg") { }
 
-        public string Command
+        public RequestParameters(Uri rootUrl, string command, string resource)
         {
-            set
-            {
-                Parameters.Add("cmd", value);
-            }
+            RootUrl = rootUrl;
+            Resource = resource;
+            Parameters.Add("cmd", command);
         }
 
         public Guid DebugID
@@ -33,6 +27,8 @@ namespace com.github.yukon39.DebugClientBSL
         }
 
         public string Resource { get; set; }
+
+        public Uri RootUrl { get; }
 
         public override string ToString()
         {

@@ -14,7 +14,7 @@ namespace com.github.yukon39.DebugClientBSL
     {
         public readonly string InfobaseAlias;
         public readonly Guid DebugSession;
-        private readonly IDebuggerClient Client;
+        private readonly Uri DebugServerURL;
         private bool Attached = false;
         private Timer Timer;
         private readonly Mutex PingMutex = new Mutex();
@@ -23,9 +23,9 @@ namespace com.github.yukon39.DebugClientBSL
         public event TargetQuitHandler TargetQuit;
         public event MeasureProcessingHandler MeasureProcessing;
 
-        public HTTPDebugSession(HTTPDebugClient client, string infobaseAlias)
+        public HTTPDebugSession(Uri debugServerURL, string infobaseAlias)
         {
-            Client = client;
+            DebugServerURL = debugServerURL;
             InfobaseAlias = infobaseAlias;
             DebugSession = Guid.NewGuid();
         }
@@ -34,10 +34,7 @@ namespace com.github.yukon39.DebugClientBSL
 
         public AttachDebugUIResult Attach(char[] Password, DebuggerOptions Options)
         {
-            var requestParameters = new RequestParameters
-            {
-                Command = "attachDebugUI"
-            };
+            var requestParameters = new RequestParameters(DebugServerURL, "attachDebugUI");
 
             var request = new RDBGAttachDebugUIRequest
             {
@@ -72,13 +69,9 @@ namespace com.github.yukon39.DebugClientBSL
 
         public bool Detach()
         {
-            var RequestParameters = new RequestParameters
-            {
-                Command = "detachDebugUI"
-            };
-
-
-            var Request = new RDBGDetachDebugUIRequest
+            var requestParameters = new RequestParameters(DebugServerURL, "detachDebugUI");
+            
+            var request = new RDBGDetachDebugUIRequest
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias
@@ -86,7 +79,7 @@ namespace com.github.yukon39.DebugClientBSL
 
             lock (this)
             {
-                var Response = Execute<RDBGDetachDebugUIResponse>(Request, RequestParameters);
+                var response = Execute<RDBGDetachDebugUIResponse>(request, requestParameters);
 
                 Attached = false;
 
@@ -100,34 +93,30 @@ namespace com.github.yukon39.DebugClientBSL
             return true;
         }
 
-        public void AttachDebugTarget(DebugTargetIdLight target) => AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, true);
+        public void AttachDebugTarget(DebugTargetIdLight target) => 
+            AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, true);
 
-        public void DetachDebugTarget(DebugTargetIdLight target) => AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, false);
+        public void DetachDebugTarget(DebugTargetIdLight target) => 
+            AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, false);
 
         private void AttachDetachDebugTargets(List<DebugTargetIdLight> targets, bool Attach)
         {
-            var RequestParameters = new RequestParameters
-            {
-                Command = "attachDetachDbgTargets"
-            };
-
-            var Request = new RDBGAttachDetachDebugTargetsRequest
+            var requestParameters = new RequestParameters(DebugServerURL, "attachDetachDbgTargets");
+            
+            var request = new RDBGAttachDetachDebugTargetsRequest
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias,
                 Attach = Attach,
             };
-            Request.ID.AddRange(targets);
+            request.ID.AddRange(targets);
 
-            Execute<RDBGEmptyResponse>(Request, RequestParameters);
+            Execute<RDBGEmptyResponse>(request, requestParameters);
         }
 
         public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName)
         {
-            var requestParameters = new RequestParameters
-            {
-                Command = "getDbgAllTargetStates"
-            };
+            var requestParameters = new RequestParameters(DebugServerURL, "getDbgAllTargetStates");
 
             var request = new RDBGGetDbgAllTargetStatesRequest
             {
@@ -148,31 +137,24 @@ namespace com.github.yukon39.DebugClientBSL
 
         public void InitSettings(HTTPServerInitialDebugSettingsData data)
         {
-            var RequestParameters = new RequestParameters
-            {
-                Command = "initSettings"
-            };
-
-
-            var Request = new RDBGSetInitialDebugSettingsRequest
+            var requestParameters = new RequestParameters(DebugServerURL, "initSettings");
+           
+            var request = new RDBGSetInitialDebugSettingsRequest
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias,
                 Data = data
             };
 
-            Execute<RDBGEmptyResponse>(Request, RequestParameters);
+            Execute<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("InitSettings successful");
         }
 
         public void SetAutoAttachSettings(DebugAutoAttachSettings autoAttachSettings)
         {
-            var requestParameters = new RequestParameters
-            {
-                Command = "setAutoAttachSettings"
-            };
-
+            var requestParameters = new RequestParameters(DebugServerURL, "setAutoAttachSettings");
+            
             var request = new RDBGSetAutoAttachSettingsRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -188,18 +170,15 @@ namespace com.github.yukon39.DebugClientBSL
 
         public void ClearBreakOnNextStatement()
         {
-            var RequestParameters = new RequestParameters
-            {
-                Command = "clearBreakOnNextStatement"
-            };
-
-            var Request = new RDBGClearBreakOnNextStatementRequest
+            var requestParameters = new RequestParameters(DebugServerURL, "clearBreakOnNextStatement");
+            
+            var request = new RDBGClearBreakOnNextStatementRequest
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias
             };
 
-            Execute<RDBGEmptyResponse>(Request, RequestParameters);
+            Execute<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("ClearBreakOnNextStatement successful");
         }
@@ -213,33 +192,29 @@ namespace com.github.yukon39.DebugClientBSL
 
         private List<DBGUIExtCmdInfoBase> PingInternal()
         {
-            var RequestParameters = new RequestParameters
+            var requestParameters = new RequestParameters(DebugServerURL, "pingDebugUIParams")
             {
-                Command = "pingDebugUIParams",
                 DebugID = DebugSession
             };
 
-            var Request = new RDBGPingDebugUIRequest()
+            var request = new RDBGPingDebugUIRequest()
             {
                 IdOfDebuggerUI = DebugSession,
                 InfoBaseAlias = InfobaseAlias
             };
 
-            var Response = Execute<RDBGPingDebugUIResponse>(Request, RequestParameters);
-            var Result = Response.Result;
+            var response = Execute<RDBGPingDebugUIResponse>(request, requestParameters);
+            var result = response.Result;
 
             //Logger.LogDebug("Ping result size is {size}", Result.Count);
 
-            return Result;
+            return result;
         }
 
         public void SetMeasureMode(Guid measureMode)
         {
-            var requestParameters = new RequestParameters
-            {
-                Command = "setMeasureMode",
-            };
-
+            var requestParameters = new RequestParameters(DebugServerURL, "setMeasureMode");
+            
             var request = new RDBGSetMeasureModeRequest()
             {
                 IdOfDebuggerUI = DebugSession,
@@ -299,10 +274,10 @@ namespace com.github.yukon39.DebugClientBSL
             StopTimer();
         }
 
-        private async Task<T> ExecuteAsync<T>(IRDBGRequest request, IDebuggerClientRequestParameters parameters) where T : IRDBGResponse => 
-            await Client.ExecuteAsync<T>(request, parameters).ConfigureAwait(false);
+        private async Task<T> ExecuteAsync<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse => 
+            await HttpClientExecutor.ExecuteAsync<T>(request, parameters).ConfigureAwait(false);
 
-        private T Execute<T>(IRDBGRequest request, IDebuggerClientRequestParameters parameters) where T : IRDBGResponse
+        private T Execute<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse
         {
             return ExecuteAsync<T>(request, parameters).GetAwaiter().GetResult();
         }
