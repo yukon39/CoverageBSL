@@ -11,33 +11,45 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
     public class HTTPInitialDebugSettingsData
     {
         [XmlElement(ElementName = "inacessibleModuleID")]
-        public readonly List<BSLModuleIdInternal> InacessibleModuleID = new List<BSLModuleIdInternal>();
+        public List<BSLModuleIdInternal> InacessibleModuleID { get; } = new List<BSLModuleIdInternal>();
 
         [XmlElement(ElementName = "envStateVersion")]
-        public Guid EnvStateVersion;
+        public Guid EnvStateVersion { get; set; }
+
+        public bool ShouldSerializeEnvStateVersion() => false;
 
         [XmlElement(ElementName = "breakOnNextLine")]
-        public bool BreakOnNextLine;
+        public bool BreakOnNextLine { get; set; }
 
         [XmlElement(ElementName = "measureMode")]
-        public Guid MeasureMode;
+        public Guid MeasureMode { get; set; }
+
+        public bool ShouldSerializeMeasureMode() => MeasureMode != Guid.Empty;
 
         [XmlElement(ElementName = "serverIndependentWorkTime")]
-        public int ServerIndependentWorkTime;
+        public int ServerIndependentWorkTime { get; set; }
+
+        public bool ShouldSerializeServerIndependentWorkTime() => ServerIndependentWorkTime != 0;
 
         [XmlElement(ElementName = "bpWorkspace")]
-        public BPWorkspaceInternal BPWorkspace;
+        public BPWorkspaceInternal BPWorkspace { get; set; }
 
         [XmlElement(ElementName = "bpVersion")]
-        public Guid BPVersion;
+        public Guid BPVersion { get; set; }
+
+        public bool ShouldSerializeBPVersion() => BPVersion != Guid.Empty;
 
         [XmlElement(ElementName = "rteProcessing")]
-        public RteFilterStorage RTEProcessing;
+        public RteFilterStorage RTEProcessing { get; set; }
 
         [XmlElement(ElementName = "rteProcVersion")]
-        public Guid RTEProcVersion;
+        public Guid RTEProcVersion { get; set; }
+
+        public bool ShouldSerializeRTEProcVersion() => RTEProcVersion != Guid.Empty;
 
         [XmlElement(ElementName = "inacessibleModuleVersion")]
-        public Guid InacessibleModuleVersion;
+        public Guid InacessibleModuleVersion { get; set; }
+
+        public bool ShouldSerializeInacessibleModuleVersion() => InacessibleModuleVersion != Guid.Empty;
     }
 }
