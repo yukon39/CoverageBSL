@@ -16,7 +16,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse
         [XmlElement(ElementName = "envStateVersion")]
         public Guid EnvStateVersion { get; set; }
 
-        public bool ShouldSerializeEnvStateVersion() => false;
+        public bool ShouldSerializeEnvStateVersion() => EnvStateVersion != Guid.Empty;
 
         [XmlElement(ElementName = "breakOnNextLine")]
         public bool BreakOnNextLine { get; set; }
