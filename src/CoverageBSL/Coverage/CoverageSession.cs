@@ -10,6 +10,7 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine.Values;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
@@ -25,20 +26,26 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
 
-            DebuggerSession.TargetStarted += HandlerTargetStarted;
-            DebuggerSession.TargetQuit += HandlerTargetQuit;
-            DebuggerSession.MeasureProcessing += HandlerMeasureProcessing;
+            DebuggerSession.TargetStarted += HandlerTargetStartedAsync;
+            DebuggerSession.TargetQuit += HandlerTargetQuitAsync;
+            DebuggerSession.MeasureProcessing += HandlerMeasureProcessingAsync;
         }
 
         [ContextMethod("Attach", "Подключить")]
-        public void Attach(string password)
+        public void Attach(string password) => 
+            AttachConfigureAwait(password).GetAwaiter().GetResult();
+
+        private async Task AttachConfigureAwait(string password) => 
+            await AttachAsync(password).ConfigureAwait(false);
+
+        private async Task AttachAsync(string password)
         {
-            var attachResult = DebuggerSession.Attach(password.ToCharArray(), new DebuggerOptions());
+            var attachResult = await DebuggerSession.AttachAsync(password.ToCharArray(), new DebuggerOptions());
 
             switch (attachResult)
             {
                 case AttachDebugUIResult.Registered:
-                    OnSuccessfulAttach();
+                    await OnSuccessfulAttachAsync();
                     break;
 
                 case AttachDebugUIResult.CredentialsRequired:
@@ -62,7 +69,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
         }
 
-        private void OnSuccessfulAttach()
+        private async Task OnSuccessfulAttachAsync()
         {
             var data = new HTTPServerInitialDebugSettingsData();
 
@@ -70,50 +77,68 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             autoAttachSettings.TargetType.AddRange(TargetTypes);
             autoAttachSettings.AreaName.AddRange(AreaNames);
 
-            DebuggerSession.InitSettings(data);
-            DebuggerSession.ClearBreakOnNextStatement();
-            DebuggerSession.SetAutoAttachSettings(autoAttachSettings);
-            DebuggerSession.AttachedTargetsStates("").ForEach(x => DebuggerSession.AttachDebugTarget(x.TargetID.TargetIdLight));
+            await DebuggerSession.InitSettingsAsync(data);
+            await DebuggerSession.ClearBreakOnNextStatementAsync();
+            await DebuggerSession.SetAutoAttachSettingsAsync(autoAttachSettings);
+            (await DebuggerSession.AttachedTargetsStatesAsync(""))
+                .ForEach(async x => await DebuggerSession.AttachDebugTargetAsync(x.TargetID.TargetIdLight));
         }
 
         [ContextMethod("Detach", "Отключить")]
-        public void Detach() => DebuggerSession.Detach();
+        public void Detach() => 
+            DetachConfigureAwait().GetAwaiter().GetResult();
+
+        private async Task DetachConfigureAwait() => 
+            await DebuggerSession.DetachAsync().ConfigureAwait(false);
 
         [ContextMethod("StartPerformanceMeasure", "НачатьЗамерПроизводительности")]
-        public GuidWrapper StartPerformanceMeasure()
+        public GuidWrapper StartPerformanceMeasure() => 
+            StartPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+
+        private async Task<GuidWrapper> StartPerformanceMeasureConfigureAwait() => 
+            await StartPerformanceMeasureAsync().ConfigureAwait(false);
+
+        private async Task<GuidWrapper> StartPerformanceMeasureAsync()
         {
             var measureId = Guid.NewGuid();
-            DebuggerSession.SetMeasureMode(measureId);
+            await DebuggerSession.SetMeasureModeAsync(measureId);
             coverageData = new CoverageData();
             return new GuidWrapper(measureId.ToString());
         }
 
         [ContextMethod("StopPerformanceMeasure", "ЗавершитьЗамерПроизводительности")]
-        public CoverageData StopPerformanceMeasure()
+        public CoverageData StopPerformanceMeasure() => 
+            StopPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+
+        private async Task<CoverageData> StopPerformanceMeasureConfigureAwait() =>
+            await StopPerformanceMeasureAsync().ConfigureAwait(false);
+
+        private async Task<CoverageData> StopPerformanceMeasureAsync()
         {
-            DebuggerSession.SetMeasureMode(Guid.Empty);
-            DebuggerSession.Ping();
+            await DebuggerSession.SetMeasureModeAsync(Guid.Empty);
+            await DebuggerSession.PingAsync();
             return coverageData;
         }
 
-        private void HandlerTargetStarted(DebugTargetId targetID)
+        private async Task HandlerTargetStartedAsync(DebugTargetId targetID)
         {
-            DebuggerSession.AttachDebugTarget(targetID.TargetIdLight);
+            await DebuggerSession.AttachDebugTargetAsync(targetID.TargetIdLight);
         }
 
-        private void HandlerTargetQuit(DebugTargetId targetID)
+        private async Task HandlerTargetQuitAsync(DebugTargetId targetID)
         {
-            DebuggerSession.DetachDebugTarget(targetID.TargetIdLight);
+            await DebuggerSession.DetachDebugTargetAsync(targetID.TargetIdLight);
         }
 
-        private void HandlerMeasureProcessing(PerformanceInfoMain performanceInfo)
+        private Task HandlerMeasureProcessingAsync(PerformanceInfoMain performanceInfo)
         {
             lock (coverageData)
             {
                 coverageData.TotalDurability += performanceInfo.TotalDurability;
-
                 performanceInfo.ModuleData.ForEach(x => ProcessPerformanceInfoModule(x));
             }
+
+            return Task.CompletedTask;
         }
 
         private void ProcessPerformanceInfoModule(PerformanceInfoModule module)

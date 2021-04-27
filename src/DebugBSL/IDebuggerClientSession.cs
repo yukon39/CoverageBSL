@@ -4,13 +4,14 @@ using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugBSL
 {
 
-    public delegate void TargetStartedHandler(DebugTargetId TargetID);
-    public delegate void TargetQuitHandler(DebugTargetId TargetID);
-    public delegate void MeasureProcessingHandler(PerformanceInfoMain TargetID);
+    public delegate Task TargetStartedHandler(DebugTargetId TargetID);
+    public delegate Task TargetQuitHandler(DebugTargetId TargetID);
+    public delegate Task MeasureProcessingHandler(PerformanceInfoMain TargetID);
 
     public interface IDebuggerClientSession
     {
@@ -20,24 +21,24 @@ namespace com.github.yukon39.DebugBSL
 
         bool IsAttached();
 
-        AttachDebugUIResult Attach(char[] Password, DebuggerOptions Options);
+        Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options);
 
-        bool Detach();
+        Task<bool> DetachAsync();
 
-        void AttachDebugTarget(DebugTargetIdLight target);
+        Task AttachDebugTargetAsync(DebugTargetIdLight target);
 
-        void DetachDebugTarget(DebugTargetIdLight target);
+        Task DetachDebugTargetAsync(DebugTargetIdLight target);
 
-        List<DbgTargetStateInfo> AttachedTargetsStates(string areaName);
+        Task<List<DbgTargetStateInfo>> AttachedTargetsStatesAsync(string areaName);
 
-        void InitSettings(HTTPServerInitialDebugSettingsData Data);
+        Task InitSettingsAsync(HTTPServerInitialDebugSettingsData Data);
 
-        void SetAutoAttachSettings(DebugAutoAttachSettings AutoAttachSettings);
+        Task SetAutoAttachSettingsAsync(DebugAutoAttachSettings AutoAttachSettings);
 
-        void ClearBreakOnNextStatement();
+        Task ClearBreakOnNextStatementAsync();
 
-        void Ping();
+        Task PingAsync();
 
-        void SetMeasureMode(Guid measureMode);
+        Task SetMeasureModeAsync(Guid measureMode);
     }
 }

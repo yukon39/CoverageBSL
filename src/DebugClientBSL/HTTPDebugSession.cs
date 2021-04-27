@@ -32,7 +32,7 @@ namespace com.github.yukon39.DebugClientBSL
 
         public bool IsAttached() => Attached;
 
-        public AttachDebugUIResult Attach(char[] Password, DebuggerOptions Options)
+        public async Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "attachDebugUI");
 
@@ -49,7 +49,7 @@ namespace com.github.yukon39.DebugClientBSL
             //}
             request.Options = Options;
 
-            var response = Execute<RDBGAttachDebugUIResponse>(request, requestParameters);
+            var response = await HttpClientExecutor.ExecuteAsync<RDBGAttachDebugUIResponse>(request, requestParameters);
             var result = response.Result;
 
             //Logger.LogDebug("Debug attach result is {result}", Result);
@@ -67,7 +67,7 @@ namespace com.github.yukon39.DebugClientBSL
             return result;
         }
 
-        public bool Detach()
+        public async Task<bool> DetachAsync()
         {
             var requestParameters = new RequestParameters(DebugServerURL, "detachDebugUI");
             
@@ -77,29 +77,25 @@ namespace com.github.yukon39.DebugClientBSL
                 InfoBaseAlias = InfobaseAlias
             };
 
-            lock (this)
-            {
-                var response = Execute<RDBGDetachDebugUIResponse>(request, requestParameters);
+            // lock
+            var response = await HttpClientExecutor.ExecuteAsync<RDBGDetachDebugUIResponse>(request, requestParameters);
+            var result = response.Result;
 
-                Attached = false;
+            Attached = false;
+            StopTimer();
 
-                StopTimer();
-
-            }
-
-            //var Result = Response.Result;
             //Logger.LogDebug("Debug detach result is {result}", Result);
 
-            return true;
+            return result;
         }
 
-        public void AttachDebugTarget(DebugTargetIdLight target) => 
-            AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, true);
+        public async Task AttachDebugTargetAsync(DebugTargetIdLight target) =>
+            await AttachDetachDebugTargetsAsync(new List<DebugTargetIdLight>() { target }, true);
 
-        public void DetachDebugTarget(DebugTargetIdLight target) => 
-            AttachDetachDebugTargets(new List<DebugTargetIdLight>() { target }, false);
+        public async Task DetachDebugTargetAsync(DebugTargetIdLight target) =>
+            await AttachDetachDebugTargetsAsync(new List<DebugTargetIdLight>() { target }, false);
 
-        private void AttachDetachDebugTargets(List<DebugTargetIdLight> targets, bool Attach)
+        private async Task AttachDetachDebugTargetsAsync(List<DebugTargetIdLight> targets, bool Attach)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "attachDetachDbgTargets");
             
@@ -111,10 +107,10 @@ namespace com.github.yukon39.DebugClientBSL
             };
             request.ID.AddRange(targets);
 
-            Execute<RDBGEmptyResponse>(request, requestParameters);
+            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
 
-        public List<DbgTargetStateInfo> AttachedTargetsStates(string areaName)
+        public async Task<List<DbgTargetStateInfo>> AttachedTargetsStatesAsync(string areaName)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "getDbgAllTargetStates");
 
@@ -129,13 +125,13 @@ namespace com.github.yukon39.DebugClientBSL
                 request.DebugAreaName = areaName;
             }
 
-            var response = Execute<RDBGGetDbgAllTargetStatesResponse>(request, requestParameters);
+            var response = await HttpClientExecutor.ExecuteAsync<RDBGGetDbgAllTargetStatesResponse>(request, requestParameters);
             var items = response.Item;
 
             return items;
         }
 
-        public void InitSettings(HTTPServerInitialDebugSettingsData data)
+        public async Task InitSettingsAsync(HTTPServerInitialDebugSettingsData data)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "initSettings");
            
@@ -146,12 +142,12 @@ namespace com.github.yukon39.DebugClientBSL
                 Data = data
             };
 
-            Execute<RDBGEmptyResponse>(request, requestParameters);
+            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("InitSettings successful");
         }
 
-        public void SetAutoAttachSettings(DebugAutoAttachSettings autoAttachSettings)
+        public async Task SetAutoAttachSettingsAsync(DebugAutoAttachSettings autoAttachSettings)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "setAutoAttachSettings");
             
@@ -163,12 +159,12 @@ namespace com.github.yukon39.DebugClientBSL
                 AutoAttachSettings = autoAttachSettings
             };
 
-            Execute<RDBGEmptyResponse>(request, requestParameters);
+            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("SetAutoAttachSettings successful");
         }
 
-        public void ClearBreakOnNextStatement()
+        public async Task ClearBreakOnNextStatementAsync()
         {
             var requestParameters = new RequestParameters(DebugServerURL, "clearBreakOnNextStatement");
             
@@ -178,19 +174,19 @@ namespace com.github.yukon39.DebugClientBSL
                 InfoBaseAlias = InfobaseAlias
             };
 
-            Execute<RDBGEmptyResponse>(request, requestParameters);
+            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
             //Logger.LogDebug("ClearBreakOnNextStatement successful");
         }
 
-        public void Ping()
+        public async Task PingAsync()
         {
             PingMutex.WaitOne();
-            PingInternal().ForEach(x => { InvokeEvent(x); });
+            (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
             PingMutex.ReleaseMutex();
         }
 
-        private List<DBGUIExtCmdInfoBase> PingInternal()
+        private async Task<List<DBGUIExtCmdInfoBase>> PingInternalAsync()
         {
             var requestParameters = new RequestParameters(DebugServerURL, "pingDebugUIParams")
             {
@@ -203,7 +199,7 @@ namespace com.github.yukon39.DebugClientBSL
                 InfoBaseAlias = InfobaseAlias
             };
 
-            var response = Execute<RDBGPingDebugUIResponse>(request, requestParameters);
+            var response = await HttpClientExecutor.ExecuteAsync<RDBGPingDebugUIResponse>(request, requestParameters);
             var result = response.Result;
 
             //Logger.LogDebug("Ping result size is {size}", Result.Count);
@@ -211,7 +207,7 @@ namespace com.github.yukon39.DebugClientBSL
             return result;
         }
 
-        public void SetMeasureMode(Guid measureMode)
+        public async Task SetMeasureModeAsync(Guid measureMode)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "setMeasureMode");
             
@@ -222,14 +218,14 @@ namespace com.github.yukon39.DebugClientBSL
                 MeasureModeSeanceID = measureMode
             };
 
-            Execute<RDBGEmptyResponse>(request, requestParameters);
+            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
 
-        private void Loop()
+        private async Task Loop()
         {
             if (Attached && PingMutex.WaitOne(TimeSpan.FromMilliseconds(500)))
             {
-                PingInternal().ForEach(x => { InvokeEvent(x); });
+                (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
                 PingMutex.ReleaseMutex();
             }
         }
@@ -257,7 +253,7 @@ namespace com.github.yukon39.DebugClientBSL
             StopTimer();
 
             var period = TimeSpan.FromSeconds(1);
-            Timer = new Timer((e) => { Loop(); }, null, period, period);
+            Timer = new Timer(async (e) => { await Loop(); }, null, period, period);
         }
 
         private void StopTimer()
@@ -272,14 +268,6 @@ namespace com.github.yukon39.DebugClientBSL
         public void Dispose()
         {
             StopTimer();
-        }
-
-        private async Task<T> ExecuteAsync<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse => 
-            await HttpClientExecutor.ExecuteAsync<T>(request, parameters).ConfigureAwait(false);
-
-        private T Execute<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse
-        {
-            return ExecuteAsync<T>(request, parameters).GetAwaiter().GetResult();
         }
     }
 }
