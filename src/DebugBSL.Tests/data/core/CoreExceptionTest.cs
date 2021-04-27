@@ -1,9 +1,8 @@
-﻿using com.github.yukon39.DebugBSL;
-using com.github.yukon39.DebugBSL.data.core;
+﻿using com.github.yukon39.DebugBSL.data.core;
 using NUnit.Framework;
 using System;
 
-namespace CoverageBSL.Tests.data.core
+namespace com.github.yukon39.DebugBSL.Tests.data.core
 {
     class CoreExceptionTest
     {

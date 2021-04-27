@@ -1,10 +1,9 @@
-﻿using com.github.yukon39.DebugBSL;
-using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 
-namespace CoverageBSL.Tests.debugger.debugDBGUICommands
+namespace com.github.yukon39.DebugBSL.Tests.debugger.debugDBGUICommands
 {
     class DBGUIExtCmdInfoMeasureTest
     {

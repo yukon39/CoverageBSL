@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;net48</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <RootNamespace>com.github.yukon39.DebugBSL.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoverageBSL\CoverageBSL.csproj" />
+    <ProjectReference Include="..\DebugBSL\DebugBSL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

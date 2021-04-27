@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageBSL", "CoverageBSL\CoverageBSL.csproj", "{E5EED395-CE28-4B8A-ACF9-0ED9CCDEDE9B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageBSL.Tests", "CoverageBSL.Tests\CoverageBSL.Tests.csproj", "{61B0CB86-D2BA-4567-861D-78BA67A35C63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugBSL.Tests", "DebugBSL.Tests\DebugBSL.Tests.csproj", "{61B0CB86-D2BA-4567-861D-78BA67A35C63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugBSL", "DebugBSL\DebugBSL.csproj", "{2E678FCA-0C14-4568-AFE0-E6D1B1316C3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugClientBSL", "DebugClientBSL\DebugClientBSL.csproj", "{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugClientBSL", "DebugClientBSL\DebugClientBSL.csproj", "{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

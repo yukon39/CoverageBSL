@@ -1,10 +1,9 @@
-﻿using com.github.yukon39.DebugBSL;
-using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
+﻿using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using com.github.yukon39.DebugBSL.debugger.debugRTEFilter;
 using NUnit.Framework;
 using System;
 
-namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
+namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 {
     class RDBGSetInitialDebugSettingsTest
     {

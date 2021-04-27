@@ -1,10 +1,9 @@
-﻿using com.github.yukon39.DebugBSL;
-using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 using System;
 
-namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
+namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 {
     class RDBGAttachDebugUITest
     {

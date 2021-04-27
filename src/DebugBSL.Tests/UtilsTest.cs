@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 
-namespace CoverageBSL.Tests
+namespace com.github.yukon39.DebugBSL.Tests
 {
     static class UtilsTest
     {
