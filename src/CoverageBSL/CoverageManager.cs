@@ -1,5 +1,5 @@
 ﻿using com.github.yukon39.CoverageBSL.Coverage;
-using com.github.yukon39.CoverageBSL.httpDebug;
+using com.github.yukon39.DebugClientBSL;
 using com.github.yukon39.DebugBSL;
 using ScriptEngine.Machine.Contexts;
 using System;

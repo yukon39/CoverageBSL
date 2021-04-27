@@ -12,11 +12,11 @@
   <ItemGroup>
     <PackageReference Include="OneScript" Version="1.5.0" />
     <PackageReference Include="OneScript.StandardLibrary" Version="1.5.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DebugBSL\DebugBSL.csproj" />
+    <ProjectReference Include="..\DebugClientBSL\DebugClientBSL.csproj" />
   </ItemGroup>
 
 </Project>

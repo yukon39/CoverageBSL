@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.CoverageBSL.httpDebug
+namespace com.github.yukon39.DebugClientBSL
 {
     class HTTPDebugSession : IDebuggerClientSession, IDisposable
     {

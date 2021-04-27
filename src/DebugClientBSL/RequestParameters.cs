@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace com.github.yukon39.CoverageBSL.httpDebug
+namespace com.github.yukon39.DebugClientBSL
 {
     class RequestParameters : IDebuggerClientRequestParameters
     {

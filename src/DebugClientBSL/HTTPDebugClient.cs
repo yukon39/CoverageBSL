@@ -8,9 +8,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.CoverageBSL.httpDebug
+namespace com.github.yukon39.DebugClientBSL
 {
-    class HTTPDebugClient : IDebuggerClient
+    public class HTTPDebugClient : IDebuggerClient
     {
         private static readonly HttpClient Client = new HttpClient();
 
@@ -58,7 +58,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
         {
             var CommandURL = string.Format("{0}e1crdbg/{1}", DebugServerURL, parameters.ToString());
 
-            var RequestContent = HTTPDebugSerializer.Serialize(request);
+            var RequestContent = DebuggerXmlSerializer.Serialize(request);
 
             var ResponseContent = await HttpResponseContent(CommandURL, RequestContent);
 
@@ -68,7 +68,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             }
             else
             {
-                return HTTPDebugSerializer.Deserialize<T>(ResponseContent);
+                return DebuggerXmlSerializer.Deserialize<T>(ResponseContent);
             }
         }
 
@@ -88,7 +88,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             var ResponseContentString = await HttpResponse.Content.ReadAsStringAsync();
             if (!HttpResponse.IsSuccessStatusCode)
             {
-                var exception = HTTPDebugSerializer.Deserialize<VRSException>(ResponseContentString);
+                var exception = DebuggerXmlSerializer.Deserialize<VRSException>(ResponseContentString);
                 var description = ErrorProcessingManager.BriefErrorDescription(exception);
                 throw new Exception(description);
             }
