@@ -3,6 +3,7 @@ using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
+using log4net;
 using ScriptEngine;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine;
@@ -17,6 +18,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
     [ContextClass(typeName: "CoverageSession", typeAlias: "СессияОтладки")]
     public class CoverageSession : AutoContext<CoverageSession>
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(CoverageSession));
+
         private readonly IDebuggerClientSession DebuggerSession;
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
         private readonly List<string> AreaNames = new List<string>();
@@ -32,10 +35,26 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         }
 
         [ContextMethod("Attach", "Подключить")]
-        public void Attach(string password) => 
-            AttachConfigureAwait(password).GetAwaiter().GetResult();
+        public void Attach(string password)
+        {
+            try
+            {
+                AttachConfigureAwait(password).GetAwaiter().GetResult();
+            }
+            catch (RuntimeException rex)
+            {
+                log.Error(rex.ErrorDescription, rex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'Attach error';ru = 'Ошибка подключения'");
+                log.Error(message, ex);
+                throw new RuntimeException(message, ex);
+            }
+        }
 
-        private async Task AttachConfigureAwait(string password) => 
+        private async Task AttachConfigureAwait(string password) =>
             await AttachAsync(password).ConfigureAwait(false);
 
         private async Task AttachAsync(string password)
@@ -67,6 +86,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
                     throw new RuntimeException(
                         Locale.NStr("en = 'Unknown error';ru = 'Неизвестная ошибка'"));
             }
+
         }
 
         private async Task OnSuccessfulAttachAsync()
@@ -85,17 +105,39 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         }
 
         [ContextMethod("Detach", "Отключить")]
-        public void Detach() => 
-            DetachConfigureAwait().GetAwaiter().GetResult();
+        public void Detach()
+        {
+            try
+            {
+                DetachConfigureAwait().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'Detach error';ru = 'Ошибка отключения'");
+                log.Error(message, ex);
+                throw new RuntimeException(message, ex);
+            }
+        }
 
-        private async Task DetachConfigureAwait() => 
+        private async Task DetachConfigureAwait() =>
             await DebuggerSession.DetachAsync().ConfigureAwait(false);
 
         [ContextMethod("StartPerformanceMeasure", "НачатьЗамерПроизводительности")]
-        public GuidWrapper StartPerformanceMeasure() => 
-            StartPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+        public GuidWrapper StartPerformanceMeasure()
+        {
+            try
+            {
+                return StartPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'StartPerformanceMeasure error';ru = 'Ошибка начала замера производительности'");
+                log.Error(message, ex);
+                throw new RuntimeException(message, ex);
+            }
+        }
 
-        private async Task<GuidWrapper> StartPerformanceMeasureConfigureAwait() => 
+        private async Task<GuidWrapper> StartPerformanceMeasureConfigureAwait() =>
             await StartPerformanceMeasureAsync().ConfigureAwait(false);
 
         private async Task<GuidWrapper> StartPerformanceMeasureAsync()
@@ -107,8 +149,19 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         }
 
         [ContextMethod("StopPerformanceMeasure", "ЗавершитьЗамерПроизводительности")]
-        public CoverageData StopPerformanceMeasure() => 
-            StopPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+        public CoverageData StopPerformanceMeasure()
+        {
+            try
+            {
+                return StopPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'StopPerformanceMeasure error';ru = 'Ошибка завершения замера производительности'");
+                log.Error(message, ex);
+                throw new RuntimeException(message, ex);
+            }
+        }
 
         private async Task<CoverageData> StopPerformanceMeasureConfigureAwait() =>
             await StopPerformanceMeasureAsync().ConfigureAwait(false);
@@ -122,20 +175,44 @@ namespace com.github.yukon39.CoverageBSL.Coverage
 
         private async Task HandlerTargetStartedAsync(DebugTargetId targetID)
         {
-            await DebuggerSession.AttachDebugTargetAsync(targetID.TargetIdLight);
+            try
+            {
+                await DebuggerSession.AttachDebugTargetAsync(targetID.TargetIdLight);
+            } 
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'TargetStarted event handler error';ru = 'Ошибка обработки события TargetStarted'");
+                log.Error(message, ex);
+            }
         }
 
         private async Task HandlerTargetQuitAsync(DebugTargetId targetID)
         {
-            await DebuggerSession.DetachDebugTargetAsync(targetID.TargetIdLight);
+            try
+            {
+                await DebuggerSession.DetachDebugTargetAsync(targetID.TargetIdLight);
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr("en = 'TargetQuit event handler error';ru = 'Ошибка обработки события TargetQuit'");
+                log.Error(message, ex);
+            }
         }
 
         private Task HandlerMeasureProcessingAsync(PerformanceInfoMain performanceInfo)
         {
-            lock (coverageData)
+            try
             {
+                // lock (coverageData)
                 coverageData.TotalDurability += performanceInfo.TotalDurability;
                 performanceInfo.ModuleData.ForEach(x => ProcessPerformanceInfoModule(x));
+            }
+            catch (Exception ex)
+            {
+                var message = Locale.NStr(
+                    "en = 'MeasureProcessing event handler error';" +
+                    "ru = 'Ошибка обработки события MeasureProcessing'");
+                log.Error(message, ex);
             }
 
             return Task.CompletedTask;
@@ -154,10 +231,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             module.LineInfo.ForEach(x => ProcessPerformanceInfoLine(x, linesCoverage));
         }
 
-        private void ProcessPerformanceInfoLine(PerformanceInfoLine line, MapImpl lineslinesCoverage)
-        {
+        private void ProcessPerformanceInfoLine(PerformanceInfoLine line, MapImpl lineslinesCoverage) => 
             lineslinesCoverage.Insert(NumberValue.Create(line.LineNo), BooleanValue.True);
-        }
 
         private static List<DebugTargetType> DefaultTargetTypes => new List<DebugTargetType>()
         {
