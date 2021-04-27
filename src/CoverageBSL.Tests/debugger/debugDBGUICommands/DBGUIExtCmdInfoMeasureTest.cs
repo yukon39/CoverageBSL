@@ -1,7 +1,7 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL;
+using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 
 namespace CoverageBSL.Tests.debugger.debugDBGUICommands
@@ -15,7 +15,7 @@ namespace CoverageBSL.Tests.debugger.debugDBGUICommands
             var xmlString = UtilsTest.XmlString("debugger", "debugDBGUICommands", "DBGUIExtCmdInfoMeasureTest.xml");
 
             // When
-            var response = HTTPDebugSerializer.Deserialize<RDBGPingDebugUIResponse>(xmlString);
+            var response = DebuggerXmlSerializer.Deserialize<RDBGPingDebugUIResponse>(xmlString);
 
             // Then
             Assert.AreEqual(response.Result.Count, 1);

@@ -1,5 +1,5 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using com.github.yukon39.CoverageBSL.httpDebug;
+﻿using com.github.yukon39.DebugBSL;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 using System;
 
@@ -17,11 +17,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var xmlString = HTTPDebugSerializer.Serialize(response);
+            var xmlString = DebuggerXmlSerializer.Serialize(response);
             Console.Write(xmlString);
 
             // Then
-            var xmlResponse = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
+            var xmlResponse = DebuggerXmlSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
             Assert.AreEqual(response.Version, xmlResponse.Version);
         }
 
@@ -32,7 +32,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", "MiscRDbgGetAPIVerResponseTest.xml");
 
             // When
-            var request = HTTPDebugSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
+            var request = DebuggerXmlSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
 
             // Then
             Assert.AreEqual(request.Version, "8.3.17");

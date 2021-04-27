@@ -1,5 +1,5 @@
-﻿using com.github.yukon39.DebugBSL.data.core;
-using com.github.yukon39.CoverageBSL.httpDebug;
+﻿using com.github.yukon39.DebugBSL;
+using com.github.yukon39.DebugBSL.data.core;
 using NUnit.Framework;
 using System;
 
@@ -14,7 +14,7 @@ namespace CoverageBSL.Tests.data.core
             var xmlString = UtilsTest.XmlString("data", "core", "VRSExceptionTest.xml");
 
             // When
-            var vrsException = HTTPDebugSerializer.Deserialize<VRSException>(xmlString);
+            var vrsException = DebuggerXmlSerializer.Deserialize<VRSException>(xmlString);
 
             // Then
             Assert.AreEqual(vrsException.CLSID, Guid.Parse("580392e6-ba49-4280-ac67-fcd6f2180121"));

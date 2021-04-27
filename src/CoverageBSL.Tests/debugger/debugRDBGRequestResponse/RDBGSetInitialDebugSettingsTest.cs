@@ -1,4 +1,4 @@
-﻿using com.github.yukon39.CoverageBSL.httpDebug;
+﻿using com.github.yukon39.DebugBSL;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using com.github.yukon39.DebugBSL.debugger.debugRTEFilter;
 using NUnit.Framework;
@@ -28,11 +28,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var xmlString = HTTPDebugSerializer.Serialize(request);
+            var xmlString = DebuggerXmlSerializer.Serialize(request);
             Console.Write(xmlString);
 
             // Then
-            var o = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
+            var o = DebuggerXmlSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
             Assert.AreEqual(request.InfoBaseAlias, o.InfoBaseAlias);
             Assert.AreEqual(request.IdOfDebuggerUI, o.IdOfDebuggerUI);
             Assert.AreEqual(request.Data.RTEProcessing.StopOnErrors, o.Data.RTEProcessing.StopOnErrors);
@@ -46,7 +46,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", "RDBGAttachDetachDebugTargetsRequest.xml");
 
             // When
-            var request = HTTPDebugSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
+            var request = DebuggerXmlSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
 
             // Then
             Assert.AreEqual(request.InfoBaseAlias, "DefAlias");

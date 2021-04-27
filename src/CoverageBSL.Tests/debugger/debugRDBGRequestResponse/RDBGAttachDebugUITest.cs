@@ -1,6 +1,6 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL;
+using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using com.github.yukon39.CoverageBSL.httpDebug;
 using NUnit.Framework;
 using System;
 
@@ -24,11 +24,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var xmlString = HTTPDebugSerializer.Serialize(request);
+            var xmlString = DebuggerXmlSerializer.Serialize(request);
             Console.Write(xmlString);
 
             // Then
-            var xmlRequest = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
+            var xmlRequest = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
             Assert.AreEqual(request.InfoBaseAlias, xmlRequest.InfoBaseAlias);
             Assert.AreEqual(request.IdOfDebuggerUI, xmlRequest.IdOfDebuggerUI);
             Assert.AreEqual(request.Options.ForegroundAbility, xmlRequest.Options.ForegroundAbility);
@@ -41,7 +41,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             var xmlString = UtilsTest.XmlString("debugger", "debugRDBGRequestResponse", "RDBGAttachDebugUIRequestTest.xml");
 
             // When
-            var request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
+            var request = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
 
             // Then
             Assert.AreEqual(request.InfoBaseAlias, "DefAlias");
@@ -59,11 +59,11 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
             };
 
             // When
-            var xmlString = HTTPDebugSerializer.Serialize(response);
+            var xmlString = DebuggerXmlSerializer.Serialize(response);
             Console.Write(xmlString);
 
             // Then
-            var xmlResponse = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
+            var xmlResponse = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
             Assert.AreEqual(response.Result, xmlResponse.Result);
         }
 
@@ -75,7 +75,7 @@ namespace CoverageBSL.Tests.debugger.debugRDBGRequestResponse
                     "RDBGAttachDebugUIResponseTest.xml");
 
             // When
-            var request = HTTPDebugSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
+            var request = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
 
             // Then
             Assert.AreEqual(request.Result, AttachDebugUIResult.Registered);

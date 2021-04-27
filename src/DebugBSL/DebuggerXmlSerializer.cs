@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace com.github.yukon39.CoverageBSL.httpDebug
+namespace com.github.yukon39.DebugBSL
 {
-    public static class HTTPDebugSerializer
+    public static class DebuggerXmlSerializer
     {
         public static string Serialize(object o)
         {
@@ -17,7 +17,7 @@ namespace com.github.yukon39.CoverageBSL.httpDebug
             return Writer.ToString();
         }
 
-          public static T Deserialize<T>(string xmlString)
+        public static T Deserialize<T>(string xmlString)
         {
             var Serializer = new XmlSerializer(typeof(T));
             var Reader = new StringReader(xmlString);
