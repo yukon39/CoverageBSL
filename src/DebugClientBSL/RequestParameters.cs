@@ -7,6 +7,8 @@ namespace com.github.yukon39.DebugClientBSL
 {
     class RequestParameters
     {
+        private readonly Uri RootUrl;
+        private readonly string Resource;
         private readonly Dictionary<string, string> Parameters = new Dictionary<string, string>();
 
         public RequestParameters(Uri rootUrl, string command) : this(rootUrl, command, "rdbg") { }
@@ -26,20 +28,15 @@ namespace com.github.yukon39.DebugClientBSL
             }
         }
 
-        public string Resource { get; set; }
-
-        public Uri RootUrl { get; }
-
-        public override string ToString()
+        public Uri RequestUrl()
         {
-            var URLParams = Parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value));
+            var query = Parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value));
 
-            var Result = new StringBuilder();
-            Result.Append(Resource);
-            Result.Append('?');
-            Result.Append(string.Join("&", URLParams));
+            var uriBuilder = new UriBuilder(RootUrl);
+            uriBuilder.Path = string.Format("e1crdbg/{0}", Resource);
+            uriBuilder.Query = string.Join("&", query);
 
-            return Result.ToString();
+            return uriBuilder.Uri;
         }
     }
 }

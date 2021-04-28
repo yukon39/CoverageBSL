@@ -16,43 +16,45 @@ namespace com.github.yukon39.DebugClientBSL
 
         public static async Task<T> ExecuteAsync<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse
         {
-            var CommandURL = string.Format("{0}e1crdbg/{1}", parameters.RootUrl, parameters.ToString());
+            var requesrUrl = parameters.RequestUrl();
 
-            var RequestContent = DebuggerXmlSerializer.Serialize(request);
+            var requestContent = DebuggerXmlSerializer.Serialize(request);
 
-            var ResponseContent = await HttpResponseContent(CommandURL, RequestContent);
+            var responseContent = await HttpResponseContent(requesrUrl, requestContent);
 
-            if (string.IsNullOrEmpty(ResponseContent))
+            if (string.IsNullOrEmpty(responseContent))
             {
                 return Activator.CreateInstance<T>();
             }
             else
             {
-                return DebuggerXmlSerializer.Deserialize<T>(ResponseContent);
+                return DebuggerXmlSerializer.Deserialize<T>(responseContent);
             }
         }
 
-        private static async Task<string> HttpResponseContent(string url, string requestContent)
+        private static async Task<string> HttpResponseContent(Uri requestUrl, string requestContent)
         {
 
-            var Content = new StringContent(requestContent, Encoding.UTF8, "application/xml");
+            var content = new StringContent(requestContent, Encoding.UTF8, "application/xml");
     
-            var HttpRequest = new HttpRequestMessage(HttpMethod.Post, url);
-            HttpRequest.Content = Content;
-            HttpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-            HttpRequest.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            httpRequest.Content = content;
+            httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+            httpRequest.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
-            var HttpResponse = await Client.SendAsync(HttpRequest);
+            var httpResponse = await Client.SendAsync(httpRequest);
 
-            var ResponseContentString = await HttpResponse.Content.ReadAsStringAsync();
-            if (!HttpResponse.IsSuccessStatusCode)
+            var responseContent = await httpResponse.Content.ReadAsStringAsync();
+            if (httpResponse.IsSuccessStatusCode)
             {
-                var exception = DebuggerXmlSerializer.Deserialize<VRSException>(ResponseContentString);
+                return responseContent;
+            }
+            else
+            {
+                var exception = DebuggerXmlSerializer.Deserialize<VRSException>(responseContent);
                 var description = ErrorProcessingManager.BriefErrorDescription(exception);
                 throw new Exception(description);
-            }
-
-            return ResponseContentString;
+            }            
         }
     }
 }
