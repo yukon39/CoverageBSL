@@ -16,8 +16,8 @@ namespace com.github.yukon39.DebugClientBSL
         public readonly Guid DebugSession;
         private readonly Uri DebugServerURL;
         private bool Attached = false;
-        private Timer Timer;
-        private readonly Mutex PingMutex = new Mutex();
+        private readonly Timer PingTimer;
+        private readonly SemaphoreSlim PingSemaphore = new SemaphoreSlim(1, 1);
 
         public event TargetStartedHandler TargetStarted;
         public event TargetQuitHandler TargetQuit;
@@ -28,6 +28,7 @@ namespace com.github.yukon39.DebugClientBSL
             DebugServerURL = debugServerURL;
             InfobaseAlias = infobaseAlias;
             DebugSession = Guid.NewGuid();
+            PingTimer = new Timer(async (e) => { await Loop(); });
         }
 
         public bool IsAttached() => Attached;
@@ -70,7 +71,7 @@ namespace com.github.yukon39.DebugClientBSL
         public async Task<bool> DetachAsync()
         {
             var requestParameters = new RequestParameters(DebugServerURL, "detachDebugUI");
-            
+
             var request = new RDBGDetachDebugUIRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -98,7 +99,7 @@ namespace com.github.yukon39.DebugClientBSL
         private async Task AttachDetachDebugTargetsAsync(List<DebugTargetIdLight> targets, bool Attach)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "attachDetachDbgTargets");
-            
+
             var request = new RDBGAttachDetachDebugTargetsRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -134,7 +135,7 @@ namespace com.github.yukon39.DebugClientBSL
         public async Task InitSettingsAsync(HTTPServerInitialDebugSettingsData data)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "initSettings");
-           
+
             var request = new RDBGSetInitialDebugSettingsRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -150,7 +151,7 @@ namespace com.github.yukon39.DebugClientBSL
         public async Task SetAutoAttachSettingsAsync(DebugAutoAttachSettings autoAttachSettings)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "setAutoAttachSettings");
-            
+
             var request = new RDBGSetAutoAttachSettingsRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -167,7 +168,7 @@ namespace com.github.yukon39.DebugClientBSL
         public async Task ClearBreakOnNextStatementAsync()
         {
             var requestParameters = new RequestParameters(DebugServerURL, "clearBreakOnNextStatement");
-            
+
             var request = new RDBGClearBreakOnNextStatementRequest
             {
                 IdOfDebuggerUI = DebugSession,
@@ -181,9 +182,9 @@ namespace com.github.yukon39.DebugClientBSL
 
         public async Task PingAsync()
         {
-            PingMutex.WaitOne();
+            await PingSemaphore.WaitAsync();
             (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
-            PingMutex.ReleaseMutex();
+            PingSemaphore.Release();
         }
 
         private async Task<List<DBGUIExtCmdInfoBase>> PingInternalAsync()
@@ -210,7 +211,7 @@ namespace com.github.yukon39.DebugClientBSL
         public async Task SetMeasureModeAsync(Guid measureMode)
         {
             var requestParameters = new RequestParameters(DebugServerURL, "setMeasureMode");
-            
+
             var request = new RDBGSetMeasureModeRequest()
             {
                 IdOfDebuggerUI = DebugSession,
@@ -223,10 +224,10 @@ namespace com.github.yukon39.DebugClientBSL
 
         private async Task Loop()
         {
-            if (Attached && PingMutex.WaitOne(TimeSpan.FromMilliseconds(500)))
+            if (Attached && await PingSemaphore.WaitAsync(TimeSpan.FromMilliseconds(500)))
             {
                 (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
-                PingMutex.ReleaseMutex();
+                PingSemaphore.Release();
             }
         }
 
@@ -248,26 +249,16 @@ namespace com.github.yukon39.DebugClientBSL
             }
         }
 
-        private void StartTimer()
-        {
-            StopTimer();
+        private void StartTimer() => 
+            PingTimer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
-            var period = TimeSpan.FromSeconds(1);
-            Timer = new Timer(async (e) => { await Loop(); }, null, period, period);
-        }
-
-        private void StopTimer()
-        {
-            if (Timer is Timer)
-            {
-                Timer.Dispose();
-            }
-            Timer = null;
-        }
+        private void StopTimer() => 
+            PingTimer.Change(TimeSpan.Zero, TimeSpan.Zero);
 
         public void Dispose()
         {
-            StopTimer();
+            PingTimer.Dispose();
+            PingSemaphore.Dispose();
         }
     }
 }

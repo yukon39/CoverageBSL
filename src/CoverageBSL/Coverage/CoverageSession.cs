@@ -11,20 +11,21 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine.Values;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
     [ContextClass(typeName: "CoverageSession", typeAlias: "СессияОтладки")]
-    public class CoverageSession : AutoContext<CoverageSession>
+    public class CoverageSession : AutoContext<CoverageSession>, IDisposable
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(CoverageSession));
 
         private readonly IDebuggerClientSession DebuggerSession;
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
         private readonly List<string> AreaNames = new List<string>();
+        private readonly SemaphoreSlim CoverageSemaphore = new SemaphoreSlim(1, 1);
         private CoverageData coverageData;
-
         public CoverageSession(IDebuggerClient debuggerClient, string infobaseAlias)
         {
             DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
@@ -144,7 +145,11 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             var measureId = Guid.NewGuid();
             await DebuggerSession.SetMeasureModeAsync(measureId);
+
+            await CoverageSemaphore.WaitAsync();
             coverageData = new CoverageData();
+            CoverageSemaphore.Release();
+
             return new GuidWrapper(measureId.ToString());
         }
 
@@ -170,7 +175,13 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             await DebuggerSession.SetMeasureModeAsync(Guid.Empty);
             await DebuggerSession.PingAsync();
-            return coverageData;
+
+            await CoverageSemaphore.WaitAsync();
+            var result = coverageData;
+            coverageData = new CoverageData();
+            CoverageSemaphore.Release();
+
+            return result;
         }
 
         private async Task HandlerTargetStartedAsync(DebugTargetId targetID)
@@ -178,7 +189,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             try
             {
                 await DebuggerSession.AttachDebugTargetAsync(targetID.TargetIdLight);
-            } 
+            }
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'TargetStarted event handler error';ru = 'Ошибка обработки события TargetStarted'");
@@ -199,13 +210,14 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
         }
 
-        private Task HandlerMeasureProcessingAsync(PerformanceInfoMain performanceInfo)
+        private async Task HandlerMeasureProcessingAsync(PerformanceInfoMain performanceInfo)
         {
             try
             {
-                // lock (coverageData)
+                await CoverageSemaphore.WaitAsync();
                 coverageData.TotalDurability += performanceInfo.TotalDurability;
                 performanceInfo.ModuleData.ForEach(x => ProcessPerformanceInfoModule(x));
+                CoverageSemaphore.Release();
             }
             catch (Exception ex)
             {
@@ -214,8 +226,6 @@ namespace com.github.yukon39.CoverageBSL.Coverage
                     "ru = 'Ошибка обработки события MeasureProcessing'");
                 log.Error(message, ex);
             }
-
-            return Task.CompletedTask;
         }
 
         private void ProcessPerformanceInfoModule(PerformanceInfoModule module)
@@ -231,7 +241,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             module.LineInfo.ForEach(x => ProcessPerformanceInfoLine(x, linesCoverage));
         }
 
-        private void ProcessPerformanceInfoLine(PerformanceInfoLine line, MapImpl lineslinesCoverage) => 
+        private void ProcessPerformanceInfoLine(PerformanceInfoLine line, MapImpl lineslinesCoverage) =>
             lineslinesCoverage.Insert(NumberValue.Create(line.LineNo), BooleanValue.True);
 
         private static List<DebugTargetType> DefaultTargetTypes => new List<DebugTargetType>()
@@ -242,5 +252,10 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             DebugTargetType.Server,
             DebugTargetType.ServerEmulation
         };
+
+        public void Dispose()
+        {
+            CoverageSemaphore.Dispose();
+        }
     }
 }
