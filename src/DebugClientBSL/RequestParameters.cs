@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace com.github.yukon39.DebugClientBSL
 {
-    class RequestParameters
+    public class RequestParameters
     {
         private readonly Uri RootUrl;
         private readonly string Resource;

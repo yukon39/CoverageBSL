@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugBSL", "DebugBSL\DebugB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugClientBSL", "DebugClientBSL\DebugClientBSL.csproj", "{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugClientBSL.Tests", "DebugClientBSL.Tests\DebugClientBSL.Tests.csproj", "{A2954797-A66B-42C7-A579-579BF464A68F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0B8CF49-9C37-4C14-A24E-FD986E6008C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2954797-A66B-42C7-A579-579BF464A68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2954797-A66B-42C7-A579-579BF464A68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2954797-A66B-42C7-A579-579BF464A68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2954797-A66B-42C7-A579-579BF464A68F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
