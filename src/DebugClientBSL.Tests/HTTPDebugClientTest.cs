@@ -67,7 +67,7 @@ namespace com.github.yukon39.DebugClientBSL.Tests
         private static IDebuggerClient Create(MockHttpMessageHandler messageHandler)
         {
             var executor = messageHandler.CreateExecutor();
-            return HTTPDebugClient.Build(executor);
+            return HTTPDebugClient.Create(executor);
         }
     }
 }
