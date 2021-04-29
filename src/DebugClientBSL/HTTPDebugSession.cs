@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugClientBSL
 {
-    class HTTPDebugSession : IDebuggerClientSession, IDisposable
+    public class HTTPDebugSession : IDebuggerClientSession, IDisposable
     {
         public readonly string InfobaseAlias;
         public readonly Guid DebugSession;
@@ -23,13 +23,19 @@ namespace com.github.yukon39.DebugClientBSL
         public event TargetQuitHandler TargetQuit;
         public event MeasureProcessingHandler MeasureProcessing;
 
-        public HTTPDebugSession(HttpClientExecutor executor, string infobaseAlias)
+        private HTTPDebugSession(HttpClientExecutor executor, string infobaseAlias, Guid debugSession)
         {
             Executor = executor;
             InfobaseAlias = infobaseAlias;
-            DebugSession = Guid.NewGuid();
+            DebugSession = debugSession;  
             PingTimer = new Timer(async (e) => { await Loop(); });
         }
+
+        public static HTTPDebugSession Create(HttpClientExecutor executor, string infobaseAlias) =>
+            new HTTPDebugSession(executor, infobaseAlias, Guid.NewGuid());
+
+        public static HTTPDebugSession Create(HttpClientExecutor executor, string infobaseAlias, Guid debugSession) => 
+            new HTTPDebugSession(executor, infobaseAlias, debugSession);
 
         public bool IsAttached() => Attached;
 

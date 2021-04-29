@@ -34,8 +34,8 @@ namespace com.github.yukon39.DebugClientBSL
         }
 
         public IDebuggerClientSession CreateSession(string infobaseAlias) =>
-            new HTTPDebugSession(Executor, infobaseAlias);
-
+            HTTPDebugSession.Create(Executor, infobaseAlias);
+        
         public static IDebuggerClient Create(HttpClientExecutor executor) => new HTTPDebugClient(executor);
     }
 }
