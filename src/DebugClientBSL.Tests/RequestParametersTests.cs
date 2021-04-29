@@ -1,9 +1,5 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugClientBSL.Tests
 {
@@ -14,10 +10,10 @@ namespace com.github.yukon39.DebugClientBSL.Tests
         {
             // Given
             var rootUrl = new Uri("http://localhost:1550");
-            var parameters = new RequestParameters(rootUrl, "testCommand");
+            var parameters = new RequestParameters("testCommand");
 
             // When
-            var requestUrl = parameters.RequestUrl();
+            var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
             Assert.AreEqual("http://localhost:1550/e1crdbg/rdbg?cmd=testCommand", requestUrl.ToString());
@@ -28,10 +24,10 @@ namespace com.github.yukon39.DebugClientBSL.Tests
         {
             // Given
             var rootUrl = new Uri("http://localhost:1550");
-            var parameters = new RequestParameters(rootUrl, "testCommand", "testRsc");
+            var parameters = new RequestParameters("testCommand", "testRsc");
 
             // When
-            var requestUrl = parameters.RequestUrl();
+            var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
             Assert.AreEqual("http://localhost:1550/e1crdbg/testRsc?cmd=testCommand", requestUrl.ToString());
@@ -44,11 +40,11 @@ namespace com.github.yukon39.DebugClientBSL.Tests
             var rootUrl = new Uri("http://localhost:1550");
             var debugId = Guid.NewGuid();
             var expectedUrl = string.Format("http://localhost:1550/e1crdbg/rdbg?cmd=testCommand&dbgui={0}", debugId);
-            var parameters = new RequestParameters(rootUrl, "testCommand");
+            var parameters = new RequestParameters("testCommand");
             parameters.DebugID = debugId;
 
             // When
-            var requestUrl = parameters.RequestUrl();
+            var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
             Assert.AreEqual(expectedUrl, requestUrl.ToString());
