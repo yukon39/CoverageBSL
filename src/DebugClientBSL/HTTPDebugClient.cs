@@ -7,34 +7,35 @@ namespace com.github.yukon39.DebugClientBSL
 {
     public class HTTPDebugClient : IDebuggerClient
     {
-        private readonly Uri DebugServerURL;
+        private readonly HttpClientExecutor Executor;
 
-        private HTTPDebugClient(Uri debugServerURL)
+        private HTTPDebugClient(HttpClientExecutor executor)
         {
-            DebugServerURL = debugServerURL;
+            Executor = executor;
         }
 
         public async Task TestAsync()
         {
-            var requestParameters = new RequestParameters(DebugServerURL, "test", "rdbgTest");
+            var requestParameters = new RequestParameters("test", "rdbgTest");
             var request = new RDBGTestRequest();
 
-            await HttpClientExecutor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
+            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
 
         public async Task<string> ApiVersionAsync()
         {
-            var requestParameters = new RequestParameters(DebugServerURL, "getRDbgAPIVer");
+            var requestParameters = new RequestParameters("getRDbgAPIVer");
             var request = new MiscRDbgGetAPIVerRequest();
 
-            var response = await HttpClientExecutor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(request, requestParameters);
+            var response = await Executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(request, requestParameters);
             var version = response.Version;
 
             return version;
         }
 
-        public IDebuggerClientSession CreateSession(string infobaseAlias) => new HTTPDebugSession(DebugServerURL, infobaseAlias);
+        public IDebuggerClientSession CreateSession(string infobaseAlias) =>
+            new HTTPDebugSession(Executor, infobaseAlias);
 
-        public static IDebuggerClient Build(Uri debugServerURL) => new HTTPDebugClient(debugServerURL);
+        public static IDebuggerClient Create(HttpClientExecutor executor) => new HTTPDebugClient(executor);
     }
 }

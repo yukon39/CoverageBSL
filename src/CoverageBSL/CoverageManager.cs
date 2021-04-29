@@ -16,7 +16,7 @@ namespace com.github.yukon39.CoverageBSL
         private static readonly ILog log = CreateLogger();
 
         private IDebuggerClient Client;
-
+        
         [ScriptConstructor(Name = "По умолчанию")]
         public static CoverageManager Constructor() => 
             new CoverageManager();
@@ -26,8 +26,9 @@ namespace com.github.yukon39.CoverageBSL
         {
             try
             {
-                var DebuggetURI = new Uri(debuggerURI);
-                Client = HTTPDebugClient.Build(DebuggetURI);
+                var DebuggerURI = new Uri(debuggerURI);
+                var executor = HttpClientExecutor.Create(DebuggerURI);
+                Client = HTTPDebugClient.Create(executor);
                 return ApiVersionConfigureAwait().GetAwaiter().GetResult();
             } catch (Exception e)
             {

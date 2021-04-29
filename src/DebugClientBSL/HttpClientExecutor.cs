@@ -10,13 +10,39 @@ using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugClientBSL
 {
-    static class HttpClientExecutor
+    public class HttpClientExecutor
     {
-        private static readonly HttpClient Client = new HttpClient();
+        private readonly HttpClient Client;
+        private readonly Uri RootUrl;
 
-        public static async Task<T> ExecuteAsync<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse
+        private HttpClientExecutor(Uri rootUrl, HttpClient client)
         {
-            var requesrUrl = parameters.RequestUrl();
+            Client = client;
+            RootUrl = rootUrl;
+        }
+
+        public static HttpClientExecutor Create(Uri rootUrl)
+        {
+            var httpClient = new HttpClient();
+            ConfigureHttpClient(httpClient);
+            return new HttpClientExecutor(rootUrl, httpClient);
+        }
+
+        public static HttpClientExecutor Create(Uri rootUrl, HttpClient httpClient) =>
+            new HttpClientExecutor(rootUrl, httpClient);
+
+        public static void ConfigureHttpClient(HttpClient client)
+        {
+            var requestHeaders = client.DefaultRequestHeaders;
+            requestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+            requestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+
+            client.Timeout = TimeSpan.FromSeconds(15);
+        }
+
+        public async Task<T> ExecuteAsync<T>(IRDBGRequest request, RequestParameters parameters) where T : IRDBGResponse
+        {
+            var requesrUrl = parameters.RequestUrl(RootUrl);
 
             var requestContent = DebuggerXmlSerializer.Serialize(request);
 
@@ -32,7 +58,7 @@ namespace com.github.yukon39.DebugClientBSL
             }
         }
 
-        private static async Task<string> HttpResponseContent(Uri requestUrl, string requestContent)
+        private async Task<string> HttpResponseContent(Uri requestUrl, string requestContent)
         {
 
             var content = new StringContent(requestContent, Encoding.UTF8, "application/xml");
