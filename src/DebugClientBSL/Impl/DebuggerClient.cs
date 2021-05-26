@@ -1,18 +1,18 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client.Data;
+using com.github.yukon39.DebugBSL.Client.Internal;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using System;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL
+namespace com.github.yukon39.DebugBSL.Client.Impl
 {
-    public class HTTPDebugClient : IDebuggerClient
+    public class DebuggerClient : IDebuggerClient
     {
-        private readonly HttpClientExecutor Executor;
+        private readonly DebuggerClientExecutor Executor;
 
-        private HTTPDebugClient(HttpClientExecutor executor)
-        {
-            Executor = executor;
-        }
+        private DebuggerClient(DebuggerClientExecutor executor) => Executor = executor;
+
+        public static DebuggerClient NewInstance(DebuggerClientExecutor executor) =>
+            new DebuggerClient(executor);
 
         public async Task TestAsync()
         {
@@ -34,8 +34,6 @@ namespace com.github.yukon39.DebugClientBSL
         }
 
         public IDebuggerClientSession CreateSession(string infobaseAlias) =>
-            HTTPDebugSession.Create(Executor, infobaseAlias);
-        
-        public static IDebuggerClient Create(HttpClientExecutor executor) => new HTTPDebugClient(executor);
+            DebuggerClientSession.NewInstance(Executor, infobaseAlias);
     }
 }
