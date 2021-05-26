@@ -98,18 +98,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             return result;
         }
-
-        public async Task ClearBreakOnNextStatementAsync()
-        {
-            var requestParameters = new RequestParameters("clearBreakOnNextStatement");
-
-            var request = Context.NewSessionRequest<RDBGClearBreakOnNextStatementRequest>();
-
-            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
-
-            //Logger.LogDebug("ClearBreakOnNextStatement successful");
-        }
-
+        
         public async Task PingAsync()
         {
             await PingSemaphore.WaitAsync();
