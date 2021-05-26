@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
-    [ContextClass(typeName: "CoverageSession", typeAlias: "СессияОтладки")]
+    [ContextClass(typeName: "CoverageSession", typeAlias: "СессияПокрытия")]
     public class CoverageSession : AutoContext<CoverageSession>, IDisposable
     {
         private readonly IDebuggerClientSession DebuggerSession;
@@ -28,8 +28,6 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
 
-            DebuggerSession.TargetStarted += HandlerTargetStartedAsync;
-            DebuggerSession.TargetQuit += HandlerTargetQuitAsync;
             DebuggerSession.MeasureProcessing += HandlerMeasureProcessingAsync;
         }
 
@@ -183,35 +181,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
 
             return result;
         }
-
-        private async Task HandlerTargetStartedAsync(IDebuggerClientSession sender, DebugTargetId targetID)
-        {
-            try
-            {
-                var targetsManager = DebuggerSession.GetTargetsManager();
-                await targetsManager.AttachDebugTargetAsync(targetID.TargetIdLight);
-            }
-            catch (Exception ex)
-            {
-                var message = Locale.NStr("en = 'TargetStarted event handler error';ru = 'Ошибка обработки события TargetStarted'");
-                Logger.Error(message, ex);
-            }
-        }
-
-        private async Task HandlerTargetQuitAsync(IDebuggerClientSession sender, DebugTargetId targetID)
-        {
-            try
-            {
-                var targetsManager = DebuggerSession.GetTargetsManager();
-                await targetsManager.DetachDebugTargetAsync(targetID.TargetIdLight);
-            }
-            catch (Exception ex)
-            {
-                var message = Locale.NStr("en = 'TargetQuit event handler error';ru = 'Ошибка обработки события TargetQuit'");
-                Logger.Error(message, ex);
-            }
-        }
-
+                
         private async Task HandlerMeasureProcessingAsync(IDebuggerClientSession sender, PerformanceInfoMain performanceInfo)
         {
             try
