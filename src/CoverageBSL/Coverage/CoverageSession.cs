@@ -1,4 +1,4 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client;
 using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
@@ -98,11 +98,12 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             autoAttachSettings.TargetType.AddRange(TargetTypes);
             autoAttachSettings.AreaName.AddRange(AreaNames);
 
-            await DebuggerSession.InitSettingsAsync(data);
-            await DebuggerSession.ClearBreakOnNextStatementAsync();
-            await DebuggerSession.SetAutoAttachSettingsAsync(autoAttachSettings);
-            (await DebuggerSession.AttachedTargetsStatesAsync(""))
-                .ForEach(async x => await DebuggerSession.AttachDebugTargetAsync(x.TargetID.TargetIdLight));
+            var targetsManager = DebuggerSession.GetTargetsManager();
+
+            await targetsManager.InitSettingsAsync(data);
+            await targetsManager.SetAutoAttachSettingsAsync(autoAttachSettings);
+            (await targetsManager.AttachedTargetsStatesAsync(""))
+                .ForEach(async x => await targetsManager.AttachDebugTargetAsync(x.TargetID.TargetIdLight));
         }
 
         [ContextMethod("Detach", "Отключить")]
@@ -143,8 +144,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
 
         private async Task<GuidWrapper> StartPerformanceMeasureAsync()
         {
-            var measureId = Guid.NewGuid();
-            await DebuggerSession.SetMeasureModeAsync(measureId);
+            var measureManager = DebuggerSession.GetMeasureManager();
+            var measureId = await measureManager.StartMeasureModeAsync();
 
             await CoverageSemaphore.WaitAsync();
             coverageData = new CoverageData();
@@ -173,7 +174,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
 
         private async Task<CoverageData> StopPerformanceMeasureAsync()
         {
-            await DebuggerSession.SetMeasureModeAsync(Guid.Empty);
+            var measureManager = DebuggerSession.GetMeasureManager();
+            await measureManager.StopMeasureModeAsync();
             await DebuggerSession.PingAsync();
 
             await CoverageSemaphore.WaitAsync();
@@ -184,11 +186,12 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             return result;
         }
 
-        private async Task HandlerTargetStartedAsync(DebugTargetId targetID)
+        private async Task HandlerTargetStartedAsync(IDebuggerClientSession sender, DebugTargetId targetID)
         {
             try
             {
-                await DebuggerSession.AttachDebugTargetAsync(targetID.TargetIdLight);
+                var targetsManager = DebuggerSession.GetTargetsManager();
+                await targetsManager.AttachDebugTargetAsync(targetID.TargetIdLight);
             }
             catch (Exception ex)
             {
@@ -197,11 +200,12 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
         }
 
-        private async Task HandlerTargetQuitAsync(DebugTargetId targetID)
+        private async Task HandlerTargetQuitAsync(IDebuggerClientSession sender, DebugTargetId targetID)
         {
             try
             {
-                await DebuggerSession.DetachDebugTargetAsync(targetID.TargetIdLight);
+                var targetsManager = DebuggerSession.GetTargetsManager();
+                await targetsManager.DetachDebugTargetAsync(targetID.TargetIdLight);
             }
             catch (Exception ex)
             {
@@ -210,7 +214,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
         }
 
-        private async Task HandlerMeasureProcessingAsync(PerformanceInfoMain performanceInfo)
+        private async Task HandlerMeasureProcessingAsync(IDebuggerClientSession sender, PerformanceInfoMain performanceInfo)
         {
             try
             {

@@ -1,12 +1,11 @@
 ﻿using com.github.yukon39.CoverageBSL.Coverage;
-using com.github.yukon39.DebugClientBSL;
-using com.github.yukon39.DebugBSL;
-using ScriptEngine.Machine.Contexts;
-using System;
-using System.Threading.Tasks;
+using com.github.yukon39.DebugBSL.Client;
 using log4net;
 using log4net.Config;
 using ScriptEngine.Machine;
+using ScriptEngine.Machine.Contexts;
+using System;
+using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL
 {
@@ -16,9 +15,9 @@ namespace com.github.yukon39.CoverageBSL
         private static readonly ILog log = CreateLogger();
 
         private IDebuggerClient Client;
-        
+
         [ScriptConstructor(Name = "По умолчанию")]
-        public static CoverageManager Constructor() => 
+        public static CoverageManager Constructor() =>
             new CoverageManager();
 
         [ContextMethod("Настроить", "Configure")]
@@ -26,11 +25,10 @@ namespace com.github.yukon39.CoverageBSL
         {
             try
             {
-                var DebuggerURI = new Uri(debuggerURI);
-                var executor = HttpClientExecutor.Create(DebuggerURI);
-                Client = HTTPDebugClient.Create(executor);
+                Client = DebuggerClientFactory.NewInstance(debuggerURI);
                 return ApiVersionConfigureAwait().GetAwaiter().GetResult();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 log.Error("Error configuring debugger", e);
                 throw new RuntimeException("Error configuring debugger", e);
@@ -38,13 +36,14 @@ namespace com.github.yukon39.CoverageBSL
         }
 
         [ContextMethod("NewCoverageSession", "НоваяСессияОтладки")]
-        public CoverageSession NewCoverageSession(string infobaseAlias) => 
+        public CoverageSession NewCoverageSession(string infobaseAlias) =>
             new CoverageSession(Client, infobaseAlias);
 
-        private async Task<string> ApiVersionConfigureAwait() => 
+        private async Task<string> ApiVersionConfigureAwait() =>
             await Client.ApiVersionAsync().ConfigureAwait(false);
 
-        private static ILog CreateLogger() {
+        private static ILog CreateLogger()
+        {
             BasicConfigurator.Configure();
             return LogManager.GetLogger(typeof(CoverageManager));
         }
