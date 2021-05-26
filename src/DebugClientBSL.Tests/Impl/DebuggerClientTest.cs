@@ -1,12 +1,12 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client.Tests;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL.Tests
+namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 {
-    class HTTPDebugClientTest
+    class DebuggerClientTest
     {
         [Test]
         public void TestTestAsync()
@@ -67,7 +67,7 @@ namespace com.github.yukon39.DebugClientBSL.Tests
         private static IDebuggerClient Create(MockHttpMessageHandler messageHandler)
         {
             var executor = messageHandler.CreateExecutor();
-            return HTTPDebugClient.Create(executor);
+            return DebuggerClient.NewInstance(executor);
         }
     }
 }

@@ -1,16 +1,14 @@
-﻿using com.github.yukon39.DebugBSL;
-using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
+﻿using com.github.yukon39.DebugBSL.Client.Impl;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL.Tests
+namespace com.github.yukon39.DebugBSL.Client.Tests
 {
-    class HTTPDebugSessionTest
+    class DebuggerClientSessionTest
     {
 
         [Test]
@@ -218,10 +216,10 @@ namespace com.github.yukon39.DebugClientBSL.Tests
             Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode", request.RequestUri.ToString());
         }
 
-        private static IDebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
+        private static DebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
         {
             var executor = messageHandler.CreateExecutor();
-            return HTTPDebugSession.Create(executor, "testAlias", sessionId);
+            return DebuggerClientSession.NewInstance(executor, "testAlias", sessionId);
         }
     }
 }

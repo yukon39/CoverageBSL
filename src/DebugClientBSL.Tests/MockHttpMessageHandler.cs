@@ -1,4 +1,4 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client.Internal;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL.Tests
+namespace com.github.yukon39.DebugBSL.Client.Tests
 {
     class MockHttpMessageHandler : HttpMessageHandler
     {
@@ -34,14 +34,14 @@ namespace com.github.yukon39.DebugClientBSL.Tests
             requests.Enqueue(request);
             var response = responses.Dequeue();
             return Task.FromResult(response);
-        } 
-             
+        }
 
-        public HttpClientExecutor CreateExecutor()
+
+        public DebuggerClientExecutor CreateExecutor()
         {
             var httpClient = new HttpClient(this);
             var rootUrl = new Uri("http://localhost");
-            var executor = HttpClientExecutor.Create(rootUrl, httpClient);
+            var executor = DebuggerClientExecutor.Create(rootUrl, httpClient);
 
             return executor;
         }

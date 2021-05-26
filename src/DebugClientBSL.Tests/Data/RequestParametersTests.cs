@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace com.github.yukon39.DebugClientBSL.Tests
+namespace com.github.yukon39.DebugBSL.Client.Data.Tests
 {
     class RequestParametersTests
     {

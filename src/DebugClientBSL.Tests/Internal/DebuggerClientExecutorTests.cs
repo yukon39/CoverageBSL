@@ -1,4 +1,5 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client.Data;
+using com.github.yukon39.DebugBSL.Client.Tests;
 using com.github.yukon39.DebugBSL.data.core;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
@@ -7,9 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL.Tests
+namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
 {
-    class HttpClientExecutorTests
+    class DebuggerClientExecutorTests
     {
         [Test]
         public async Task TestExecutorEmptyContent()
@@ -67,7 +68,7 @@ namespace com.github.yukon39.DebugClientBSL.Tests
             var content = DebuggerXmlSerializer.Serialize(vrsException);
             var responseMessage = new HttpResponseMessage(badRequest);
             responseMessage.Content = new StringContent(content);
-            
+
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(responseMessage);
 
