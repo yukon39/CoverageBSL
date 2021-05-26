@@ -1,6 +1,5 @@
 ﻿using com.github.yukon39.DebugBSL.Client.Data;
 using com.github.yukon39.DebugBSL.Client.Internal;
-using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
@@ -16,6 +15,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         private readonly SessionContext Context;
         private readonly DebuggerClientExecutor Executor;
         private readonly DebuggerClientTargetsManager TargetsManager;
+        private readonly DebuggerClientMeasureManager MeasureManager;
         private bool Attached = false;
         private readonly Timer PingTimer;
         private readonly SemaphoreSlim PingSemaphore = new SemaphoreSlim(1, 1);
@@ -31,6 +31,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             PingTimer = new Timer(async (e) => { await Loop(); });
 
             TargetsManager = NewEntityManager<DebuggerClientTargetsManager>(Executor, Context);
+            MeasureManager = NewEntityManager<DebuggerClientMeasureManager>(Executor, Context);
         }
 
         private T NewEntityManager<T>(DebuggerClientExecutor executor, SessionContext context) where T : DebuggerClientEntityManager
@@ -49,6 +50,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         public bool IsAttached() => Attached;
 
         public IDebuggerClientTargets GetTargetsManager() => TargetsManager;
+
+        public IDebuggerClientMeasure GetMeasureManager() => MeasureManager;
 
         public async Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options)
         {
@@ -98,7 +101,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             return result;
         }
-        
+
         public async Task PingAsync()
         {
             await PingSemaphore.WaitAsync();
@@ -121,16 +124,6 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             //Logger.LogDebug("Ping result size is {size}", Result.Count);
 
             return result;
-        }
-
-        public async Task SetMeasureModeAsync(Guid measureModeSeanceID)
-        {
-            var requestParameters = new RequestParameters("setMeasureMode");
-
-            var request = Context.NewSessionRequest<RDBGSetMeasureModeRequest>();
-            request.MeasureModeSeanceID = measureModeSeanceID;
-
-            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
 
         private async Task Loop()
