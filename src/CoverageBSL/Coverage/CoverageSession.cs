@@ -17,19 +17,14 @@ using System.Threading.Tasks;
 namespace com.github.yukon39.CoverageBSL.Coverage
 {
     [ContextClass(typeName: "CoverageSession", typeAlias: "СессияПокрытия")]
-    public class CoverageSession : AutoContext<CoverageSession>, IDisposable
+    public class CoverageSession : AutoContext<CoverageSession>
     {
         private readonly IDebuggerClientSession DebuggerSession;
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
         private readonly List<string> AreaNames = new List<string>();
-        private readonly SemaphoreSlim CoverageSemaphore = new SemaphoreSlim(1, 1);
-        private CoverageData coverageData;
-        public CoverageSession(IDebuggerClient debuggerClient, string infobaseAlias)
-        {
-            DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
 
-            DebuggerSession.MeasureProcessing += HandlerMeasureProcessingAsync;
-        }
+        public CoverageSession(IDebuggerClient debuggerClient, string infobaseAlias) => 
+            DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
 
         [ContextMethod("Attach", "Подключить")]
         public void Attach(string password)
@@ -129,7 +124,9 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
             catch (Exception ex)
             {
-                var message = Locale.NStr("en = 'StartPerformanceMeasure error';ru = 'Ошибка начала замера производительности'");
+                var message = Locale.NStr(
+                    "en = 'StartCoverageCapture error';" +
+                    "ru = 'Ошибка начала сбора покрытия'");
                 Logger.Error(message, ex);
                 throw RuntimeExceptionFactory.NewException(message, ex);
             }
@@ -142,11 +139,6 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             var measureManager = DebuggerSession.GetMeasureManager();
             var measureId = await measureManager.StartMeasureModeAsync();
-
-            await CoverageSemaphore.WaitAsync();
-            coverageData = new CoverageData();
-            CoverageSemaphore.Release();
-
             return new GuidWrapper(measureId.ToString());
         }
 
@@ -155,48 +147,31 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         {
             try
             {
-                return StopPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+                var performanceInfo = StopPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+
+                var coverageData = new CoverageData();
+                performanceInfo.ForEach(x => ProcessPerformanceInfo(coverageData, x));
+
+                return coverageData;
+
             }
             catch (Exception ex)
             {
-                var message = Locale.NStr("en = 'StopPerformanceMeasure error';ru = 'Ошибка завершения замера производительности'");
+                var message = Locale.NStr(
+                    "en = 'StopCoverageCapture error';" +
+                    "ru = 'Ошибка завершения сбора покрытия'");
                 Logger.Error(message, ex);
                 throw RuntimeExceptionFactory.NewException(message, ex);
             }
         }
 
-        private async Task<CoverageData> StopPerformanceMeasureConfigureAwait() =>
+        private async Task<List<PerformanceInfoMain>> StopPerformanceMeasureConfigureAwait() =>
             await StopPerformanceMeasureAsync().ConfigureAwait(false);
 
-        private async Task<CoverageData> StopPerformanceMeasureAsync()
+        private async Task<List<PerformanceInfoMain>> StopPerformanceMeasureAsync()
         {
             var measureManager = DebuggerSession.GetMeasureManager();
-            await measureManager.StopMeasureModeAsync();
-            await DebuggerSession.PingAsync();
-
-            await CoverageSemaphore.WaitAsync();
-            var result = coverageData;
-            coverageData = new CoverageData();
-            CoverageSemaphore.Release();
-
-            return result;
-        }
-                
-        private async Task HandlerMeasureProcessingAsync(IDebuggerClientSession sender, PerformanceInfoMain performanceInfo)
-        {
-            try
-            {
-                await CoverageSemaphore.WaitAsync();
-                ProcessPerformanceInfo(coverageData, performanceInfo);
-                CoverageSemaphore.Release();
-            }
-            catch (Exception ex)
-            {
-                var message = Locale.NStr(
-                    "en = 'MeasureProcessing event handler error';" +
-                    "ru = 'Ошибка обработки события MeasureProcessing'");
-                Logger.Error(message, ex);
-            }
+            return await measureManager.StopMeasureModeAsync();
         }
         
         private void ProcessPerformanceInfo(CoverageData coverageData, PerformanceInfoMain info)
@@ -229,10 +204,5 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             DebugTargetType.Server,
             DebugTargetType.ServerEmulation
         };
-
-        public void Dispose()
-        {
-            CoverageSemaphore.Dispose();
-        }
     }
 }
