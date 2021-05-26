@@ -105,7 +105,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         public async Task PingAsync()
         {
             await PingSemaphore.WaitAsync();
-            (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
+            await InvokeByPingAsync();
             PingSemaphore.Release();
         }
 
@@ -130,11 +130,13 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             if (Attached && await PingSemaphore.WaitAsync(TimeSpan.FromMilliseconds(500)))
             {
-                (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
+                await InvokeByPingAsync();
                 PingSemaphore.Release();
             }
         }
 
+        private async Task InvokeByPingAsync() =>
+            (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
         private void InvokeEvent(DBGUIExtCmdInfoBase Command)
         {
             switch (Command)
