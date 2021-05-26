@@ -1,4 +1,5 @@
 ﻿using com.github.yukon39.DebugBSL.Client.Data;
+using com.github.yukon39.DebugBSL.Client.Internal;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugBSL.Client.Impl
 {
-    class DebuggerClientMeasureManager : DebuggerClientEntityManager, IDebuggerClientMeasure
+    public class DebuggerClientMeasureManager : DebuggerClientEntityManager, IDebuggerClientMeasure
     {
         private IDebuggerClientSession Session;
         private readonly List<PerformanceInfoMain> PerformanceInfo = new List<PerformanceInfoMain>();
