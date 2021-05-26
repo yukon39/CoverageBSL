@@ -2,6 +2,7 @@
 using com.github.yukon39.DebugBSL.Client;
 using log4net;
 using log4net.Config;
+using ScriptEngine;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
@@ -9,28 +10,33 @@ using System.Threading.Tasks;
 
 namespace com.github.yukon39.CoverageBSL
 {
-    [ContextClass(typeName: "МенеджерПокрытия", typeAlias: "CoverageManager")]
+    [ContextClass(typeName: "CoverageManager", typeAlias: "МенеджерПокрытия")]
     public class CoverageManager : AutoContext<CoverageManager>
     {
         private static readonly ILog log = CreateLogger();
 
-        private IDebuggerClient Client;
+        private readonly IDebuggerClient Client;
 
-        [ScriptConstructor(Name = "По умолчанию")]
-        public static CoverageManager Constructor() =>
-            new CoverageManager();
+        [ScriptConstructor]
+        public static CoverageManager Constructor(string debuggerURI) =>
+            new CoverageManager(debuggerURI);
 
-        [ContextMethod("Настроить", "Configure")]
-        public string Configure(string debuggerURI)
+        private CoverageManager(string debuggerURI) =>
+            Client = DebuggerClientFactory.NewInstance(debuggerURI);
+
+        [ContextMethod("APIVersion", "ВерсияAPI")]
+        public string APIVersion()
         {
             try
             {
-                Client = DebuggerClientFactory.NewInstance(debuggerURI);
                 return ApiVersionConfigureAwait().GetAwaiter().GetResult();
             }
             catch (Exception e)
             {
-                log.Error("Error configuring debugger", e);
+                var message = Locale.NStr(
+                    "en = 'Get API version error';" +
+                    "ru = 'Ошибка получения версии API'");
+                log.Error(message, e);
                 throw new RuntimeException("Error configuring debugger", e);
             }
         }
