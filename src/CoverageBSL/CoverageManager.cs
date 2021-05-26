@@ -34,7 +34,7 @@ namespace com.github.yukon39.CoverageBSL
                     "en = 'Get API version error';" +
                     "ru = 'Ошибка получения версии API'");
                 Logger.Error(message, e);
-                throw new RuntimeException("Error configuring debugger", e);
+                throw RuntimeExceptionFactory.NewException(message, e);
             }
         }
 

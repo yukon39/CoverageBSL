@@ -49,7 +49,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             {
                 var message = Locale.NStr("en = 'Attach error';ru = 'Ошибка подключения'");
                 Logger.Error(message, ex);
-                throw new RuntimeException(message, ex);
+                throw RuntimeExceptionFactory.NewException(message, ex);
             }
         }
 
@@ -115,7 +115,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             {
                 var message = Locale.NStr("en = 'Detach error';ru = 'Ошибка отключения'");
                 Logger.Error(message, ex);
-                throw new RuntimeException(message, ex);
+                throw RuntimeExceptionFactory.NewException(message, ex);
             }
         }
 
@@ -133,7 +133,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             {
                 var message = Locale.NStr("en = 'StartPerformanceMeasure error';ru = 'Ошибка начала замера производительности'");
                 Logger.Error(message, ex);
-                throw new RuntimeException(message, ex);
+                throw RuntimeExceptionFactory.NewException(message, ex);
             }
         }
 
@@ -163,7 +163,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             {
                 var message = Locale.NStr("en = 'StopPerformanceMeasure error';ru = 'Ошибка завершения замера производительности'");
                 Logger.Error(message, ex);
-                throw new RuntimeException(message, ex);
+                throw RuntimeExceptionFactory.NewException(message, ex);
             }
         }
 
