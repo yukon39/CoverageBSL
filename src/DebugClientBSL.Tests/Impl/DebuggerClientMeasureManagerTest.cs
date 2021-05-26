@@ -15,13 +15,11 @@ namespace com.github.yukon39.DebugClientBSL.Impl.Tests
         public async Task TestStartMeasureModeAsync()
         {
             // given
-            var sessionId = Guid.NewGuid();
             var response = new RDBGEmptyResponse();
 
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            //var manager = Create(messageHandler, sessionId);
             var manager = Create(messageHandler);
             
             // when
@@ -39,13 +37,11 @@ namespace com.github.yukon39.DebugClientBSL.Impl.Tests
         public async Task TestStartMeasureModeWitGuidAsync()
         {
             // given
-            var sessionId = Guid.NewGuid();
             var response = new RDBGEmptyResponse();
 
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            //var manager = Create(messageHandler, sessionId);
             var manager = Create(messageHandler);
             var measureId = Guid.NewGuid();
 

@@ -29,9 +29,11 @@ namespace com.github.yukon39.DebugBSL.Client.Data
         {
             var query = Parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value));
 
-            var uriBuilder = new UriBuilder(rootUrl);
-            uriBuilder.Path = string.Format("e1crdbg/{0}", Resource);
-            uriBuilder.Query = string.Join("&", query);
+            var uriBuilder = new UriBuilder(rootUrl)
+            {
+                Path = string.Format("e1crdbg/{0}", Resource),
+                Query = string.Join("&", query)
+            };
 
             return uriBuilder.Uri;
         }
