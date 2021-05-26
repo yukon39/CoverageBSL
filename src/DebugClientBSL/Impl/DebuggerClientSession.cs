@@ -90,12 +90,13 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             var request = Context.NewSessionRequest<RDBGDetachDebugUIRequest>();
 
-            // lock
+            await PingSemaphore.WaitAsync();
             var response = await Executor.ExecuteAsync<RDBGDetachDebugUIResponse>(request, requestParameters);
             var result = response.Result;
 
             Attached = false;
             StopTimer();
+            PingSemaphore.Release();
 
             //Logger.LogDebug("Debug detach result is {result}", Result);
 
@@ -107,6 +108,17 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             await PingSemaphore.WaitAsync();
             await InvokeByPingAsync();
             PingSemaphore.Release();
+        }
+
+        public async Task<bool> PingAsync(TimeSpan timeSpan)
+        {
+            var result = await PingSemaphore.WaitAsync(timeSpan);
+            if (result)
+            {
+                await InvokeByPingAsync();
+                PingSemaphore.Release();
+            }
+            return result;
         }
 
         private async Task<List<DBGUIExtCmdInfoBase>> PingInternalAsync()
@@ -128,7 +140,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
         private async Task Loop()
         {
-            if (Attached && await PingSemaphore.WaitAsync(TimeSpan.FromMilliseconds(500)))
+            var result = await PingSemaphore.WaitAsync(TimeSpan.FromMilliseconds(500));
+            if (Attached && result)
             {
                 await InvokeByPingAsync();
                 PingSemaphore.Release();
@@ -137,6 +150,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
         private async Task InvokeByPingAsync() =>
             (await PingInternalAsync()).ForEach(x => { InvokeEvent(x); });
+
         private void InvokeEvent(DBGUIExtCmdInfoBase Command)
         {
             switch (Command)
