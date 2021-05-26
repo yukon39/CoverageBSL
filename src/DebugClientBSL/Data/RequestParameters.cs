@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace com.github.yukon39.DebugClientBSL
+namespace com.github.yukon39.DebugBSL.Client.Data
 {
     public class RequestParameters
     {
