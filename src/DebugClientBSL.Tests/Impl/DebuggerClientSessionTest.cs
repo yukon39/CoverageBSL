@@ -83,7 +83,31 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var request = messageHandler.Dequeue();
             Assert.AreEqual(requestUri, request.RequestUri.ToString());
         }
-        
+
+        [Test]
+        public async Task TestPingAsyncWithTimeSpan()
+        {
+            // given
+            var sessionId = Guid.NewGuid();
+            var requestUri = string.Format("http://localhost/e1crdbg/rdbg?cmd=pingDebugUIParams&dbgui={0}", sessionId);
+            var response = new RDBGPingDebugUIResponse();
+
+            var messageHandler = new MockHttpMessageHandler();
+            messageHandler.Enqueue(HttpStatusCode.OK, response);
+
+            var session = Create(messageHandler, sessionId);
+            var timeSpan = TimeSpan.FromTicks(1);
+
+            // when
+            var result = await session.PingAsync(timeSpan);
+
+            // then
+            Assert.IsTrue(result);
+
+            var request = messageHandler.Dequeue();
+            Assert.AreEqual(requestUri, request.RequestUri.ToString());
+        }
+
         private static IDebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
         {
             var executor = messageHandler.CreateExecutor();
