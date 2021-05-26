@@ -15,6 +15,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
     {
         private readonly SessionContext Context;
         private readonly DebuggerClientExecutor Executor;
+        private readonly DebuggerClientTargetsManager TargetsManager;
         private bool Attached = false;
         private readonly Timer PingTimer;
         private readonly SemaphoreSlim PingSemaphore = new SemaphoreSlim(1, 1);
@@ -28,6 +29,15 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             Executor = executor;
             Context = SessionContext.NewInstance(infobaseAlias, debugSession);
             PingTimer = new Timer(async (e) => { await Loop(); });
+
+            TargetsManager = NewEntityManager<DebuggerClientTargetsManager>(Executor, Context);
+        }
+
+        private T NewEntityManager<T>(DebuggerClientExecutor executor, SessionContext context) where T : DebuggerClientEntityManager
+        {
+            var manager = Activator.CreateInstance(typeof(T), new object[] { executor, context }) as T;
+            manager.SubscribeSessionEvents(this);
+            return manager;
         }
 
         public static DebuggerClientSession NewInstance(DebuggerClientExecutor executor, string infobaseAlias) =>
@@ -37,6 +47,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             new DebuggerClientSession(executor, infobaseAlias, debugSession);
 
         public bool IsAttached() => Attached;
+
+        public IDebuggerClientTargets GetTargetsManager() => TargetsManager;
 
         public async Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options)
         {
@@ -85,64 +97,6 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             //Logger.LogDebug("Debug detach result is {result}", Result);
 
             return result;
-        }
-
-        public async Task AttachDebugTargetAsync(DebugTargetIdLight target) =>
-            await AttachDetachDebugTargetsAsync(new List<DebugTargetIdLight>() { target }, true);
-
-        public async Task DetachDebugTargetAsync(DebugTargetIdLight target) =>
-            await AttachDetachDebugTargetsAsync(new List<DebugTargetIdLight>() { target }, false);
-
-        private async Task AttachDetachDebugTargetsAsync(List<DebugTargetIdLight> targets, bool Attach)
-        {
-            var requestParameters = new RequestParameters("attachDetachDbgTargets");
-
-            var request = Context.NewSessionRequest<RDBGAttachDetachDebugTargetsRequest>();
-            request.Attach = Attach;
-            request.ID.AddRange(targets);
-
-            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
-        }
-
-        public async Task<List<DbgTargetStateInfo>> AttachedTargetsStatesAsync(string areaName)
-        {
-            var requestParameters = new RequestParameters("getDbgAllTargetStates");
-
-            var request = Context.NewSessionRequest<RDBGGetDbgAllTargetStatesRequest>();
-
-            if (!string.IsNullOrEmpty(areaName))
-            {
-                request.DebugAreaName = areaName;
-            }
-
-            var response = await Executor.ExecuteAsync<RDBGGetDbgAllTargetStatesResponse>(request, requestParameters);
-            var items = response.Item;
-
-            return items;
-        }
-
-        public async Task InitSettingsAsync(HTTPServerInitialDebugSettingsData data)
-        {
-            var requestParameters = new RequestParameters("initSettings");
-
-            var request = Context.NewSessionRequest<RDBGSetInitialDebugSettingsRequest>();
-            request.Data = data;
-
-            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
-
-            //Logger.LogDebug("InitSettings successful");
-        }
-
-        public async Task SetAutoAttachSettingsAsync(DebugAutoAttachSettings autoAttachSettings)
-        {
-            var requestParameters = new RequestParameters("setAutoAttachSettings");
-
-            var request = Context.NewSessionRequest<RDBGSetAutoAttachSettingsRequest>();
-            request.AutoAttachSettings = autoAttachSettings;
-
-            await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
-
-            //Logger.LogDebug("SetAutoAttachSettings successful");
         }
 
         public async Task ClearBreakOnNextStatementAsync()
