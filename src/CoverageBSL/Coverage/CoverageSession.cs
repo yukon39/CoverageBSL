@@ -120,8 +120,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         private async Task DetachConfigureAwait() =>
             await DebuggerSession.DetachAsync().ConfigureAwait(false);
 
-        [ContextMethod("StartPerformanceMeasure", "НачатьЗамерПроизводительности")]
-        public GuidWrapper StartPerformanceMeasure()
+        [ContextMethod("StartCoverageCapture", "НачатьСборПокрытия")]
+        public GuidWrapper StartCoverageCapture()
         {
             try
             {
@@ -150,8 +150,8 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             return new GuidWrapper(measureId.ToString());
         }
 
-        [ContextMethod("StopPerformanceMeasure", "ЗавершитьЗамерПроизводительности")]
-        public CoverageData StopPerformanceMeasure()
+        [ContextMethod("StopCoverageCapture", "ЗавершитьСборПокрытия")]
+        public CoverageData StopCoverageCapture()
         {
             try
             {
@@ -187,8 +187,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             try
             {
                 await CoverageSemaphore.WaitAsync();
-                coverageData.TotalDurability += performanceInfo.TotalDurability;
-                performanceInfo.ModuleData.ForEach(x => ProcessPerformanceInfoModule(x));
+                ProcessPerformanceInfo(coverageData, performanceInfo);
                 CoverageSemaphore.Release();
             }
             catch (Exception ex)
@@ -199,8 +198,14 @@ namespace com.github.yukon39.CoverageBSL.Coverage
                 Logger.Error(message, ex);
             }
         }
+        
+        private void ProcessPerformanceInfo(CoverageData coverageData, PerformanceInfoMain info)
+        {
+            coverageData.TotalDurability += info.TotalDurability;
+            info.ModuleData.ForEach(x => ProcessPerformanceInfoModule(coverageData, x));
+        }
 
-        private void ProcessPerformanceInfoModule(PerformanceInfoModule module)
+        private void ProcessPerformanceInfoModule(CoverageData coverageData, PerformanceInfoModule module)
         {
             var moduleBSL = new CoverageModuleId(module.ModuleID);
             var linesCoverage = coverageData.Data.Retrieve(moduleBSL) as MapImpl;
