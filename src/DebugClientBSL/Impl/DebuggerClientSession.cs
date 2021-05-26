@@ -13,8 +13,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 {
     public class DebuggerClientSession : IDebuggerClientSession, IDisposable
     {
-        public readonly string InfobaseAlias;
-        public readonly Guid DebugSession;
+        private readonly SessionContext Context;
         private readonly DebuggerClientExecutor Executor;
         private bool Attached = false;
         private readonly Timer PingTimer;
@@ -27,8 +26,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         private DebuggerClientSession(DebuggerClientExecutor executor, string infobaseAlias, Guid debugSession)
         {
             Executor = executor;
-            InfobaseAlias = infobaseAlias;
-            DebugSession = debugSession;
+            Context = SessionContext.NewInstance(infobaseAlias, debugSession);
             PingTimer = new Timer(async (e) => { await Loop(); });
         }
 
@@ -44,11 +42,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("attachDebugUI");
 
-            var request = new RDBGAttachDebugUIRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias
-            };
+            var request = Context.NewSessionRequest<RDBGAttachDebugUIRequest>();
 
             //if (password.length > 0)
             //{
@@ -79,11 +73,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("detachDebugUI");
 
-            var request = new RDBGDetachDebugUIRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias
-            };
+            var request = Context.NewSessionRequest<RDBGDetachDebugUIRequest>();
 
             // lock
             var response = await Executor.ExecuteAsync<RDBGDetachDebugUIResponse>(request, requestParameters);
@@ -107,12 +97,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("attachDetachDbgTargets");
 
-            var request = new RDBGAttachDetachDebugTargetsRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias,
-                Attach = Attach,
-            };
+            var request = Context.NewSessionRequest<RDBGAttachDetachDebugTargetsRequest>();
+            request.Attach = Attach;
             request.ID.AddRange(targets);
 
             await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
@@ -122,11 +108,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("getDbgAllTargetStates");
 
-            var request = new RDBGGetDbgAllTargetStatesRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias,
-            };
+            var request = Context.NewSessionRequest<RDBGGetDbgAllTargetStatesRequest>();
 
             if (!string.IsNullOrEmpty(areaName))
             {
@@ -143,12 +125,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("initSettings");
 
-            var request = new RDBGSetInitialDebugSettingsRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias,
-                Data = data
-            };
+            var request = Context.NewSessionRequest<RDBGSetInitialDebugSettingsRequest>();
+            request.Data = data;
 
             await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
@@ -159,13 +137,8 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("setAutoAttachSettings");
 
-            var request = new RDBGSetAutoAttachSettingsRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias,
-
-                AutoAttachSettings = autoAttachSettings
-            };
+            var request = Context.NewSessionRequest<RDBGSetAutoAttachSettingsRequest>();
+            request.AutoAttachSettings = autoAttachSettings;
 
             await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
@@ -176,11 +149,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("clearBreakOnNextStatement");
 
-            var request = new RDBGClearBreakOnNextStatementRequest
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias
-            };
+            var request = Context.NewSessionRequest<RDBGClearBreakOnNextStatementRequest>();
 
             await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
 
@@ -198,14 +167,10 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             var requestParameters = new RequestParameters("pingDebugUIParams")
             {
-                DebugID = DebugSession
+                DebugID = Context.DebugSession
             };
 
-            var request = new RDBGPingDebugUIRequest()
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias
-            };
+            var request = Context.NewSessionRequest<RDBGPingDebugUIRequest>();
 
             var response = await Executor.ExecuteAsync<RDBGPingDebugUIResponse>(request, requestParameters);
             var result = response.Result;
@@ -215,16 +180,12 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             return result;
         }
 
-        public async Task SetMeasureModeAsync(Guid measureMode)
+        public async Task SetMeasureModeAsync(Guid measureModeSeanceID)
         {
             var requestParameters = new RequestParameters("setMeasureMode");
 
-            var request = new RDBGSetMeasureModeRequest()
-            {
-                IdOfDebuggerUI = DebugSession,
-                InfoBaseAlias = InfobaseAlias,
-                MeasureModeSeanceID = measureMode
-            };
+            var request = Context.NewSessionRequest<RDBGSetMeasureModeRequest>();
+            request.MeasureModeSeanceID = measureModeSeanceID;
 
             await Executor.ExecuteAsync<RDBGEmptyResponse>(request, requestParameters);
         }
