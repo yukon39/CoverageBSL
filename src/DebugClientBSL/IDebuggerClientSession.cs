@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugBSL
+namespace com.github.yukon39.DebugBSL.Client
 {
 
     public delegate Task TargetStartedHandler(DebugTargetId TargetID);

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugBSL
+namespace com.github.yukon39.DebugBSL.Client
 {
     public interface IDebuggerClient
     {
