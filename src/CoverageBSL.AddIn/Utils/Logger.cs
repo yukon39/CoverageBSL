@@ -2,7 +2,7 @@
 using ScriptEngine.Machine;
 using System;
 
-namespace com.github.yukon39.CoverageBSL.Utils
+namespace com.github.yukon39.CoverageBSL.AddIn.Utils
 {
     public class Logger
     {
