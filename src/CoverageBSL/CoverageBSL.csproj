@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="OneScript" Version="1.5.0" />
     <PackageReference Include="OneScript.StandardLibrary" Version="1.5.0" />
   </ItemGroup>

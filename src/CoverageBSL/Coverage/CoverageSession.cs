@@ -1,9 +1,9 @@
-﻿using com.github.yukon39.DebugBSL.Client;
+﻿using com.github.yukon39.CoverageBSL.Utils;
+using com.github.yukon39.DebugBSL.Client;
 using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using log4net;
 using ScriptEngine;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine;
@@ -19,8 +19,6 @@ namespace com.github.yukon39.CoverageBSL.Coverage
     [ContextClass(typeName: "CoverageSession", typeAlias: "СессияОтладки")]
     public class CoverageSession : AutoContext<CoverageSession>, IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(CoverageSession));
-
         private readonly IDebuggerClientSession DebuggerSession;
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
         private readonly List<string> AreaNames = new List<string>();
@@ -44,13 +42,13 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             }
             catch (RuntimeException rex)
             {
-                log.Error(rex.ErrorDescription, rex);
+                Logger.Error(rex.ErrorDescription, rex);
                 throw;
             }
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'Attach error';ru = 'Ошибка подключения'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
                 throw new RuntimeException(message, ex);
             }
         }
@@ -116,7 +114,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'Detach error';ru = 'Ошибка отключения'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
                 throw new RuntimeException(message, ex);
             }
         }
@@ -134,7 +132,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'StartPerformanceMeasure error';ru = 'Ошибка начала замера производительности'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
                 throw new RuntimeException(message, ex);
             }
         }
@@ -164,7 +162,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'StopPerformanceMeasure error';ru = 'Ошибка завершения замера производительности'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
                 throw new RuntimeException(message, ex);
             }
         }
@@ -196,7 +194,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'TargetStarted event handler error';ru = 'Ошибка обработки события TargetStarted'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
             }
         }
 
@@ -210,7 +208,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
             catch (Exception ex)
             {
                 var message = Locale.NStr("en = 'TargetQuit event handler error';ru = 'Ошибка обработки события TargetQuit'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
             }
         }
 
@@ -228,7 +226,7 @@ namespace com.github.yukon39.CoverageBSL.Coverage
                 var message = Locale.NStr(
                     "en = 'MeasureProcessing event handler error';" +
                     "ru = 'Ошибка обработки события MeasureProcessing'");
-                log.Error(message, ex);
+                Logger.Error(message, ex);
             }
         }
 
