@@ -1,4 +1,5 @@
-﻿using com.github.yukon39.DebugBSL;
+﻿using com.github.yukon39.DebugBSL.Client.Data;
+using com.github.yukon39.DebugBSL.Client.Internal;
 using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
@@ -8,13 +9,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.DebugClientBSL
+namespace com.github.yukon39.DebugBSL.Client.Impl
 {
-    public class HTTPDebugSession : IDebuggerClientSession, IDisposable
+    public class DebuggerClientSession : IDebuggerClientSession, IDisposable
     {
         public readonly string InfobaseAlias;
         public readonly Guid DebugSession;
-        private readonly HttpClientExecutor Executor;
+        private readonly DebuggerClientExecutor Executor;
         private bool Attached = false;
         private readonly Timer PingTimer;
         private readonly SemaphoreSlim PingSemaphore = new SemaphoreSlim(1, 1);
@@ -23,19 +24,19 @@ namespace com.github.yukon39.DebugClientBSL
         public event TargetQuitHandler TargetQuit;
         public event MeasureProcessingHandler MeasureProcessing;
 
-        private HTTPDebugSession(HttpClientExecutor executor, string infobaseAlias, Guid debugSession)
+        private DebuggerClientSession(DebuggerClientExecutor executor, string infobaseAlias, Guid debugSession)
         {
             Executor = executor;
             InfobaseAlias = infobaseAlias;
-            DebugSession = debugSession;  
+            DebugSession = debugSession;
             PingTimer = new Timer(async (e) => { await Loop(); });
         }
 
-        public static HTTPDebugSession Create(HttpClientExecutor executor, string infobaseAlias) =>
-            new HTTPDebugSession(executor, infobaseAlias, Guid.NewGuid());
+        public static DebuggerClientSession NewInstance(DebuggerClientExecutor executor, string infobaseAlias) =>
+            new DebuggerClientSession(executor, infobaseAlias, Guid.NewGuid());
 
-        public static HTTPDebugSession Create(HttpClientExecutor executor, string infobaseAlias, Guid debugSession) => 
-            new HTTPDebugSession(executor, infobaseAlias, debugSession);
+        public static DebuggerClientSession NewInstance(DebuggerClientExecutor executor, string infobaseAlias, Guid debugSession) =>
+            new DebuggerClientSession(executor, infobaseAlias, debugSession);
 
         public bool IsAttached() => Attached;
 
@@ -242,23 +243,23 @@ namespace com.github.yukon39.DebugClientBSL
             switch (Command)
             {
                 case DBGUIExtCmdInfoStarted StartEvent:
-                    TargetStarted?.Invoke(StartEvent.TargetID);
+                    TargetStarted?.Invoke(this, StartEvent.TargetID);
                     break;
 
                 case DBGUIExtCmdInfoQuit QuitEvent:
-                    TargetQuit?.Invoke(QuitEvent.TargetID);
+                    TargetQuit?.Invoke(this, QuitEvent.TargetID);
                     break;
 
                 case DBGUIExtCmdInfoMeasure MeasureEvent:
-                    MeasureProcessing?.Invoke(MeasureEvent.Measure);
+                    MeasureProcessing?.Invoke(this, MeasureEvent.Measure);
                     break;
             }
         }
 
-        private void StartTimer() => 
+        private void StartTimer() =>
             PingTimer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
-        private void StopTimer() => 
+        private void StopTimer() =>
             PingTimer.Change(TimeSpan.Zero, TimeSpan.Zero);
 
         public void Dispose()
