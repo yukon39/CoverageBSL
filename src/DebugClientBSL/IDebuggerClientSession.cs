@@ -1,9 +1,7 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
-using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugBSL.Client
@@ -20,14 +18,12 @@ namespace com.github.yukon39.DebugBSL.Client
         event MeasureProcessingHandler MeasureProcessing;
 
         bool IsAttached();
-        
+
         IDebuggerClientTargets GetTargetsManager();
 
         Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options);
 
         Task<bool> DetachAsync();
-
-        Task ClearBreakOnNextStatementAsync();
 
         Task PingAsync();
 
