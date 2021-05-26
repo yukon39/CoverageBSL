@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace com.github.yukon39.DebugBSL
@@ -22,6 +23,18 @@ namespace com.github.yukon39.DebugBSL
             var Serializer = new XmlSerializer(typeof(T));
             var Reader = new StringReader(xmlString);
             return (T)Serializer.Deserialize(Reader);
+        }
+
+        public static T TryDeserialize<T>(string xmlContent)
+        {
+            try
+            {
+                return Deserialize<T>(xmlContent);
+            }
+            catch (InvalidOperationException)
+            {
+                return default;
+            }
         }
 
         public static XmlSerializerNamespaces Namespaces()
