@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace com.github.yukon39.DebugBSL.Client
 {
 
-    public delegate Task TargetStartedHandler(DebugTargetId TargetID);
-    public delegate Task TargetQuitHandler(DebugTargetId TargetID);
-    public delegate Task MeasureProcessingHandler(PerformanceInfoMain TargetID);
+    public delegate Task TargetStartedHandler(IDebuggerClientSession sender, DebugTargetId targetId);
+    public delegate Task TargetQuitHandler(IDebuggerClientSession sender, DebugTargetId targetId);
+    public delegate Task MeasureProcessingHandler(IDebuggerClientSession sender, PerformanceInfoMain performanceInfo);
 
     public interface IDebuggerClientSession
     {
