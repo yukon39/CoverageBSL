@@ -20,20 +20,12 @@ namespace com.github.yukon39.DebugBSL.Client
         event MeasureProcessingHandler MeasureProcessing;
 
         bool IsAttached();
+        
+        IDebuggerClientTargets GetTargetsManager();
 
         Task<AttachDebugUIResult> AttachAsync(char[] Password, DebuggerOptions Options);
 
         Task<bool> DetachAsync();
-
-        Task AttachDebugTargetAsync(DebugTargetIdLight target);
-
-        Task DetachDebugTargetAsync(DebugTargetIdLight target);
-
-        Task<List<DbgTargetStateInfo>> AttachedTargetsStatesAsync(string areaName);
-
-        Task InitSettingsAsync(HTTPServerInitialDebugSettingsData Data);
-
-        Task SetAutoAttachSettingsAsync(DebugAutoAttachSettings AutoAttachSettings);
 
         Task ClearBreakOnNextStatementAsync();
 
