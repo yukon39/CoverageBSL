@@ -62,117 +62,6 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=detachDebugUI", request.RequestUri.ToString());
         }
 
-        [Test]
-        public async Task TestAttachDebugTargetAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGEmptyResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-            var debugTargetId = new DebugTargetIdLight()
-            {
-                ID = Guid.NewGuid()
-            };
-
-            // when
-            await session.AttachDebugTargetAsync(debugTargetId);
-
-            // then
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets", request.RequestUri.ToString());
-        }
-
-        [Test]
-        public async Task TestDetachDebugTargetAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGEmptyResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-            var debugTargetId = new DebugTargetIdLight()
-            {
-                ID = Guid.NewGuid()
-            };
-
-            // when
-            await session.DetachDebugTargetAsync(debugTargetId);
-
-            // then
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets", request.RequestUri.ToString());
-        }
-
-        [Test]
-        public async Task TestAttachedTargetsStatesAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGGetDbgAllTargetStatesResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-            var areaName = "";
-
-            // when
-            var result = await session.AttachedTargetsStatesAsync(areaName);
-
-            // then
-            Assert.IsInstanceOf<List<DbgTargetStateInfo>>(result);
-
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=getDbgAllTargetStates", request.RequestUri.ToString());
-        }
-
-        [Test]
-        public async Task TestSetAutoAttachSettingsAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGEmptyResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-            var autoAttachSettings = new DebugAutoAttachSettings();
-
-            // when
-            await session.SetAutoAttachSettingsAsync(autoAttachSettings);
-
-            // then
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setAutoAttachSettings", request.RequestUri.ToString());
-        }
-
-        [Test]
-        public async Task TestClearBreakOnNextStatementAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGEmptyResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-
-            // when
-            await session.ClearBreakOnNextStatementAsync();
-
-            // then
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=clearBreakOnNextStatement", request.RequestUri.ToString());
-        }
 
         [Test]
         public async Task TestPingAsync()
@@ -194,29 +83,8 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var request = messageHandler.Dequeue();
             Assert.AreEqual(requestUri, request.RequestUri.ToString());
         }
-
-        [Test]
-        public async Task TestSetMeasureModeAsync()
-        {
-            // given
-            var sessionId = Guid.NewGuid();
-            var response = new RDBGEmptyResponse();
-
-            var messageHandler = new MockHttpMessageHandler();
-            messageHandler.Enqueue(HttpStatusCode.OK, response);
-
-            var session = Create(messageHandler, sessionId);
-            var measureMode = Guid.NewGuid();
-
-            // when
-            await session.SetMeasureModeAsync(measureMode);
-
-            // then
-            var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode", request.RequestUri.ToString());
-        }
-
-        private static DebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
+        
+        private static IDebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
         {
             var executor = messageHandler.CreateExecutor();
             return DebuggerClientSession.NewInstance(executor, "testAlias", sessionId);
