@@ -4,23 +4,18 @@ using ScriptEngine.Machine.Contexts;
 namespace com.github.yukon39.CoverageBSL.AddIn
 {
     [ContextClass(typeName: "CoverageData", typeAlias: "ДанныеПокрытия")]
-    public class CoverageDataContextClass : AutoContext<CoverageDataContextClass>, IObjectWrapper
+    public class CoverageDataContextClass : AutoContext<CoverageDataContextClass>
     {
-        private readonly ICoverageData coverageData;
-
-        public CoverageDataContextClass(ICoverageData coverageData) =>
-            this.coverageData = coverageData;
-
         [ContextProperty("TotalDurability")]
-        public long TotalDurability
-        {
-            get => coverageData.TotalDurability;
-            set => coverageData.TotalDurability = value;
-        }
+        public long TotalDurability { get; }
 
         [ContextProperty("Data")]
-        public MapImpl Data { get; } = new MapImpl();
+        public MapImpl Data { get; }
 
-        public object UnderlyingObject => coverageData;
+        public CoverageDataContextClass(ICoverageData coverageData)
+        {
+            TotalDurability = coverageData.TotalDurability;
+            Data = coverageData.Data;
+        }
     }
 }
