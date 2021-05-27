@@ -21,7 +21,7 @@ namespace com.github.yukon39.DebugClientBSL.Impl.Tests
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
             var manager = Create(messageHandler);
-            
+
             // when
             var measureId = await manager.StartMeasureModeAsync();
 

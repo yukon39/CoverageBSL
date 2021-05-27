@@ -12,17 +12,17 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
     {
         public DebuggerClientTargetsManager(DebuggerClientExecutor executor, SessionContext context)
             : base(executor, context) { }
-        
+
         public override void SubscribeSessionEvents(IDebuggerClientSession session)
         {
             session.TargetStarted += TargetStartedHandler;
             session.TargetQuit += TargetQuitHandler;
         }
 
-        public async Task TargetStartedHandler(IDebuggerClientSession sender, DebugTargetId targetID) => 
+        public async Task TargetStartedHandler(IDebuggerClientSession sender, DebugTargetId targetID) =>
             await AttachDebugTargetAsync(targetID.TargetIdLight);
 
-        public async Task TargetQuitHandler(IDebuggerClientSession sender, DebugTargetId targetID) => 
+        public async Task TargetQuitHandler(IDebuggerClientSession sender, DebugTargetId targetID) =>
             await DetachDebugTargetAsync(targetID.TargetIdLight);
 
         public async Task AttachDebugTargetAsync(DebugTargetIdLight target) =>

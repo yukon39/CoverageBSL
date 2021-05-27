@@ -20,7 +20,7 @@ namespace com.github.yukon39.DebugBSL.debugger.debugDBGUICommands
 
         [XmlElement(ElementName = "requestQueueID")]
         public string requestQueueID;
-        
+
         public DBGUIExtCmdInfoBase() : this(DBGUIExtCmds.Unknown)
         {
 

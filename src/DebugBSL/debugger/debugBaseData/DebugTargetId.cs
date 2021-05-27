@@ -33,8 +33,10 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBaseData
         public DebugTargetType TargetType;
 
         [XmlIgnore]
-        public DebugTargetIdLight TargetIdLight { 
-            get {
+        public DebugTargetIdLight TargetIdLight
+        {
+            get
+            {
                 _TargetIdLight.ID = ID;
                 return _TargetIdLight;
             }

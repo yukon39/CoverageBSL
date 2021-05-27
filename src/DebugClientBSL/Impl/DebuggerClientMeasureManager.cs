@@ -27,7 +27,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             {
                 throw new InvalidOperationException();
             }
-            
+
             PerformanceInfo.Clear();
             await SetMeasureModeAsync(MeasureId);
         }
@@ -47,7 +47,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             await SetMeasureModeAsync(MeasureId);
 
             return MeasureId;
-        }            
+        }
 
         public async Task<List<PerformanceInfoMain>> StopMeasureModeAsync()
         {
@@ -62,9 +62,9 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             var result = new List<PerformanceInfoMain>();
             result.AddRange(PerformanceInfo);
-            
+
             PerformanceInfo.Clear();
-            
+
             return result;
         }
 
