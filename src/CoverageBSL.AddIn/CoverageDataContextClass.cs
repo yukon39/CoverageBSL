@@ -1,15 +1,14 @@
-﻿using com.github.yukon39.CoverageBSL.Coverage;
-using ScriptEngine.HostedScript.Library;
+﻿using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine.Contexts;
 
 namespace com.github.yukon39.CoverageBSL.AddIn
 {
     [ContextClass(typeName: "CoverageData", typeAlias: "ДанныеПокрытия")]
-    public class CoverageDataWrapper : AutoContext<CoverageDataWrapper>, IObjectWrapper
+    public class CoverageDataContextClass : AutoContext<CoverageDataContextClass>, IObjectWrapper
     {
-        private readonly CoverageData coverageData;
+        private readonly ICoverageData coverageData;
 
-        public CoverageDataWrapper(CoverageData coverageData) =>
+        public CoverageDataContextClass(ICoverageData coverageData) =>
             this.coverageData = coverageData;
 
         [ContextProperty("TotalDurability")]
@@ -20,10 +19,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         }
 
         [ContextProperty("Data")]
-        public MapImpl Data
-        {
-            get => coverageData.Data;
-        }
+        public MapImpl Data { get; } = new MapImpl();
 
         [ContextMethod("Write")]
         public void Write(string filePath) =>
