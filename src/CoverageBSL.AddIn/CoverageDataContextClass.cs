@@ -21,10 +21,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         [ContextProperty("Data")]
         public MapImpl Data { get; } = new MapImpl();
 
-        [ContextMethod("Write")]
-        public void Write(string filePath) =>
-            coverageData.Write(filePath);
-
         public object UnderlyingObject => coverageData;
     }
 }

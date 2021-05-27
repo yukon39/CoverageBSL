@@ -41,25 +41,5 @@ namespace com.github.yukon39.CoverageBSL.Coverage.Impl
 
         private void ProcessPerformanceInfoLine(PerformanceInfoLine line, MapImpl lineslinesCoverage) =>
             lineslinesCoverage.Insert(NumberValue.Create(line.LineNo), BooleanValue.True);
-
-        public void Write(string filePath)
-        {
-            var jsonWriter = new JSONWriter();
-            jsonWriter.OpenFile(filePath);
-
-            var jsonFunctions = JsonFunctions.GlobalInstanse();
-
-            jsonWriter.WriteStartArray();
-            foreach (KeyAndValueImpl keyValue in Data)
-            {
-                var moduleId = keyValue.Key.AsObject() as CoverageModuleId;
-                var moduleData = keyValue.Value.AsObject() as MapImpl;
-
-                jsonFunctions.WriteJSON(jsonWriter, Data);
-            }
-
-            jsonWriter.WriteEndArray();
-            jsonWriter.Close();
-        }
     }
 }
