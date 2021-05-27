@@ -10,11 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OneScript" Version="1.5.0" />
-    <PackageReference Include="OneScript.StandardLibrary" Version="1.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DebugBSL\DebugBSL.csproj" />
     <ProjectReference Include="..\DebugClientBSL\DebugClientBSL.csproj" />
   </ItemGroup>
