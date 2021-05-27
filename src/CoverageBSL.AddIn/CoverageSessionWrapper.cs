@@ -1,5 +1,4 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
-using com.github.yukon39.CoverageBSL.Coverage;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using ScriptEngine;
 using ScriptEngine.HostedScript.Library;
@@ -12,9 +11,9 @@ namespace com.github.yukon39.CoverageBSL.AddIn
     [ContextClass(typeName: "CoverageSession", typeAlias: "СессияПокрытия")]
     public class CoverageSessionWrapper : AutoContext<CoverageSessionWrapper>, IObjectWrapper
     {
-        private readonly CoverageSession session;
+        private readonly ICoverageSession session;
 
-        public CoverageSessionWrapper(CoverageSession session) =>
+        public CoverageSessionWrapper(ICoverageSession session) =>
             this.session = session;
 
         [ContextMethod("Attach", "Подключить")]
@@ -23,7 +22,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             AttachDebugUIResult result;
             try
             {
-                result = session.Attach(password);
+                var safePassword = password.ToCharArray();
+                result = session.Attach(safePassword);
             }
             catch (Exception ex)
             {
@@ -96,12 +96,12 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         }
 
         [ContextMethod("StopCoverageCapture", "ЗавершитьСборПокрытия")]
-        public CoverageDataWrapper StopCoverageCapture()
+        public CoverageDataContextClass StopCoverageCapture()
         {
             try
             {
                 var coverageData = session.StopCoverageCapture();
-                return new CoverageDataWrapper(coverageData);
+                return new CoverageDataContextClass(coverageData);
             }
             catch (Exception ex)
             {

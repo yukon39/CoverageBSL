@@ -8,14 +8,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn
     [ContextClass(typeName: "CoverageManager", typeAlias: "МенеджерПокрытия")]
     public class CoverageManagerWrapper : AutoContext<CoverageManagerWrapper>, IObjectWrapper
     {
-        private readonly CoverageManager manager;
+        private readonly ICoverageManager manager;
 
         [ScriptConstructor]
         public static CoverageManagerWrapper ScriptConstructor(string debuggerURI) =>
             new CoverageManagerWrapper(debuggerURI);
 
         private CoverageManagerWrapper(string debuggerURI) =>
-            manager = new CoverageManager(debuggerURI);
+            manager = CoverageFactory.NewManager(debuggerURI);
 
         [ContextMethod("APIVersion", "ВерсияAPI")]
         public string APIVersion()
