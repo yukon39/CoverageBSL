@@ -1,10 +1,9 @@
-﻿using com.github.yukon39.CoverageBSL.Coverage;
-using com.github.yukon39.DebugBSL.Client;
+﻿using com.github.yukon39.DebugBSL.Client;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.CoverageBSL
+namespace com.github.yukon39.CoverageBSL.Impl
 {
-    public class CoverageManager
+    public class CoverageManager : ICoverageManager
     {
         private readonly IDebuggerClient Client;
 
@@ -15,15 +14,21 @@ namespace com.github.yukon39.CoverageBSL
             ApiVersionConfigureAwait().GetAwaiter().GetResult();
 
         private async Task<string> ApiVersionConfigureAwait() =>
-           await Client.ApiVersionAsync().ConfigureAwait(false);
+           await ApiVersionAsync().ConfigureAwait(false);
+
+        public Task<string> ApiVersionAsync() =>
+            Client.ApiVersionAsync();
 
         public void TestConnection() =>
             TestConfigureAwait().GetAwaiter().GetResult();
 
         private async Task TestConfigureAwait() =>
-           await Client.TestAsync().ConfigureAwait(false);
+           await TestConnectionAsync().ConfigureAwait(false);
 
-        public CoverageSession NewCoverageSession(string infobaseAlias) =>
+        public Task TestConnectionAsync() =>
+            Client.TestAsync();
+
+        public ICoverageSession NewCoverageSession(string infobaseAlias) =>
             new CoverageSession(Client, infobaseAlias);
     }
 }

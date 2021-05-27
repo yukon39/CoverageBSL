@@ -5,9 +5,9 @@ using ScriptEngine.Machine;
 using ScriptEngine.Machine.Values;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.Coverage
+namespace com.github.yukon39.CoverageBSL.Coverage.Impl
 {
-    public class CoverageData
+    public class CoverageData : ICoverageData
     {
         public long TotalDurability { get; set; }
 

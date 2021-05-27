@@ -6,10 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace com.github.yukon39.CoverageBSL.Coverage
+namespace com.github.yukon39.CoverageBSL.Impl
 {
-
-    public class CoverageSession
+    public class CoverageSession : ICoverageSession
     {
         private readonly IDebuggerClientSession DebuggerSession;
         private readonly List<DebugTargetType> TargetTypes = DefaultTargetTypes;
@@ -18,18 +17,15 @@ namespace com.github.yukon39.CoverageBSL.Coverage
         public CoverageSession(IDebuggerClient debuggerClient, string infobaseAlias) =>
             DebuggerSession = debuggerClient.CreateSession(infobaseAlias);
 
-        public AttachDebugUIResult Attach(string password)
+        public AttachDebugUIResult Attach(char[] password) =>
+            AttachConfigureAwait(password).GetAwaiter().GetResult();
+
+        private async Task<AttachDebugUIResult> AttachConfigureAwait(char[] password) =>
+            await AttachAsync(password).ConfigureAwait(false);
+
+        public async Task<AttachDebugUIResult> AttachAsync(char[] password)
         {
-            var safePassword = password.ToCharArray();
             var options = new DebuggerOptions();
-            return AttachConfigureAwait(safePassword, options).GetAwaiter().GetResult();
-        }
-
-        private async Task<AttachDebugUIResult> AttachConfigureAwait(char[] password, DebuggerOptions options) =>
-            await AttachAsync(password, options).ConfigureAwait(false);
-
-        private async Task<AttachDebugUIResult> AttachAsync(char[] password, DebuggerOptions options)
-        {
             var result = await DebuggerSession.AttachAsync(password, options).ConfigureAwait(false);
 
             if (DebuggerSession.IsAttached())
@@ -55,21 +51,27 @@ namespace com.github.yukon39.CoverageBSL.Coverage
              DetachConfigureAwait().GetAwaiter().GetResult();
 
         private async Task DetachConfigureAwait() =>
-            await DebuggerSession.DetachAsync().ConfigureAwait(false);
+            await DetachAsync().ConfigureAwait(false);
+
+        public Task DetachAsync() =>
+            DebuggerSession.DetachAsync();
 
         public Guid StartCoverageCapture() =>
-            StartPerformanceMeasureConfigureAwait().GetAwaiter().GetResult();
+            StartCoverageCaptureConfigureAwait().GetAwaiter().GetResult();
 
-        private async Task<Guid> StartPerformanceMeasureConfigureAwait() =>
-            await DebuggerSession.GetMeasureManager().StartMeasureModeAsync().ConfigureAwait(false);
+        private async Task<Guid> StartCoverageCaptureConfigureAwait() =>
+            await StartCoverageCaptureAsync().ConfigureAwait(false);
 
-        public CoverageData StopCoverageCapture()
+        public Task<Guid> StartCoverageCaptureAsync() =>
+            DebuggerSession.GetMeasureManager().StartMeasureModeAsync();
+
+        public ICoverageData StopCoverageCapture()
             => StopCoverageCaptureConfigureAwait().GetAwaiter().GetResult();
 
-        private async Task<CoverageData> StopCoverageCaptureConfigureAwait() =>
+        private async Task<ICoverageData> StopCoverageCaptureConfigureAwait() =>
             await StopCoverageCaptureAsync().ConfigureAwait(false);
 
-        private async Task<CoverageData> StopCoverageCaptureAsync()
+        public async Task<ICoverageData> StopCoverageCaptureAsync()
         {
             var measureManager = DebuggerSession.GetMeasureManager();
             var performanceInfo = await measureManager.StopMeasureModeAsync();
