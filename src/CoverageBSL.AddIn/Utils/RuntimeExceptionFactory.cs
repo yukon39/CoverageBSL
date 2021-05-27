@@ -16,7 +16,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Utils
             if (e.InnerException is Exception inner)
             {
                 return string.Format("{0} ---> {1}", e.Message, ExceptionMessage(inner));
-
             }
             else
             {

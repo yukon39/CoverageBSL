@@ -17,7 +17,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Utils
             if (e is RuntimeException re)
             {
                 exceptionMessage = re.Message;
-            } 
+            }
             else
             {
                 exceptionMessage = e.ToString();
