@@ -1,7 +1,7 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.Coverage.Impl
+namespace com.github.yukon39.CoverageBSL.Impl
 {
     public class CoverageData : ICoverageData
     {
