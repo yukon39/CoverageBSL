@@ -2,3 +2,4 @@
 /src/**/bin/
 /src/**/obj/
 /.vscode
+/bin
