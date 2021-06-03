@@ -35,25 +35,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn
 
         private void ProcessPerformanceInfoModule(PerformanceInfoModule module)
         {
-            var moduleBSL = ModuleId(module.ModuleID);
+            var moduleBSL = new CoverageModuleIdWrapper(module.ModuleID);
             var linesCoverage = new CoverageLineInfosContextClass(module.LineInfo);
 
-            moduleBSL.Insert("LineNo", linesCoverage);
+            //moduleBSL.Insert("LineNo", linesCoverage);
             Data.Add(moduleBSL);
-        }
-
-        private static StructureImpl ModuleId(BSLModuleIdInternal moduleId)
-        {
-            var result = new StructureImpl();
-            result.Insert("ModuleType", StringValue.Create(moduleId.Type.ToString()));
-            result.Insert("URL", StringValue.Create(moduleId.URL));
-            result.Insert("ExtensionName", StringValue.Create(moduleId.ExtensionName));
-            result.Insert("ObjectID", StringValue.Create(moduleId.ObjectID.ToString()));
-            result.Insert("PropertyID", StringValue.Create(moduleId.PropertyID.ToString()));
-            result.Insert("ExtId", NumberValue.Create(moduleId.ExtId));
-            result.Insert("Version", StringValue.Create(moduleId.Version));
-
-            return result;
         }
     }
 }
