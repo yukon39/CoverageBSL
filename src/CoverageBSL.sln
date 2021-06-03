@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugClientBSL", "DebugClie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugClientBSL.Tests", "DebugClientBSL.Tests\DebugClientBSL.Tests.csproj", "{A2954797-A66B-42C7-A579-579BF464A68F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoverageBSL.AddIn", "CoverageBSL.AddIn\CoverageBSL.AddIn.csproj", "{F1FC3DE5-8770-404B-B393-0D9510092453}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageBSL.AddIn", "CoverageBSL.AddIn\CoverageBSL.AddIn.csproj", "{F1FC3DE5-8770-404B-B393-0D9510092453}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxitems", "{16F0D998-FCE3-4C5B-8A57-F77A694B80EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
