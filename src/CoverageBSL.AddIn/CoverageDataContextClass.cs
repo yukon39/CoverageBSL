@@ -36,18 +36,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         private void ProcessPerformanceInfoModule(PerformanceInfoModule module)
         {
             var moduleBSL = ModuleId(module.ModuleID);
-            var linesCoverage = new ArrayImpl();
-
-            module.LineInfo.ForEach(x => ProcessPerformanceInfoLine(x, linesCoverage));
+            var linesCoverage = new CoverageLineInfosContextClass(module.LineInfo);
 
             moduleBSL.Insert("LineNo", linesCoverage);
             Data.Add(moduleBSL);
-        }
-
-        private static void ProcessPerformanceInfoLine(PerformanceInfoLine line, ArrayImpl linesCoverage)
-        {
-            var result = new CoverageLineInfoWrapper(line);
-            linesCoverage.Add(result);
         }
 
         private static StructureImpl ModuleId(BSLModuleIdInternal moduleId)
