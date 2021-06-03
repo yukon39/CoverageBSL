@@ -1,4 +1,5 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+﻿using com.github.yukon39.CoverageBSL.AddIn.Debugger;
+using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine.Contexts;
@@ -45,10 +46,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
 
         private static void ProcessPerformanceInfoLine(PerformanceInfoLine line, ArrayImpl linesCoverage)
         {
-            var result = new StructureImpl();
-            result.Insert("lineNumber", NumberValue.Create(line.LineNo));
-            result.Insert("covered", BooleanValue.True);
-
+            var result = new CoverageLineInfoWrapper(line);
             linesCoverage.Add(result);
         }
 
