@@ -1,4 +1,5 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
+using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System.Collections;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
+    [ContextClass(typeName: "CoverageLineInfoList", typeAlias: "СписокСтрокПокрытия")]
     class CoverageLineInfosContextClass : AutoContext<CoverageLineInfosContextClass>, ICollectionContext, IEnumerable<IValue>
     {
         private readonly List<CoverageLineInfoWrapper> lineInfos = new List<CoverageLineInfoWrapper>();
@@ -21,6 +23,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         public void Add(CoverageLineInfoWrapper item)
             => lineInfos.Add(item);
 
+        public void SerializeJson(JSONWriter writer)
+        {
+            writer.WriteStartArray();
+
+            lineInfos.ForEach(x => x.SerializeJson(writer));
+
+            writer.WriteEndArray();
+        }
         public IEnumerator<IValue> GetEnumerator()
             => lineInfos.GetEnumerator();
 

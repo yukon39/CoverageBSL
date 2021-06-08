@@ -1,4 +1,5 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
+using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine.Contexts;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
@@ -13,6 +14,19 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         {
             moduleId = new CoverageModuleIdWrapper(moduleInfo.ModuleID);
             lineInfos = new CoverageLineInfosContextClass(moduleInfo.LineInfo);
+        }
+
+        public void SerializeJson(JSONWriter writer)
+        {
+            writer.WriteStartObject();
+
+            writer.WritePropertyName("ModuleId");
+            moduleId.SerializeJson(writer);
+
+            writer.WritePropertyName("LineInfo");
+            lineInfos.SerializeJson(writer);
+
+            writer.WriteEndObject();
         }
     }
 }

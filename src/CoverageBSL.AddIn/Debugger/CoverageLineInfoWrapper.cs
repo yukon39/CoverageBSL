@@ -1,5 +1,8 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
+using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine.Contexts;
+using ScriptEngine.Machine.Values;
+using System;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
@@ -19,7 +22,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         }
 
         [ContextProperty("Hits", "Попаданий")]
-        public int Frequency
+        public int Hits
         {
             get => lineInfo.Frequency;
             set => lineInfo.Frequency = value;
@@ -35,6 +38,22 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         public object UnderlyingObject
         {
             get => lineInfo;
+        }
+
+        public void SerializeJson(JSONWriter writer)
+        {
+            writer.WriteStartObject();
+
+            writer.WritePropertyName(nameof(LineNo));
+            writer.WriteValue(NumberValue.Create(LineNo));
+
+            writer.WritePropertyName(nameof(Hits));
+            writer.WriteValue(NumberValue.Create(Hits));
+
+            writer.WritePropertyName(nameof(Durability));
+            writer.WriteValue(NumberValue.Create((decimal)Durability));
+
+            writer.WriteEndObject();
         }
     }
 }

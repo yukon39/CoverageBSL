@@ -1,5 +1,7 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine.Contexts;
+using ScriptEngine.Machine.Values;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
@@ -56,6 +58,34 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         {
             get => moduleId.Version;
             set => moduleId.Version = value;
+        }
+
+        public void SerializeJson(JSONWriter writer)
+        {
+            writer.WriteStartObject();
+
+            writer.WritePropertyName(nameof(ModuleType));
+            writer.WriteValue(StringValue.Create(ModuleType));
+
+            writer.WritePropertyName(nameof(URL));
+            writer.WriteValue(StringValue.Create(URL));
+
+            writer.WritePropertyName(nameof(ExtensionName));
+            writer.WriteValue(StringValue.Create(ExtensionName));
+
+            writer.WritePropertyName(nameof(ObjectID));
+            writer.WriteValue(StringValue.Create(ObjectID));
+
+            writer.WritePropertyName(nameof(PropertyID));
+            writer.WriteValue(StringValue.Create(PropertyID));
+
+            writer.WritePropertyName(nameof(ExtId));
+            writer.WriteValue(NumberValue.Create(ExtId));
+
+            writer.WritePropertyName(nameof(Version));
+            writer.WriteValue(StringValue.Create(Version));
+
+            writer.WriteEndObject();
         }
 
         public object UnderlyingObject

@@ -25,6 +25,15 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         public int Count()
             => moduleInfos.Count;
 
+        public void SerializeJson(JSONWriter writer)
+        {
+            writer.WriteStartArray();
+
+            moduleInfos.ForEach(x => x.SerializeJson(writer));
+
+            writer.WriteEndArray();
+        }
+
         public IEnumerator<IValue> GetEnumerator()
             => moduleInfos.GetEnumerator();
 
