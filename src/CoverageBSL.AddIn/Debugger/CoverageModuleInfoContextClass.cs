@@ -5,26 +5,37 @@ using ScriptEngine.Machine.Contexts;
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
     [ContextClass(typeName: "CoverageModuleInfo", typeAlias: "ПокрытиеСтрокМодуля")]
-    class CoverageModuleInfoContextClass : AutoContext<CoverageModuleInfoContextClass>
+    public class CoverageModuleInfoContextClass : AutoContext<CoverageModuleInfoContextClass>
     {
-        private readonly CoverageModuleIdWrapper moduleId;
-        private readonly CoverageLineInfosContextClass lineInfos;
-
         public CoverageModuleInfoContextClass(PerformanceInfoModule moduleInfo)
         {
-            moduleId = new CoverageModuleIdWrapper(moduleInfo.ModuleID);
-            lineInfos = new CoverageLineInfosContextClass(moduleInfo.LineInfo);
+            ModuleId = new CoverageModuleIdWrapper(moduleInfo.ModuleID);
+            LineInfo = new CoverageLineInfosContextClass(moduleInfo.LineInfo);
         }
 
+        [ScriptConstructor]
+        public static CoverageModuleInfoContextClass ScriptConstructor()
+            => new CoverageModuleInfoContextClass();
+
+        private CoverageModuleInfoContextClass()
+            => LineInfo = new CoverageLineInfosContextClass();
+
+        [ContextProperty("ModuleId", "ОписаниеМодуля")]
+        public CoverageModuleIdWrapper ModuleId { get; set; }
+
+        [ContextProperty("LineInfo", "ПокрытиеМодуля")]
+        public CoverageLineInfosContextClass LineInfo { get; }
+
+        [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)
         {
             writer.WriteStartObject();
 
-            writer.WritePropertyName("ModuleId");
-            moduleId.SerializeJson(writer);
+            writer.WritePropertyName(nameof(ModuleId));
+            ModuleId.SerializeJson(writer);
 
-            writer.WritePropertyName("LineInfo");
-            lineInfos.SerializeJson(writer);
+            writer.WritePropertyName(nameof(LineInfo));
+            LineInfo.SerializeJson(writer);
 
             writer.WriteEndObject();
         }

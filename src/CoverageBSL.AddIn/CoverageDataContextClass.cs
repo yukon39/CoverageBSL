@@ -14,11 +14,18 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             Data = new CoverageModuleInfoList(coverageData.Data);
         }
 
+        [ScriptConstructor]
+        public static CoverageDataContextClass ScriptConstructor()
+            => new CoverageDataContextClass();
+
+        private CoverageDataContextClass()
+            => Data = new CoverageModuleInfoList();
+
         [ContextProperty("TotalDurability")]
-        public long TotalDurability { get; }
+        public long TotalDurability { get; set; }
 
         [ContextProperty("Data")]
-        public CoverageModuleInfoList Data { get; }
+        public CoverageModuleInfoList Data { get; private set; }
 
         [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)

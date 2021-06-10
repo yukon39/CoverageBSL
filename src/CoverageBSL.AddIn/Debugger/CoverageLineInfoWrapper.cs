@@ -2,17 +2,23 @@
 using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine.Values;
-using System;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
     [ContextClass(typeName: "CoverageLineInfo", typeAlias: "ПокрытиеСтрок")]
-    class CoverageLineInfoWrapper : AutoContext<CoverageLineInfoWrapper>, IObjectWrapper
+    public class CoverageLineInfoWrapper : AutoContext<CoverageLineInfoWrapper>, IObjectWrapper
     {
         private readonly PerformanceInfoLine lineInfo;
 
         public CoverageLineInfoWrapper(PerformanceInfoLine lineInfo) =>
             this.lineInfo = lineInfo;
+
+        [ScriptConstructor]
+        public static CoverageLineInfoWrapper ScriptConstructor()
+            => new CoverageLineInfoWrapper();
+
+        private CoverageLineInfoWrapper()
+            => lineInfo = new PerformanceInfoLine();
 
         [ContextProperty("LineNo", "НомерСтроки")]
         public int LineNo
@@ -35,11 +41,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             set => lineInfo.Durability = value;
         }
 
-        public object UnderlyingObject
-        {
-            get => lineInfo;
-        }
-
+        [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)
         {
             writer.WriteStartObject();
@@ -54,6 +56,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteValue(NumberValue.Create((decimal)Durability));
 
             writer.WriteEndObject();
+        }
+
+        public object UnderlyingObject
+        {
+            get => lineInfo;
         }
     }
 }
