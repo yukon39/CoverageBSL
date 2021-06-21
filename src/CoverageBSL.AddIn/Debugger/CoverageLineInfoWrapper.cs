@@ -27,8 +27,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             set => lineInfo.LineNo = value;
         }
 
-        [ContextProperty("Hits", "Попаданий")]
-        public int Hits
+        [ContextProperty("Frequency", "Частотность")]
+        public int Frequency
         {
             get => lineInfo.Frequency;
             set => lineInfo.Frequency = value;
@@ -41,6 +41,13 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             set => lineInfo.Durability = value;
         }
 
+        [ContextProperty("PureDurability", "ЧистаяПродолжительность")]
+        public long PureDurability
+        {
+            get => lineInfo.PureDurability;
+            set => lineInfo.PureDurability = value;
+        }
+
         [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)
         {
@@ -49,11 +56,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WritePropertyName(nameof(LineNo));
             writer.WriteValue(NumberValue.Create(LineNo));
 
-            writer.WritePropertyName(nameof(Hits));
-            writer.WriteValue(NumberValue.Create(Hits));
+            writer.WritePropertyName(nameof(Frequency));
+            writer.WriteValue(NumberValue.Create(Frequency));
 
             writer.WritePropertyName(nameof(Durability));
             writer.WriteValue(NumberValue.Create((decimal)Durability));
+
+            writer.WritePropertyName(nameof(PureDurability));
+            writer.WriteValue(NumberValue.Create((decimal)PureDurability));
 
             writer.WriteEndObject();
         }

@@ -21,10 +21,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         private CoverageDataContextClass()
             => Data = new CoverageModuleInfoList();
 
-        [ContextProperty("TotalDurability")]
+        [ContextProperty("TotalDurability", "ОбщаяПродолжительность")]
         public long TotalDurability { get; set; }
 
-        [ContextProperty("Data")]
+        [ContextProperty("Data", "Данные")]
         public CoverageModuleInfoList Data { get; private set; }
 
         [ContextMethod("SerializeJSON", "СериализоватьJSON")]

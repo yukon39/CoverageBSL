@@ -57,20 +57,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             set => moduleId.PropertyID = Guid.Parse(value);
         }
 
-        [ContextProperty("ExtId", "ИдентификаторРасширения")]
-        public int ExtId
-        {
-            get => moduleId.ExtId;
-            set => moduleId.ExtId = value;
-        }
-
-        [ContextProperty("Version", "Версия")]
-        public string Version
-        {
-            get => moduleId.Version;
-            set => moduleId.Version = value;
-        }
-
         [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)
         {
@@ -90,12 +76,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 
             writer.WritePropertyName(nameof(PropertyID));
             writer.WriteValue(StringValue.Create(PropertyID));
-
-            writer.WritePropertyName(nameof(ExtId));
-            writer.WriteValue(NumberValue.Create(ExtId));
-
-            writer.WritePropertyName(nameof(Version));
-            writer.WriteValue(StringValue.Create(Version));
 
             writer.WriteEndObject();
         }
