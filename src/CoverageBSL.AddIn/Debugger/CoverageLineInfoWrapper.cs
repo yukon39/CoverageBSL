@@ -1,7 +1,14 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
-using ScriptEngine.HostedScript.Library.Json;
+﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
+using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine.Values;
+
+#if NET5_0_OR_GREATER
+using OneScript.Commons;
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
+#else
+using ScriptEngine.HostedScript.Library.Json;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
@@ -54,16 +61,16 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteStartObject();
 
             writer.WritePropertyName(nameof(LineNo));
-            writer.WriteValue(NumberValue.Create(LineNo));
+            JSONUtils.WriteValue(writer, LineNo);
 
             writer.WritePropertyName(nameof(Frequency));
-            writer.WriteValue(NumberValue.Create(Frequency));
+            JSONUtils.WriteValue(writer, Frequency);
 
             writer.WritePropertyName(nameof(Durability));
-            writer.WriteValue(NumberValue.Create((decimal)Durability));
+            JSONUtils.WriteValue(writer, Durability);
 
             writer.WritePropertyName(nameof(PureDurability));
-            writer.WriteValue(NumberValue.Create((decimal)PureDurability));
+            JSONUtils.WriteValue(writer, PureDurability);
 
             writer.WriteEndObject();
         }

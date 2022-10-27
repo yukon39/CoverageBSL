@@ -1,14 +1,24 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
-using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
-using System.Collections;
 using System.Collections.Generic;
+
+#if NET5_0_OR_GREATER
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
+#else
+using ScriptEngine.HostedScript.Library.Json;
+using System.Collections;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
     [ContextClass(typeName: "CoverageLineInfoList", typeAlias: "СписокСтрокПокрытия")]
+#if NET5_0_OR_GREATER
+    public class CoverageLineInfosContextClass : AutoCollectionContext<CoverageLineInfosContextClass, IValue>
+#else
     public class CoverageLineInfosContextClass : AutoContext<CoverageLineInfosContextClass>, ICollectionContext, IEnumerable<IValue>
+#endif
     {
         private readonly List<CoverageLineInfoWrapper> lineInfos = new List<CoverageLineInfoWrapper>();
 
@@ -18,7 +28,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
         public CoverageLineInfosContextClass() { }
 
         [ContextMethod("Count", "Количество")]
+#if NET5_0_OR_GREATER
+        public override int Count()
+#else
         public int Count()
+#endif
             => lineInfos.Count;
 
         [ContextMethod("Add", "Добавить")]
@@ -34,13 +48,20 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 
             writer.WriteEndArray();
         }
+
+#if NET5_0_OR_GREATER
+        public override IEnumerator<IValue> GetEnumerator()
+#else
         public IEnumerator<IValue> GetEnumerator()
+#endif
             => lineInfos.GetEnumerator();
 
         public CollectionEnumerator GetManagedIterator()
             => new CollectionEnumerator(GetEnumerator());
 
+#if NET48
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
+#endif
     }
 }

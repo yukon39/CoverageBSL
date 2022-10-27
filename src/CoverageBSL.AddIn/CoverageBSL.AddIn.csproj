@@ -11,9 +11,24 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
     <PackageReference Include="OneScript" Version="1.8.0" />
     <PackageReference Include="OneScript.StandardLibrary" Version="1.8.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <Reference Include="OneScript.Core">
+      <HintPath>C:\Program Files\OneScript\bin\OneScript.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OneScript.Language">
+      <HintPath>C:\Program Files\OneScript\bin\OneScript.Language.dll</HintPath>
+    </Reference>
+    <Reference Include="OneScript.StandardLibrary">
+      <HintPath>C:\Program Files\OneScript\bin\OneScript.StandardLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ScriptEngine">
+      <HintPath>C:\Program Files\OneScript\bin\ScriptEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

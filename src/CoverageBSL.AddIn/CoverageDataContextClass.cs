@@ -1,7 +1,13 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Debugger;
-using ScriptEngine.HostedScript.Library.Json;
+using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine.Values;
+
+#if NET5_0_OR_GREATER
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
+#else
+using ScriptEngine.HostedScript.Library.Json;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn
 {
@@ -33,7 +39,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             writer.WriteStartObject();
 
             writer.WritePropertyName(nameof(TotalDurability));
-            writer.WriteValue(NumberValue.Create((decimal)TotalDurability));
+            JSONUtils.WriteValue(writer, TotalDurability);
 
             writer.WritePropertyName(nameof(Data));
             Data.SerializeJson(writer);

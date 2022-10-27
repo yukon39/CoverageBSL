@@ -1,5 +1,10 @@
-﻿using ScriptEngine.Machine;
-using System;
+﻿using System;
+
+#if NET5_0_OR_GREATER
+using OneScript.Commons;
+#else
+using ScriptEngine.Machine;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Utils
 {

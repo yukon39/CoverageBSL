@@ -1,10 +1,17 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
+using ScriptEngine.Machine.Contexts;
+using System;
+
+#if NET5_0_OR_GREATER
+using OneScript.Contexts;
+using OneScript.Commons;
+using OneScript.StandardLibrary;
+#else
 using ScriptEngine;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine;
-using ScriptEngine.Machine.Contexts;
-using System;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn
 {

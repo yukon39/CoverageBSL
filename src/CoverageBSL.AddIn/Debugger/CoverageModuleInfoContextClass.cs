@@ -1,6 +1,12 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
-using ScriptEngine.HostedScript.Library.Json;
 using ScriptEngine.Machine.Contexts;
+
+#if NET5_0_OR_GREATER
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
+#else
+using ScriptEngine.HostedScript.Library.Json;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {

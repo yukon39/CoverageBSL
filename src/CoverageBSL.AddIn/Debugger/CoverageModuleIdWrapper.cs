@@ -1,8 +1,15 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
-using ScriptEngine.HostedScript.Library.Json;
+﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
+using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine.Values;
 using System;
+
+#if NET5_0_OR_GREATER
+using OneScript.Commons;
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
+#else
+using ScriptEngine.HostedScript.Library.Json;
+#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
@@ -63,19 +70,19 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteStartObject();
 
             writer.WritePropertyName(nameof(ModuleType));
-            writer.WriteValue(StringValue.Create(ModuleType));
+            JSONUtils.WriteValue(writer, ModuleType);
 
             writer.WritePropertyName(nameof(URL));
-            writer.WriteValue(StringValue.Create(URL));
+            JSONUtils.WriteValue(writer, URL);
 
             writer.WritePropertyName(nameof(ExtensionName));
-            writer.WriteValue(StringValue.Create(ExtensionName));
+            JSONUtils.WriteValue(writer, ExtensionName);
 
             writer.WritePropertyName(nameof(ObjectID));
-            writer.WriteValue(StringValue.Create(ObjectID));
+            JSONUtils.WriteValue(writer, ObjectID);
 
             writer.WritePropertyName(nameof(PropertyID));
-            writer.WriteValue(StringValue.Create(PropertyID));
+            JSONUtils.WriteValue(writer, PropertyID);
 
             writer.WriteEndObject();
         }
