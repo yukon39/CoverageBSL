@@ -1,7 +1,7 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 
 namespace com.github.yukon39.DebugBSL.Client
 {

@@ -1,8 +1,8 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using com.github.yukon39.DebugBSL.debugger.debugAutoAttach;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugBSL.Client
 {

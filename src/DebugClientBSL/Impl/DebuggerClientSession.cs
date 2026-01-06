@@ -1,12 +1,12 @@
-﻿using com.github.yukon39.DebugBSL.Client.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using com.github.yukon39.DebugBSL.Client.Data;
 using com.github.yukon39.DebugBSL.Client.Internal;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using com.github.yukon39.DebugBSL.debugger.debugDBGUICommands;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace com.github.yukon39.DebugBSL.Client.Impl
 {

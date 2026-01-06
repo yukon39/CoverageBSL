@@ -1,5 +1,5 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using System;
+﻿using System;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 
 namespace com.github.yukon39.DebugBSL.Client.Data
 {

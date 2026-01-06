@@ -1,12 +1,12 @@
-﻿using com.github.yukon39.DebugBSL.Client.Data;
-using com.github.yukon39.DebugBSL.data;
-using com.github.yukon39.DebugBSL.data.core;
-using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using com.github.yukon39.DebugBSL.Client.Data;
+using com.github.yukon39.DebugBSL.data;
+using com.github.yukon39.DebugBSL.data.core;
+using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 
 namespace com.github.yukon39.DebugBSL.Client.Internal
 {
@@ -81,10 +81,7 @@ namespace com.github.yukon39.DebugBSL.Client.Internal
                 string description;
 
                 exception = DebuggerXmlSerializer.TryDeserialize<VRSException>(responseContent);
-                if (exception is null)
-                {
-                    exception = DebuggerXmlSerializer.TryDeserialize<GenericException>(responseContent);
-                }
+                exception ??= DebuggerXmlSerializer.TryDeserialize<GenericException>(responseContent);
 
                 if (exception is null)
                 {

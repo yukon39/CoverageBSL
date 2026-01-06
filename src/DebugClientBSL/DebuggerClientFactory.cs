@@ -1,6 +1,6 @@
-﻿using com.github.yukon39.DebugBSL.Client.Impl;
+﻿using System;
+using com.github.yukon39.DebugBSL.Client.Impl;
 using com.github.yukon39.DebugBSL.Client.Internal;
-using System;
 
 namespace com.github.yukon39.DebugBSL.Client
 {
