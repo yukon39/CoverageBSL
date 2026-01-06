@@ -1,9 +1,9 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 
-#if NET5_0_OR_GREATER
-using OneScript.Contexts.Enums;
-#else
+#if NET48
 using ScriptEngine;
+#else
+using OneScript.Contexts.Enums;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
@@ -11,38 +11,38 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
     [EnumerationType("CoverageModuleType", "ТипМодуляПокрытия")]
     public enum CoverageModuleTypeEnum
     {
-#if NET5_0_OR_GREATER
-        [EnumValue("ConfigModule", "МодульКонфигурации")]
-#else
+#if NET48
         [EnumItem("ConfigModule", "МодульКонфигурации")]
+#else
+        [EnumValue("ConfigModule", "МодульКонфигурации")]
 #endif
         ConfigModule = BSLModuleType.ConfigModule,
 
-#if NET5_0_OR_GREATER
-        [EnumValue("SystemFormModule", "МодульСистемнойФормы")]
-#else
+#if NET48
         [EnumItem("SystemFormModule", "МодульСистемнойФормы")]
+#else
+        [EnumValue("SystemFormModule", "МодульСистемнойФормы")]
 #endif
         SystemFormModule = BSLModuleType.SystemFormModule,
 
-#if NET5_0_OR_GREATER
-        [EnumValue("SystemModule", "МодульСистемы")]
-#else
+#if NET48
         [EnumItem("SystemModule", "МодульСистемы")]
+#else
+        [EnumValue("SystemModule", "МодульСистемы")]
 #endif
         SystemModule = BSLModuleType.SystemModule,
 
-#if NET5_0_OR_GREATER
-        [EnumValue("ExtMDModule", "ВнешнийМодуль")]
-#else
+#if NET48
         [EnumItem("ExtMDModule", "ВнешнийМодуль")]
+#else
+        [EnumValue("ExtMDModule", "ВнешнийМодуль")]
 #endif
         ExtMDModule = BSLModuleType.ExtMDModule,
 
-#if NET5_0_OR_GREATER
-        [EnumValue("ExtensionModule", "МодульРасширения")]
-#else
+#if NET48
         [EnumItem("ExtensionModule", "МодульРасширения")]
+#else
+        [EnumValue("ExtensionModule", "МодульРасширения")]
 #endif
         ExtensionModule = BSLModuleType.ExtensionModule
     }

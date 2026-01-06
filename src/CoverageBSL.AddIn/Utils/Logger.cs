@@ -2,10 +2,10 @@
 using ScriptEngine;
 using System;
 
-#if NET5_0_OR_GREATER
-using OneScript.Commons;
-#else
+#if NET48
 using ScriptEngine.Machine;
+#else
+using OneScript.Exceptions;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Utils

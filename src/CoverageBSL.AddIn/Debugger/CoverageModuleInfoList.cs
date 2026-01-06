@@ -3,21 +3,21 @@ using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System.Collections.Generic;
 
-#if NET5_0_OR_GREATER
-using OneScript.Contexts;
-using OneScript.StandardLibrary.Json;
-#else
+#if NET48
 using ScriptEngine.HostedScript.Library.Json;
 using System.Collections;
+#else
+using OneScript.Contexts;
+using OneScript.StandardLibrary.Json;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
     [ContextClass(typeName: "CoverageModuleInfoList", typeAlias: "СписокПокрытияМодулей")]
-#if NET5_0_OR_GREATER
-    public class CoverageModuleInfoList : AutoCollectionContext<CoverageModuleInfoList, IValue>
-#else
+#if NET48
     public class CoverageModuleInfoList : AutoContext<CoverageModuleInfoList>, ICollectionContext, IEnumerable<IValue>
+#else
+    public class CoverageModuleInfoList : AutoCollectionContext<CoverageModuleInfoList, IValue>
 #endif
     {
         private readonly List<CoverageModuleInfoContextClass> moduleInfos = new List<CoverageModuleInfoContextClass>();
@@ -34,10 +34,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             => moduleInfos.Add(new CoverageModuleInfoContextClass(module));
 
         [ContextMethod("Count", "Количество")]
-#if NET5_0_OR_GREATER
-        public override int Count()
-#else
+#if NET48
         public int Count()
+#else
+        public override int Count()
 #endif
             => moduleInfos.Count;
 
@@ -55,10 +55,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteEndArray();
         }
 
-#if NET5_0_OR_GREATER
-        public override IEnumerator<IValue> GetEnumerator()
-#else
+#if NET48
         public IEnumerator<IValue> GetEnumerator()
+#else
+        public override IEnumerator<IValue> GetEnumerator()
 #endif
             => moduleInfos.GetEnumerator();
 

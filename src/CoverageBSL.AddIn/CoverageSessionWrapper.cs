@@ -3,14 +3,15 @@ using com.github.yukon39.DebugBSL.debugger.debugBaseData;
 using ScriptEngine.Machine.Contexts;
 using System;
 
-#if NET5_0_OR_GREATER
-using OneScript.Contexts;
-using OneScript.Commons;
-using OneScript.StandardLibrary;
-#else
+#if NET48
 using ScriptEngine;
 using ScriptEngine.HostedScript.Library;
 using ScriptEngine.Machine;
+#else
+using OneScript.Contexts;
+using OneScript.Commons;
+using OneScript.StandardLibrary;
+using OneScript.Exceptions;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn

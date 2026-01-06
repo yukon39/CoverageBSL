@@ -1,11 +1,11 @@
 ﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using ScriptEngine.Machine.Contexts;
 
-#if NET5_0_OR_GREATER
+#if NET48
+using ScriptEngine.HostedScript.Library.Json;
+#else
 using OneScript.Contexts;
 using OneScript.StandardLibrary.Json;
-#else
-using ScriptEngine.HostedScript.Library.Json;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger

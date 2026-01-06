@@ -2,11 +2,11 @@
 using ScriptEngine.Machine.Contexts;
 using System;
 
-#if NET5_0_OR_GREATER
+#if NET48
+using ScriptEngine;
+#else
 using OneScript.Commons;
 using OneScript.Contexts;
-#else
-using ScriptEngine;
 #endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn
