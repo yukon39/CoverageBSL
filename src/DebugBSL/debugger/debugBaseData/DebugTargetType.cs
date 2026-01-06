@@ -51,6 +51,9 @@ namespace com.github.yukon39.DebugBSL.debugger.debugBaseData
         MobileJobFileMode,
 
         [XmlEnum(Name = "MobileManagedClient")]
-        MobileManagedClient
+        MobileManagedClient,
+        
+        [XmlEnum(Name = "WebSocket")]
+        WebSocket
     }
 }
