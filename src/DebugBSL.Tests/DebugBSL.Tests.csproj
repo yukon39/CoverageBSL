@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$(MSBuildProjectDirectory)/../common/project.props" />
+    
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net48</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>com.github.yukon39.DebugBSL.Tests</RootNamespace>
   </PropertyGroup>

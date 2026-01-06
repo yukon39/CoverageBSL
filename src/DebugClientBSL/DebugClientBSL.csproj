@@ -3,11 +3,10 @@
   <Import Project="$(MSBuildProjectDirectory)/../common/project.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net48</TargetFrameworks>
     <RootNamespace>com.github.yukon39.DebugBSL.Client</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 

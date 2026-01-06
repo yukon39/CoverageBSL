@@ -1,9 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="$(MSBuildProjectDirectory)/../common/project.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net48</TargetFrameworks>
     <RootNamespace>com.github.yukon39.CoverageBSL.AddIn</RootNamespace>
   </PropertyGroup>
 
@@ -12,23 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net48'">
-    <PackageReference Include="OneScript" Version="1.8.0" />
-    <PackageReference Include="OneScript.StandardLibrary" Version="1.8.0" />
+    <PackageReference Include="OneScript.StandardLibrary" Version="1.9.3" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <Reference Include="OneScript.Core">
-      <HintPath>C:\Program Files\OneScript\bin\OneScript.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="OneScript.Language">
-      <HintPath>C:\Program Files\OneScript\bin\OneScript.Language.dll</HintPath>
-    </Reference>
-    <Reference Include="OneScript.StandardLibrary">
-      <HintPath>C:\Program Files\OneScript\bin\OneScript.StandardLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="ScriptEngine">
-      <HintPath>C:\Program Files\OneScript\bin\ScriptEngine.dll</HintPath>
-    </Reference>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="OneScript.StandardLibrary" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
