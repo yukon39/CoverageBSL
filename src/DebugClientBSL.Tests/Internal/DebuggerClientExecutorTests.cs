@@ -29,7 +29,7 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
             var response = await executor.ExecuteAsync<RDBGEmptyResponse>(new RDBGTestRequest(), parameters);
 
             // then
-            Assert.IsInstanceOf<RDBGEmptyResponse>(response);
+            Assert.That(response, Is.InstanceOf<RDBGEmptyResponse>());
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
             var response = await executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters);
 
             // then
-            Assert.IsInstanceOf<MiscRDbgGetAPIVerResponse>(response);
+            Assert.That(response, Is.InstanceOf<MiscRDbgGetAPIVerResponse>());
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
                 await executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters));
 
             // then
-            Assert.AreEqual("Test", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("Test"));
         }
     }
 }

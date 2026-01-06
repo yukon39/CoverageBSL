@@ -32,10 +32,10 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 
             // Then
             var o = DebuggerXmlSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
-            Assert.AreEqual(request.InfoBaseAlias, o.InfoBaseAlias);
-            Assert.AreEqual(request.IdOfDebuggerUI, o.IdOfDebuggerUI);
-            Assert.AreEqual(request.Data.RTEProcessing.StopOnErrors, o.Data.RTEProcessing.StopOnErrors);
-            Assert.AreEqual(request.Data.RTEProcessing.AnalyzeErrorStr, o.Data.RTEProcessing.AnalyzeErrorStr);
+            Assert.That(o.InfoBaseAlias, Is.EqualTo(request.InfoBaseAlias));
+            Assert.That(o.IdOfDebuggerUI, Is.EqualTo(request.IdOfDebuggerUI));
+            Assert.That(o.Data.RTEProcessing.StopOnErrors, Is.EqualTo(request.Data.RTEProcessing.StopOnErrors));
+            Assert.That(o.Data.RTEProcessing.AnalyzeErrorStr, Is.EqualTo(request.Data.RTEProcessing.AnalyzeErrorStr));
         }
 
         [Test]
@@ -48,8 +48,8 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<RDBGSetInitialDebugSettingsRequest>(xmlString);
 
             // Then
-            Assert.AreEqual(request.InfoBaseAlias, "DefAlias");
-            Assert.AreEqual(request.IdOfDebuggerUI, Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
+            Assert.That(request.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(request.IdOfDebuggerUI, Is.EqualTo(Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3")));
         }
 
     }

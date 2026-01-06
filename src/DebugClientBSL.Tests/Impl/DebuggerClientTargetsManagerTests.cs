@@ -33,7 +33,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets"));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=attachDetachDbgTargets"));
         }
 
         [Test]
@@ -75,10 +75,10 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
             var result = await manager.AttachedTargetsStatesAsync(areaName);
 
             // then
-            Assert.IsInstanceOf<List<DbgTargetStateInfo>>(result);
+            Assert.That(result, Is.InstanceOf<List<DbgTargetStateInfo>>());
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=getDbgAllTargetStates", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=getDbgAllTargetStates"));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=initSettings", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=initSettings"));
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setAutoAttachSettings", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=setAutoAttachSettings"));
         }
 
         private static DebuggerClientTargetsManager Create(MockHttpMessageHandler messageHandler)

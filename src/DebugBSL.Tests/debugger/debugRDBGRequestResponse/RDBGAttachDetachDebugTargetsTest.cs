@@ -25,10 +25,10 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 
             // Then
             var xmlRequest = DebuggerXmlSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(xmlString);
-            Assert.AreEqual(request.InfoBaseAlias, xmlRequest.InfoBaseAlias);
-            Assert.AreEqual(request.IdOfDebuggerUI, xmlRequest.IdOfDebuggerUI);
-            Assert.AreEqual(request.Attach, xmlRequest.Attach);
-            Assert.AreEqual(request.ID[0].ID, xmlRequest.ID[0].ID);
+            Assert.That(xmlRequest.InfoBaseAlias, Is.EqualTo(request.InfoBaseAlias));
+            Assert.That(xmlRequest.IdOfDebuggerUI, Is.EqualTo(request.IdOfDebuggerUI));
+            Assert.That(xmlRequest.Attach, Is.EqualTo(request.Attach));
+            Assert.That(xmlRequest.ID[0].ID, Is.EqualTo(request.ID[0].ID));
         }
 
         [Test]
@@ -42,10 +42,10 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<RDBGAttachDetachDebugTargetsRequest>(xmlString);
 
             // Then
-            Assert.AreEqual(request.InfoBaseAlias, "DefAlias");
-            Assert.AreEqual(request.IdOfDebuggerUI, Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
-            Assert.True(request.Attach);
-            Assert.AreEqual(request.ID[0].ID, Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720"));
+            Assert.That(request.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(request.IdOfDebuggerUI, Is.EqualTo(Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3")));
+            Assert.That(request.Attach, Is.True);
+            Assert.That(request.ID[0].ID, Is.EqualTo(Guid.Parse("f8849103-dbcd-4984-905d-28059c33a720")));
         }
     }
 }

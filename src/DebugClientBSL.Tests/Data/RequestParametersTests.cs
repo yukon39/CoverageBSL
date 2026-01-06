@@ -16,7 +16,7 @@ namespace com.github.yukon39.DebugBSL.Client.Data.Tests
             var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
-            Assert.AreEqual("http://localhost:1550/e1crdbg/rdbg?cmd=testCommand", requestUrl.ToString());
+            Assert.That(requestUrl.ToString(), Is.EqualTo("http://localhost:1550/e1crdbg/rdbg?cmd=testCommand"));
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace com.github.yukon39.DebugBSL.Client.Data.Tests
             var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
-            Assert.AreEqual("http://localhost:1550/e1crdbg/testRsc?cmd=testCommand", requestUrl.ToString());
+            Assert.That(requestUrl.ToString(), Is.EqualTo("http://localhost:1550/e1crdbg/testRsc?cmd=testCommand"));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace com.github.yukon39.DebugBSL.Client.Data.Tests
             var requestUrl = parameters.RequestUrl(rootUrl);
 
             // Then
-            Assert.AreEqual(expectedUrl, requestUrl.ToString());
+            Assert.That(requestUrl.ToString(), Is.EqualTo(expectedUrl));
         }
     }
 }

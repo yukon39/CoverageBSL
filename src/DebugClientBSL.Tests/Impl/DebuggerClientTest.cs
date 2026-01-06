@@ -24,7 +24,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbgTest?cmd=test", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbgTest?cmd=test"));
         }
 
         [Test]
@@ -45,10 +45,10 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
             var version = await client.ApiVersionAsync();
 
             // then
-            Assert.AreEqual("1.2.3.4", version);
+            Assert.That(version, Is.EqualTo("1.2.3.4"));
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=getRDbgAPIVer", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=getRDbgAPIVer"));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
             var session = client.CreateSession("testAlias");
 
             // than
-            Assert.IsInstanceOf<IDebuggerClientSession>(session);
+            Assert.That(session, Is.InstanceOf<IDebuggerClientSession>());
         }
 
         private static IDebuggerClient Create(MockHttpMessageHandler messageHandler)

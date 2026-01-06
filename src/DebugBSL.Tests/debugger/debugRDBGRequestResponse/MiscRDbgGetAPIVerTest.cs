@@ -21,7 +21,7 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 
             // Then
             var xmlResponse = DebuggerXmlSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
-            Assert.AreEqual(response.Version, xmlResponse.Version);
+            Assert.That(xmlResponse.Version, Is.EqualTo(response.Version));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<MiscRDbgGetAPIVerResponse>(xmlString);
 
             // Then
-            Assert.AreEqual(request.Version, "8.3.17");
+            Assert.That(request.Version, Is.EqualTo("8.3.17"));
         }
     }
 }

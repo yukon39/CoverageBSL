@@ -28,9 +28,9 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 
             // Then
             var xmlRequest = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
-            Assert.AreEqual(request.InfoBaseAlias, xmlRequest.InfoBaseAlias);
-            Assert.AreEqual(request.IdOfDebuggerUI, xmlRequest.IdOfDebuggerUI);
-            Assert.AreEqual(request.Options.ForegroundAbility, xmlRequest.Options.ForegroundAbility);
+            Assert.That(xmlRequest.InfoBaseAlias, Is.EqualTo(request.InfoBaseAlias));
+            Assert.That(xmlRequest.IdOfDebuggerUI, Is.EqualTo(request.IdOfDebuggerUI));
+            Assert.That(xmlRequest.Options.ForegroundAbility, Is.EqualTo(request.Options.ForegroundAbility));
         }
 
         [Test]
@@ -43,9 +43,9 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIRequest>(xmlString);
 
             // Then
-            Assert.AreEqual(request.InfoBaseAlias, "DefAlias");
-            Assert.AreEqual(request.IdOfDebuggerUI, Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
-            Assert.True(request.Options.ForegroundAbility);
+            Assert.That(request.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(request.IdOfDebuggerUI, Is.EqualTo(Guid.Parse("dbe7b1e9-9786-4a25-8da8-304684fa2ce3")));
+            Assert.That(request.Options.ForegroundAbility, Is.True);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
 
             // Then
             var xmlResponse = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
-            Assert.AreEqual(response.Result, xmlResponse.Result);
+            Assert.That(xmlResponse.Result, Is.EqualTo(response.Result));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<RDBGAttachDebugUIResponse>(xmlString);
 
             // Then
-            Assert.AreEqual(request.Result, AttachDebugUIResult.Registered);
+            Assert.That(request.Result, Is.EqualTo(AttachDebugUIResult.Registered));
         }
     }
 }

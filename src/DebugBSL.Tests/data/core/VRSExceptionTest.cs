@@ -16,8 +16,8 @@ namespace com.github.yukon39.DebugBSL.Tests.data.core
             var vrsException = DebuggerXmlSerializer.Deserialize<VRSException>(xmlString);
 
             // Then
-            Assert.AreEqual(vrsException.CLSID, Guid.Parse("580392e6-ba49-4280-ac67-fcd6f2180121"));
-            Assert.AreEqual(vrsException.Reason, 400);
+            Assert.That(vrsException.CLSID, Is.EqualTo(Guid.Parse("580392e6-ba49-4280-ac67-fcd6f2180121")));
+            Assert.That(vrsException.Reason, Is.EqualTo(400));
         }
     }
 }

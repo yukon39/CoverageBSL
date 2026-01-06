@@ -17,11 +17,11 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugRDBGRequestResponse
             var request = DebuggerXmlSerializer.Deserialize<RDBGGetDbgAllTargetStatesResponse>(xmlString);
 
             // Then
-            Assert.AreEqual(2, request.Item.Count);
+            Assert.That(request.Item.Count, Is.EqualTo(2));
 
             var targetStateInfo = request.Item[0];
-            Assert.AreEqual("DefAlias", targetStateInfo.TargetID.InfoBaseAlias);
-            Assert.AreEqual(DbgTargetState.Worked, targetStateInfo.State);
+            Assert.That(targetStateInfo.TargetID.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(targetStateInfo.State, Is.EqualTo(DbgTargetState.Worked));
         }
     }
 }

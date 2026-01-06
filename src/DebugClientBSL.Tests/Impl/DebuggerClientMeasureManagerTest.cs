@@ -26,11 +26,11 @@ namespace com.github.yukon39.DebugClientBSL.Impl.Tests
             var measureId = await manager.StartMeasureModeAsync();
 
             // then
-            Assert.IsInstanceOf<Guid>(measureId);
-            Assert.AreNotEqual(Guid.Empty, measureId);
+            Assert.That(measureId, Is.InstanceOf<Guid>());
+            Assert.That(measureId, Is.Not.EqualTo(Guid.Empty));
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode"));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace com.github.yukon39.DebugClientBSL.Impl.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=setMeasureMode"));
         }
 
         private static DebuggerClientMeasureManager Create(MockHttpMessageHandler messageHandler)

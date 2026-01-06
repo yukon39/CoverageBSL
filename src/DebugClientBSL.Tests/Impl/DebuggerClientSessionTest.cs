@@ -31,10 +31,10 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var result = await session.AttachAsync(password.ToCharArray(), new DebuggerOptions());
 
             // then
-            Assert.AreEqual(AttachDebugUIResult.Registered, result);
+            Assert.That(result, Is.EqualTo(AttachDebugUIResult.Registered));
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=attachDebugUI", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=attachDebugUI"));
         }
 
         [Test]
@@ -56,10 +56,10 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var result = await session.DetachAsync();
 
             // then
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual("http://localhost/e1crdbg/rdbg?cmd=detachDebugUI", request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo("http://localhost/e1crdbg/rdbg?cmd=detachDebugUI"));
         }
 
 
@@ -81,7 +81,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
 
             // then
             var request = messageHandler.Dequeue();
-            Assert.AreEqual(requestUri, request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo(requestUri));
         }
 
         [Test]
@@ -102,10 +102,10 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var result = await session.PingAsync(timeSpan);
 
             // then
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
 
             var request = messageHandler.Dequeue();
-            Assert.AreEqual(requestUri, request.RequestUri.ToString());
+            Assert.That(request.RequestUri.ToString(), Is.EqualTo(requestUri));
         }
 
         private static IDebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)

@@ -17,12 +17,12 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugDBGUICommands
             var response = DebuggerXmlSerializer.Deserialize<RDBGPingDebugUIResponse>(xmlString);
 
             // Then
-            Assert.AreEqual(response.Result.Count, 1);
-            Assert.IsInstanceOf<DBGUIExtCmdInfoQuit>(response.Result[0]);
+            Assert.That(response.Result.Count, Is.EqualTo(1));
+            Assert.That(response.Result[0], Is.InstanceOf<DBGUIExtCmdInfoQuit>());
             var infoStarted = (DBGUIExtCmdInfoQuit)response.Result[0];
 
-            Assert.IsInstanceOf<DebugTargetId>(infoStarted.TargetID);
-            Assert.AreEqual("DefAlias", infoStarted.TargetID.InfoBaseAlias);
+            Assert.That(infoStarted.TargetID, Is.InstanceOf<DebugTargetId>());
+            Assert.That(infoStarted.TargetID.InfoBaseAlias, Is.EqualTo("DefAlias"));
         }
     }
 }

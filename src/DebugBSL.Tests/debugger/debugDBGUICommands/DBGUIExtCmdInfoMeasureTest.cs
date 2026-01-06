@@ -17,22 +17,22 @@ namespace com.github.yukon39.DebugBSL.Tests.debugger.debugDBGUICommands
             var response = DebuggerXmlSerializer.Deserialize<RDBGPingDebugUIResponse>(xmlString);
 
             // Then
-            Assert.AreEqual(response.Result.Count, 1);
-            Assert.IsInstanceOf<DBGUIExtCmdInfoMeasure>(response.Result[0]);
+            Assert.That(response.Result.Count, Is.EqualTo(1));
+            Assert.That(response.Result[0], Is.InstanceOf<DBGUIExtCmdInfoMeasure>());
             var infoMeasure = response.Result[0] as DBGUIExtCmdInfoMeasure;
 
-            Assert.IsInstanceOf<DebugTargetId>(infoMeasure.TargetID);
-            Assert.AreEqual("DefAlias", infoMeasure.TargetID.InfoBaseAlias);
-            Assert.AreEqual("DefAlias", infoMeasure.Measure.TargetID.InfoBaseAlias);
-            Assert.Greater(infoMeasure.Measure.TotalDurability, 0);
-            Assert.Greater(infoMeasure.Measure.ModuleData.Count, 0);
+            Assert.That(infoMeasure.TargetID, Is.InstanceOf<DebugTargetId>());
+            Assert.That(infoMeasure.TargetID.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(infoMeasure.Measure.TargetID.InfoBaseAlias, Is.EqualTo("DefAlias"));
+            Assert.That(infoMeasure.Measure.TotalDurability, Is.GreaterThan(0)); 
+            Assert.That(infoMeasure.Measure.ModuleData.Count, Is.GreaterThan(0));
 
             var moduleData = infoMeasure.Measure.ModuleData[0];
-            Assert.IsInstanceOf<BSLModuleIdInternal>(moduleData.ModuleID);
-            Assert.Greater(moduleData.LineInfo.Count, 0);
+            Assert.That(moduleData.ModuleID, Is.InstanceOf<BSLModuleIdInternal>());
+            Assert.That(moduleData.LineInfo.Count, Is.GreaterThan(0));
 
             var lineInfo = moduleData.LineInfo[0];
-            Assert.Greater(lineInfo.LineNo, 0);
+            Assert.That(lineInfo.LineNo, Is.GreaterThan(0));
         }
     }
 }

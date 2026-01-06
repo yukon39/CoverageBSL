@@ -16,7 +16,7 @@ namespace com.github.yukon39.DebugBSL.Tests.data.core
             var coreException = DebuggerXmlSerializer.Deserialize<CoreException>(xmlString);
 
             // Then
-            Assert.AreEqual(coreException.CLSID, Guid.Parse("5372caa7-07b9-4767-9776-53b510236d93"));
+            Assert.That(coreException.CLSID, Is.EqualTo(Guid.Parse("5372caa7-07b9-4767-9776-53b510236d93")));
         }
     }
 }
