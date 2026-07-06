@@ -1,3 +1,6 @@
+using OneScript.Language.Extensions;
+using OneScript.Language.SyntaxAnalysis;
+using OneScript.Language.SyntaxAnalysis.AstNodes;
 using System;
 using System.Collections.Generic;
 
@@ -69,5 +72,23 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
         public static bool ShouldInclude(string methodName) =>
             !FilteredMethodNames.Contains(methodName);
+
+        /// <summary>
+        /// Аналог <c>GlobalCallsFilter.filterByName</c> в Coverage41C (этап после <c>mustCovered</c>).
+        /// </summary>
+        public static bool ShouldIncludeNode(BslSyntaxNode node)
+        {
+            if (node.Kind != NodeKind.GlobalCall)
+            {
+                return true;
+            }
+
+            if (node is CallNode call && call.Identifier != null)
+            {
+                return ShouldInclude(call.Identifier.GetIdentifier());
+            }
+
+            return true;
+        }
     }
 }
