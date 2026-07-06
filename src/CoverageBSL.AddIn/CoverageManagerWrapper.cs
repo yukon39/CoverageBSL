@@ -1,13 +1,8 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
-using ScriptEngine.Machine.Contexts;
-using System;
-
-#if NET48
-using ScriptEngine;
-#else
 using OneScript.Commons;
 using OneScript.Contexts;
-#endif
+using ScriptEngine.Machine.Contexts;
+using System;
 
 namespace com.github.yukon39.CoverageBSL.AddIn
 {

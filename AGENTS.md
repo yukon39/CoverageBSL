@@ -40,18 +40,18 @@ DebugBSL                   ← модели XML-запросов/ответов 
 | **DebugBSL.Tests** | `src/DebugBSL.Tests/` | Unit-тесты сериализации и моделей (NUnit, эталонные XML). |
 | **DebugClientBSL.Tests** | `src/DebugClientBSL.Tests/` | Unit-тесты клиента (mock HTTP). |
 
-Общие настройки сборки: `src/Common/project.props` (версия `0.5.0`, `TargetFrameworks`: `net48` + `net8.0`, C# 8.0).
+Общие настройки сборки: `src/Common/project.props` (версия `0.5.0`, `TargetFramework`: `net8.0`; версия C# — по умолчанию для SDK).
 
 ### Зависимости
 
-| Пакет | Проект | net48 | net8.0 |
-|-------|--------|-------|--------|
-| OneScript.StandardLibrary | CoverageBSL.AddIn | 1.9.3 | 2.1.0 |
-| NUnit | *.Tests | 4.6.1 | 4.6.1 |
-| NUnit3TestAdapter | *.Tests | 6.2.0 | 6.2.0 |
-| Microsoft.NET.Test.Sdk | *.Tests | 18.7.0 | 18.7.0 |
+| Пакет | Проект | Версия |
+|-------|--------|--------|
+| OneScript.StandardLibrary | CoverageBSL.AddIn | 2.1.0 |
+| NUnit | *.Tests | 4.6.1 |
+| NUnit3TestAdapter | *.Tests | 6.2.0 |
+| Microsoft.NET.Test.Sdk | *.Tests | 18.7.0 |
 
-Пакет opm требует OneScript `1.9.0` (см. `build/packagedef.os`).
+Пакет opm требует OneScript `2.1.0` (см. `build/packagedef.os`).
 
 ## Поток работы (runtime)
 
@@ -92,7 +92,7 @@ DebugBSL                   ← модели XML-запросов/ответов 
 
 Пример: `examples/collectCoverage.ru.os`, `examples/collectCoverage.en.os`.
 
-Загрузка DLL: `build/package-loader.os` выбирает `bin/net48` (OneScript 1.x) или `bin/net8.0` (OneScript 2.x).
+Загрузка DLL: `build/package-loader.os` подключает `bin/net8.0/CoverageBSL.AddIn.dll`.
 
 ## Сборка
 
@@ -110,7 +110,7 @@ opm build build/packagedef.os
 
 Скрипт `build/packagedef.os` перед упаковкой:
 1. Собирает solution через `dotnet msbuild`.
-2. Копирует 4 DLL (`CoverageBSL.AddIn.dll`, `CoverageBSL.dll`, `DebugBSL.dll`, `DebugClientBSL.dll`) в `bin/net48` и `bin/net8.0`.
+2. Копирует 4 DLL (`CoverageBSL.AddIn.dll`, `CoverageBSL.dll`, `DebugBSL.dll`, `DebugClientBSL.dll`) в `bin/net8.0`.
 
 Версия пакета берётся из `<ReleaseNumber>` в `src/Common/project.props`.
 
@@ -121,16 +121,22 @@ dotnet build src/CoverageBSL.sln -c Release
 dotnet test src/CoverageBSL.sln -c Release
 ```
 
-- **DebugBSL.Tests** — round-trip XML (эталонные файлы в `debugger/**/*.xml`), 16 тестов на TFM.
-- **DebugClientBSL.Tests** — `MockHttpMessageHandler` для HTTP-слоя, 20 тестов на TFM.
-- Итого **72 теста** (оба TFM: `net48` и `net8.0`).
+- **DebugBSL.Tests** — round-trip XML (эталонные файлы в `debugger/**/*.xml`), 16 тестов.
+- **DebugClientBSL.Tests** — `MockHttpMessageHandler` для HTTP-слоя, 20 тестов.
+- Итого **36 тестов** (`net8.0`).
 
 При добавлении новых DTO добавляйте XML-фикстуры и тесты сериализации в DebugBSL.Tests.
 
-**NUnit 4 и async:** вызовы `Assert.ThrowsAsync` / `Assert.DoesNotThrowAsync` с лямбдой, возвращающей `Task`, нужно явно приводить к `Func<Task>`, иначе компилятор не различит перегрузки:
+**NUnit 4.6 и async:** для проверки async-кода предпочитайте `await Assert.ThatAsync(...)` в тестах `async Task`. При неоднозначности перегрузок `AsyncTestDelegate` и `Func<Task>` явно приводите лямбду к `Func<Task>`:
 
 ```csharp
-Assert.DoesNotThrowAsync((Func<Task>)(() => client.TestAsync()));
+await Assert.ThatAsync(
+    (Func<Task>)(async () => await client.TestAsync()),
+    Throws.Nothing);
+
+await Assert.ThatAsync(
+    (Func<Task>)(async () => await executor.ExecuteAsync<T>(request, parameters)),
+    Throws.Exception.With.Message.EqualTo("Test"));
 ```
 
 ## Соглашения кода
@@ -138,11 +144,11 @@ Assert.DoesNotThrowAsync((Func<Task>)(() => client.TestAsync()));
 - **Namespace**: `com.github.yukon39.<ProjectName>`.
 - **Интерфейсы** в корне проекта (`ICoverageManager`), реализации в `Impl/`.
 - **Async**: публичные sync-методы — обёртки над `*Async` с `.ConfigureAwait(false)` (см. `CoverageManager`).
-- **AddIn**: все публичные методы оборачиваются в try/catch с `RuntimeExceptionFactory` и локализованными сообщениями (`Locale.NStr` en/ru).
-- **Условная компиляция AddIn**: `#if NET48` — OneScript 1.x (`ScriptEngine.*`), `#else` — OneScript 2.x (`OneScript.*`).
+- **AddIn**: все публичные методы оборачиваются в try/catch с `RuntimeExceptionFactory` и локализованными сообщениями (`Locale.NStr` en/ru). Используются API OneScript 2.x (`OneScript.*`, `AutoCollectionContext`, `EnumValue`, …).
 - **Не дублировать** протокольные модели — они живут только в DebugBSL.
 - Минимальный scope изменений: не трогать несвязанные слои.
-- При обновлении NuGet-пакетов: синхронно обновляйте оба тестовых `.csproj` и проверяйте сборку на обоих TFM.
+- При обновлении NuGet-пакетов: синхронно обновляйте оба тестовых `.csproj` и проверяйте сборку и тесты.
+- **AGENTS.md**: при существенных изменениях в проекте (TFM, зависимости, API, сборка, тесты) всегда обновляйте этот файл.
 
 ## Структура репозитория
 

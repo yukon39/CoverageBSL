@@ -1,12 +1,7 @@
 ﻿
 using ScriptEngine;
 using System;
-
-#if NET48
-using ScriptEngine.Machine;
-#else
 using OneScript.Exceptions;
-#endif
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Utils
 {

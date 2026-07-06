@@ -1,15 +1,10 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using com.github.yukon39.DebugBSL.debugger.debugBaseData;
-using ScriptEngine.Machine.Contexts;
-using System;
-
-#if NET48
-using ScriptEngine.HostedScript.Library.Json;
-#else
 using OneScript.Commons;
 using OneScript.Contexts;
 using OneScript.StandardLibrary.Json;
-#endif
+using ScriptEngine.Machine.Contexts;
+using System;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
 {
