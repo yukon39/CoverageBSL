@@ -22,7 +22,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
 
             // when
             await Assert.ThatAsync(
-                (Func<Task>)(async () => await client.TestAsync()),
+                (Func<Task>)(() => client.TestAsync()),
                 Throws.Nothing);
 
             // then
