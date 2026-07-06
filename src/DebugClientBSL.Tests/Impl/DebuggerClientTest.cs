@@ -1,6 +1,7 @@
 ﻿using com.github.yukon39.DebugBSL.Client.Tests;
 using com.github.yukon39.DebugBSL.debugger.debugRDBGRequestResponse;
 using NUnit.Framework;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
             var client = Create(messageHandler);
 
             // when
-            Assert.DoesNotThrowAsync(async () => await client.TestAsync());
+            Assert.DoesNotThrowAsync((Func<Task>)(() => client.TestAsync()));
 
             // then
             var request = messageHandler.Dequeue();

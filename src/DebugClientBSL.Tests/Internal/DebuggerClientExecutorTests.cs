@@ -76,8 +76,8 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
             var parameters = new RequestParameters("test");
 
             // when
-            var ex = Assert.ThrowsAsync<Exception>(async () =>
-                await executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters));
+            var ex = Assert.ThrowsAsync<Exception>((Func<Task>)(() =>
+                executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters)));
 
             // then
             Assert.That(ex.Message, Is.EqualTo("Test"));

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-    <PackageReference Include="OneScript.StandardLibrary" Version="2.0.0" />
+    <PackageReference Include="OneScript.StandardLibrary" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
