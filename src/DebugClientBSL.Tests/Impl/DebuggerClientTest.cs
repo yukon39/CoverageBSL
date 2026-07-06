@@ -10,7 +10,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
     class DebuggerClientTest
     {
         [Test]
-        public void TestTestAsync()
+        public async Task TestTestAsync()
         {
             // given
             var response = new RDBGEmptyResponse();
@@ -21,7 +21,9 @@ namespace com.github.yukon39.DebugBSL.Client.Impl.Tests
             var client = Create(messageHandler);
 
             // when
-            Assert.DoesNotThrowAsync((Func<Task>)(() => client.TestAsync()));
+            await Assert.ThatAsync(
+                (Func<Task>)(async () => await client.TestAsync()),
+                Throws.Nothing);
 
             // then
             var request = messageHandler.Dequeue();

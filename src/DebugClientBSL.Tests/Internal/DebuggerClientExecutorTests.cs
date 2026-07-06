@@ -55,7 +55,7 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
         }
 
         [Test]
-        public void TestExecutorWithVRSException()
+        public async Task TestExecutorWithVRSException()
         {
             // given
             var badRequest = HttpStatusCode.BadRequest;
@@ -76,11 +76,10 @@ namespace com.github.yukon39.DebugBSL.Client.Internal.Tests
             var parameters = new RequestParameters("test");
 
             // when
-            var ex = Assert.ThrowsAsync<Exception>((Func<Task>)(() =>
-                executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters)));
-
-            // then
-            Assert.That(ex.Message, Is.EqualTo("Test"));
+            await Assert.ThatAsync(
+                (Func<Task>)(async () =>
+                    await executor.ExecuteAsync<MiscRDbgGetAPIVerResponse>(new RDBGTestRequest(), parameters)),
+                Throws.Exception.With.Message.EqualTo("Test"));
         }
     }
 }
