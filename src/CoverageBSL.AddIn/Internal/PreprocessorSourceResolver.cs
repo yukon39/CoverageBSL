@@ -14,99 +14,73 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
     {
         public static SourceCode Resolve(SourceCode source, ConditionalDirectiveHandler conditional)
         {
-            var normalized = source.GetSourceCode()
+            var lines = source.GetSourceCode()
                 .Replace("\r\n", "\n", StringComparison.Ordinal)
-                .Replace('\r', '\n');
-            var lines = normalized.Split('\n');
+                .Replace('\r', '\n')
+                .Split('\n');
+
             var output = new string[lines.Length];
             var state = new ConditionalState(conditional);
 
             for (var i = 0; i < lines.Length; i++)
             {
-                var line = lines[i];
-                if (TryHandleDirective(line, state, out var directiveHandled))
+                if (TryHandleDirective(lines[i], state))
                 {
                     output[i] = string.Empty;
-                    if (directiveHandled)
-                    {
-                        continue;
-                    }
                 }
-
-                output[i] = state.IsLineActive() ? line : string.Empty;
-            }
-
-            var builder = new StringBuilder();
-            for (var i = 0; i < output.Length; i++)
-            {
-                builder.Append(output[i]);
-                if (i < output.Length - 1)
+                else
                 {
-                    builder.Append("\r\n");
+                    output[i] = state.IsLineActive() ? lines[i] : string.Empty;
                 }
             }
 
             return SourceCodeBuilder.Create()
-                .FromString(builder.ToString())
+                .FromString(string.Join("\r\n", output))
                 .WithName(source.Name)
                 .Build();
         }
 
-        private static bool TryHandleDirective(string line, ConditionalState state, out bool handled)
+        private static bool TryHandleDirective(string line, ConditionalState state)
         {
-            handled = false;
             var trimmed = line.TrimStart();
             if (!trimmed.StartsWith("#", StringComparison.Ordinal))
             {
                 return false;
             }
 
-            var directive = trimmed.Substring(1).TrimStart();
-            directive = TrimDirectiveTerminator(directive);
+            var directive = TrimDirectiveTerminator(trimmed.Substring(1).TrimStart());
             if (directive.Length == 0)
             {
                 return false;
             }
 
-            if (IsRegionStart(directive))
+            if (StartsWithKeyword(directive, "Область", "Region")
+                || StartsWithKeyword(directive, "КонецОбласти", "EndRegion"))
             {
-                handled = true;
-                return true;
-            }
-
-            if (IsRegionEnd(directive))
-            {
-                handled = true;
                 return true;
             }
 
             if (StartsWithKeyword(directive, "Если", "If"))
             {
-                var condition = ExtractCondition(directive, "Если", "If");
-                state.EnterIf(state.Evaluate(condition));
-                handled = true;
+                state.EnterIf(state.Evaluate(ExtractCondition(directive, "Если", "If")));
                 return true;
             }
 
             if (StartsWithKeyword(directive, "ИначеЕсли", "ElsIf"))
             {
-                var condition = ExtractCondition(directive, "ИначеЕсли", "ElsIf");
-                state.EnterElseIf(state.Evaluate(condition));
-                handled = true;
+                state.EnterElseIf(state.Evaluate(ExtractCondition(directive, "ИначеЕсли", "ElsIf")));
                 return true;
             }
 
             if (StartsWithKeyword(directive, "Иначе", "Else"))
             {
                 state.EnterElse();
-                handled = true;
                 return true;
             }
 
             if (StartsWithKeyword(directive, "КонецЕсли", "EndIf"))
             {
                 state.LeaveIf();
-                handled = true;
                 return true;
             }
 
@@ -124,25 +98,24 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
             return trimmed;
         }
 
-        private static bool IsRegionStart(string directive) =>
-            StartsWithKeyword(directive, "Область", "Region");
-
-        private static bool IsRegionEnd(string directive) =>
-            StartsWithKeyword(directive, "КонецОбласти", "EndRegion");
-
-        private static bool StartsWithKeyword(string directive, string ru, string en)
-        {
-            return directive.StartsWith(ru, StringComparison.OrdinalIgnoreCase)
-                || directive.StartsWith(en, StringComparison.OrdinalIgnoreCase);
-        }
+        private static bool StartsWithKeyword(string directive, string ru, string en) =>
+            directive.StartsWith(ru, StringComparison.OrdinalIgnoreCase)
+            || directive.StartsWith(en, StringComparison.OrdinalIgnoreCase);
 
         private static string ExtractCondition(string directive, string ruKeyword, string enKeyword)
         {
-            var condition = RemoveKeyword(directive, ruKeyword);
-            condition = RemoveKeyword(condition, enKeyword);
-            condition = RemoveTrailingKeyword(condition, "Тогда");
-            condition = RemoveTrailingKeyword(condition, "Then");
-            return condition.Trim();
+            if (directive.StartsWith(ruKeyword, StringComparison.OrdinalIgnoreCase))
+            {
+                directive = directive.Substring(ruKeyword.Length);
+            }
+            else if (directive.StartsWith(enKeyword, StringComparison.OrdinalIgnoreCase))
+            {
+                directive = directive.Substring(enKeyword.Length);
+            }
+
+            directive = RemoveTrailingKeyword(directive.TrimStart(), "Тогда");
+            directive = RemoveTrailingKeyword(directive, "Then");
+            return directive.Trim();
         }
 
         private static string RemoveTrailingKeyword(string text, string keyword)
@@ -151,16 +124,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
             if (trimmed.EndsWith(keyword, StringComparison.OrdinalIgnoreCase))
             {
                 return trimmed.Substring(0, trimmed.Length - keyword.Length).TrimEnd();
-            }
-
-            return text;
-        }
-
-        private static string RemoveKeyword(string text, string keyword)
-        {
-            if (text.StartsWith(keyword, StringComparison.OrdinalIgnoreCase))
-            {
-                return text.Substring(keyword.Length).TrimStart();
             }
 
             return text;
@@ -183,27 +146,26 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
             public void EnterIf(bool condition)
             {
                 var parent = _inclusive.Peek();
-                var active = parent && condition;
-                _inclusive.Push(active);
+                _inclusive.Push(parent && condition);
                 _branchTaken.Push(condition);
             }
 
             public void EnterElseIf(bool condition)
             {
-                var parent = GetParentInclusive();
                 var previousBranchTaken = _branchTaken.Pop();
                 _inclusive.Pop();
+                var parent = _inclusive.Peek();
 
-                var active = parent && !previousBranchTaken && condition;
-                _inclusive.Push(active);
+                _inclusive.Push(parent && !previousBranchTaken && condition);
                 _branchTaken.Push(previousBranchTaken || condition);
             }
 
             public void EnterElse()
             {
-                var parent = GetParentInclusive();
                 var previousBranchTaken = _branchTaken.Pop();
                 _inclusive.Pop();
+                var parent = _inclusive.Peek();
+
                 _inclusive.Push(parent && !previousBranchTaken);
                 _branchTaken.Push(true);
             }
@@ -217,16 +179,9 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
             public bool Evaluate(string expression) =>
                 string.IsNullOrWhiteSpace(expression) || EvaluateOr(expression);
 
-            private bool GetParentInclusive()
-            {
-                var values = _inclusive.ToArray();
-                return values.Length >= 2 && values[1];
-            }
-
             private bool EvaluateOr(string expression)
             {
-                var parts = SplitTopLevel(expression, "Или", "Or");
-                foreach (var part in parts)
+                foreach (var part in SplitTopLevel(expression, "Или", "Or"))
                 {
                     if (EvaluateAnd(part))
                     {
@@ -239,8 +194,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
             private bool EvaluateAnd(string expression)
             {
-                var parts = SplitTopLevel(expression, "И", "And");
-                foreach (var part in parts)
+                foreach (var part in SplitTopLevel(expression, "И", "And"))
                 {
                     if (!EvaluateNot(part))
                     {
@@ -256,7 +210,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                 var trimmed = expression.Trim();
                 if (StartsWithKeyword(trimmed, "НЕ", "Not"))
                 {
-                    var argument = trimmed.Substring(trimmed.IndexOf(' ') + 1).Trim();
+                    var spaceIndex = trimmed.IndexOf(' ');
+                    var argument = spaceIndex >= 0 ? trimmed.Substring(spaceIndex + 1).Trim() : string.Empty;
                     return !EvaluateSymbol(argument);
                 }
 
@@ -270,7 +225,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     return Evaluate(symbol.Substring(1, symbol.Length - 2));
                 }
 
-                return _conditional?.IsDefined(symbol) ?? false;
+                return _conditional.IsDefined(symbol);
             }
 
             private static IEnumerable<string> SplitTopLevel(string expression, string ru, string en)
@@ -290,12 +245,12 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                         depth--;
                     }
 
-                    if (depth == 0 && TryReadKeyword(expression, i, ru, out var ruLength)
-                        || depth == 0 && TryReadKeyword(expression, i, en, out ruLength))
+                    if (depth == 0 && TryReadKeyword(expression, i, ru, out var keywordLength)
+                        || depth == 0 && TryReadKeyword(expression, i, en, out keywordLength))
                     {
                         parts.Add(current.ToString());
                         current.Clear();
-                        i += ruLength - 1;
+                        i += keywordLength - 1;
                         continue;
                     }
 
