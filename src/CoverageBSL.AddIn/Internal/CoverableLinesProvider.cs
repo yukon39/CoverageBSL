@@ -19,6 +19,9 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         public static CoverageLineInfosContextClass FromFile(string sourcePath) =>
             FromSourceCode(SourceCodeBuilder.Create().FromFile(sourcePath).Build());
 
+        internal static IEnumerable<int> ExtractCoverableLinesFromFile(string sourcePath) =>
+            ExtractCoverableLines(SourceCodeBuilder.Create().FromFile(sourcePath).Build());
+
         public static CoverageLineInfosContextClass FromSource(string source, string location) =>
             FromSourceCode(SourceCodeBuilder.Create().FromString(source).WithName(location).Build());
 

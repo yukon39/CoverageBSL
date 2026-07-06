@@ -1,4 +1,3 @@
-using com.github.yukon39.CoverageBSL;
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using com.github.yukon39.CoverageBSL.AddIn.Utils;
@@ -14,14 +13,58 @@ namespace com.github.yukon39.CoverageBSL.AddIn
     [ContextClass(typeName: "CoverableLines", typeAlias: "СтрокиКПокрытию")]
     public class CoverableLinesContextClass : AutoContext<CoverableLinesContextClass>
     {
-        private readonly ICoverageData coverageData;
+        private readonly string workingArea;
+        private readonly List<string> sourceDirectories = [];
 
-        private CoverableLinesContextClass(ICoverageData coverageData)
-            => this.coverageData = coverageData;
+        private CoverableLinesContextClass(string workingArea)
+            => this.workingArea = workingArea ?? string.Empty;
 
         [ScriptConstructor]
-        public static CoverableLinesContextClass ScriptConstructor() =>
-            new CoverableLinesContextClass(null);
+        public static CoverableLinesContextClass ScriptConstructor(string workingArea = "")
+            => new(workingArea);
+
+        [ContextProperty("WorkingArea", "РабочаяОбласть")]
+        public string WorkingArea => workingArea;
+
+        [ContextMethod("AddSourceDirectory", "ДобавитьКаталогИсходныхФайлов")]
+        public void AddSourceDirectory(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                var message = Locale.NStr(
+                    "en = 'Source directory path is required';" +
+                    "ru = 'Не указан путь к каталогу исходных файлов'");
+                throw new RuntimeException(message);
+            }
+
+            sourceDirectories.Add(path);
+        }
+
+        [ContextMethod("Build", "Сформировать")]
+        public CoverageDataContextClass Build()
+        {
+            if (sourceDirectories.Count == 0)
+            {
+                var message = Locale.NStr(
+                    "en = 'Source directories are required';" +
+                    "ru = 'Не указаны каталоги исходных файлов'");
+                throw new RuntimeException(message);
+            }
+
+            try
+            {
+                var coverageData = CoverableLinesBuilder.Build(workingArea, sourceDirectories);
+                return new CoverageDataContextClass(coverageData);
+            }
+            catch (Exception e)
+            {
+                var message = Locale.NStr(
+                    "en = 'Build coverable lines error';" +
+                    "ru = 'Ошибка формирования строк к покрытию'");
+                Logger.Error(message, e);
+                throw RuntimeExceptionFactory.NewException(message, e);
+            }
+        }
 
         [ContextMethod("FromFile", "ИзФайла")]
         public CoverageLineInfosContextClass FromFile(string sourcePath)
@@ -55,49 +98,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn
                 Logger.Error(message, e);
                 throw RuntimeExceptionFactory.NewException(message, e);
             }
-        }
-
-        [ContextMethod("PrepareModule", "ПодготовитьМодуль")]
-        public CoverageDataContextClass PrepareModule(
-            string moduleUrl,
-            CoverageLineInfosContextClass coverableLines)
-        {
-            if (coverageData == null)
-            {
-                var message = Locale.NStr(
-                    "en = 'Coverage data is required';" +
-                    "ru = 'Не указаны данные покрытия'");
-                throw new RuntimeException(message);
-            }
-
-            try
-            {
-                CoverableLinesPreparer.PrepareData(coverageData, moduleUrl, ToLineNumbers(coverableLines));
-                return new CoverageDataContextClass(coverageData);
-            }
-            catch (Exception e)
-            {
-                var message = Locale.NStr(
-                    "en = 'Prepare coverable lines error';" +
-                    "ru = 'Ошибка подготовки строк к покрытию'");
-                Logger.Error(message, e);
-                throw RuntimeExceptionFactory.NewException(message, e);
-            }
-        }
-
-        [ContextMethod("PrepareModuleFromSource", "ПодготовитьМодульИзИсточника")]
-        public CoverageDataContextClass PrepareModuleFromSource(string moduleUrl, string sourcePath)
-            => PrepareModule(moduleUrl, FromFile(sourcePath));
-
-        private static IEnumerable<int> ToLineNumbers(CoverageLineInfosContextClass coverableLines)
-        {
-            var lineNumbers = new List<int>();
-            foreach (CoverageLineInfoWrapper lineInfo in coverableLines)
-            {
-                lineNumbers.Add(lineInfo.LineNo);
-            }
-
-            return lineNumbers;
         }
     }
 }

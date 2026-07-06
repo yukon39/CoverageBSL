@@ -86,9 +86,10 @@ DebugBSL                   ← модели XML-запросов/ответов 
 
 | Класс (en / ru) | Методы |
 |-----------------|--------|
-| `CoverageManager` / `МенеджерПокрытия` | `TestConnection`, `APIVersion`, `NewCoverageSession`, `GetCoverableLines` |
+| `CoverageManager` / `МенеджерПокрытия` | `TestConnection`, `APIVersion`, `NewCoverageSession` |
+| `CoverableLines` / `СтрокиКПокрытию` | `WorkingArea`, `AddSourceDirectory`, `Build`, `FromFile`, `FromSource` |
 | `CoverageSession` / `СессияПокрытия` | `Attach`, `Detach`, `StartCoverageCapture`, `StopCoverageCapture` |
-| `CoverageData` / `ДанныеПокрытия` | `TotalDurability`, `Data`, `SerializeJSON`, `PrepareModuleCoverableLines`, `PrepareModuleCoverableLinesFromSource` |
+| `CoverageData` / `ДанныеПокрытия` | `TotalDurability`, `Data`, `SerializeJSON` |
 
 Пример: `examples/collectCoverage.ru.os`, `examples/collectCoverage.en.os`.
 
@@ -123,8 +124,8 @@ dotnet test src/CoverageBSL.sln -c Release
 
 - **DebugBSL.Tests** — round-trip XML (эталонные файлы в `debugger/**/*.xml`), 16 тестов.
 - **DebugClientBSL.Tests** — `MockHttpMessageHandler` для HTTP-слоя, 20 тестов.
-- **CoverageBSL.AddIn.Tests** — извлечение строк к покрытию из AST BSL по правилам Coverage41C (`Resources/*.bsl`), 1 тест.
-- Итого **37 тестов** (`net8.0`).
+- **CoverageBSL.AddIn.Tests** — извлечение строк к покрытию из AST BSL по правилам Coverage41C (`Resources/*.bsl`), 11 тестов.
+- Итого **47 тестов** (`net8.0`).
 
 При добавлении новых DTO добавляйте XML-фикстуры и тесты сериализации в DebugBSL.Tests.
 
@@ -173,7 +174,7 @@ CoverageBSL/
     └── DebugClientBSL.Tests/
 ```
 
-Строки к покрытию (`GetCoverableLines`, `PrepareModuleCoverableLines*`) реализованы целиком в **CoverageBSL.AddIn** (`Internal/`).
+Строки к покрытию (`CoverableLines.*`) реализованы в **CoverageBSL.AddIn** (`CoverableLinesContextClass`, `Internal/`).
 
 ## Частые задачи для агентов
 
@@ -184,7 +185,7 @@ CoverageBSL/
 | Ошибка attach / auto-attach | `CoverageSession.AttachAsync`, `DebuggerClientTargetsManager` |
 | Проблема загрузки в OneScript | `package-loader.os`, версии `OneScript.StandardLibrary` в `.csproj` |
 | Сериализация JSON из BSL | `CoverageDataContextClass.SerializeJson`, `CoverageModuleInfoList` |
-| Строки к покрытию (исполняемые строки модуля) | `AstCoverableLinesCollector`, `CoverableLinesProvider`, `CoverableLinesPreparer` (AddIn/Internal), `CoverageManager.GetCoverableLines` |
+| Строки к покрытию (исполняемые строки модуля) | `CoverableLinesContextClass`, `CoverableLinesBuilder`, `CoverableLinesProvider`, `AstCoverableLinesCollector` (AddIn/Internal) |
 
 ## Ограничения и контекст
 
