@@ -1,5 +1,4 @@
-﻿using com.github.yukon39.CoverageBSL.AddIn.Debugger;
-using com.github.yukon39.CoverageBSL.AddIn.Utils;
+﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using OneScript.Commons;
 using OneScript.Contexts;
 using ScriptEngine.Machine.Contexts;
@@ -58,23 +57,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         {
             var session = manager.NewCoverageSession(infobaseAlias);
             return new CoverageSessionWrapper(session);
-        }
-
-        [ContextMethod("GetCoverableLines", "ПолучитьСтрокиКПокрытию")]
-        public CoverageLineInfosContextClass GetCoverableLines(string sourcePath)
-        {
-            try
-            {
-                return Internal.CoverableLinesProvider.FromFile(sourcePath);
-            }
-            catch (Exception e)
-            {
-                var message = Locale.NStr(
-                    "en = 'Get coverable lines error';" +
-                    "ru = 'Ошибка получения строк к покрытию'");
-                Logger.Error(message, e);
-                throw RuntimeExceptionFactory.NewException(message, e);
-            }
         }
 
         public object UnderlyingObject => manager;
