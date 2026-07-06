@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugClientBSL.Tests", "Deb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageBSL.AddIn", "CoverageBSL.AddIn\CoverageBSL.AddIn.csproj", "{F1FC3DE5-8770-404B-B393-0D9510092453}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageBSL.AddIn.Tests", "CoverageBSL.AddIn.Tests\CoverageBSL.AddIn.Tests.csproj", "{B8A4E2F1-3C5D-4A9B-9E7F-1D2C3B4A5E6F}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxitems", "{16F0D998-FCE3-4C5B-8A57-F77A694B80EE}"
 EndProject
 Global
@@ -47,6 +49,10 @@ Global
 		{F1FC3DE5-8770-404B-B393-0D9510092453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1FC3DE5-8770-404B-B393-0D9510092453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1FC3DE5-8770-404B-B393-0D9510092453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A4E2F1-3C5D-4A9B-9E7F-1D2C3B4A5E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A4E2F1-3C5D-4A9B-9E7F-1D2C3B4A5E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A4E2F1-3C5D-4A9B-9E7F-1D2C3B4A5E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A4E2F1-3C5D-4A9B-9E7F-1D2C3B4A5E6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,4 +18,8 @@
     <ProjectReference Include="..\CoverageBSL\CoverageBSL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CoverageBSL.AddIn.Tests" />
+  </ItemGroup>
+
 </Project>
