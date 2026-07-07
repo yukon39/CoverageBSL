@@ -40,6 +40,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                 return line;
             }
 
+            // In split "Для Каждого" forms the AST location can point to the line
+            // after "Для", while Coverage41C expects the loop header line itself.
             return line > 1 ? line - 1 : line;
         }
 

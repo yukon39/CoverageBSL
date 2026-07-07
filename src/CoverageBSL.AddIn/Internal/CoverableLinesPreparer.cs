@@ -36,6 +36,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     if (module.ModuleID.URL.Equals(moduleUrl, StringComparison.OrdinalIgnoreCase))
                     {
                         PrepareModule(module, lineNumbers);
+                        return;
                     }
                 }
             }
