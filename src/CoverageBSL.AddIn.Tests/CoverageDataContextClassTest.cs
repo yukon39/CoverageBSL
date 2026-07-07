@@ -1,8 +1,6 @@
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using NUnit.Framework;
 using OneScript.StandardLibrary.Json;
-using System.IO;
-using System.Reflection;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Tests
 {
@@ -11,7 +9,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
         [Test]
         public void DeserializeJson_ReadsCoverageFromJsonFile()
         {
-            var filePath = ResourcePath("coverage.json");
+            var filePath = TestResourcePaths.ResourcePath("coverage.json");
             var reader = JSONReader.Constructor();
             reader.OpenFile(filePath);
 
@@ -32,12 +30,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
             Assert.That(secondLine.Durability, Is.EqualTo(39));
             Assert.That(secondLine.PureDurability, Is.EqualTo(39));
         }
-
-        private static string ResourcePath(string fixtureName) =>
-            Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                "Resources",
-                fixtureName);
 
         private static CoverageModuleInfoContextClass GetSecondModule(CoverageDataContextClass coverageData)
         {
