@@ -2,7 +2,7 @@ using OneScript.Language.SyntaxAnalysis;
 using OneScript.Language.SyntaxAnalysis.AstNodes;
 using OneScript.Sources;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     /// <summary>
     /// Определение номера строки для покрытия — аналог <c>getLine</c> в Coverage41C.

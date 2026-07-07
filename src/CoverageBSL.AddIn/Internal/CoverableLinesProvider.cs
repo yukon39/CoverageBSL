@@ -1,4 +1,5 @@
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
+using com.github.yukon39.CoverageBSL.AddIn.Internal.Ast;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using OneScript.Language.SyntaxAnalysis;
 using OneScript.Language.SyntaxAnalysis.AstNodes;

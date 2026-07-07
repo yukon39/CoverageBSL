@@ -3,7 +3,7 @@ using OneScript.Language.LexicalAnalysis;
 using OneScript.Language.SyntaxAnalysis;
 using OneScript.Sources;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     internal static class PreprocessingLexerFactory
     {

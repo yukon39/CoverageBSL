@@ -2,7 +2,7 @@ using OneScript.Language.LexicalAnalysis;
 using OneScript.Language.SyntaxAnalysis;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     /// <summary>
     /// Явные правила покрытия — аналог <c>contexts</c> и <c>tokenTypes</c> в Coverage41C <c>LinesToCoverage</c>.

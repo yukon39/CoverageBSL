@@ -2,7 +2,7 @@ using OneScript.Language.LexicalAnalysis;
 using OneScript.Sources;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     /// <summary>
     /// Перечисление всех лексем исходника (без отбора).

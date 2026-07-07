@@ -4,7 +4,7 @@ using OneScript.Language.SyntaxAnalysis.AstNodes;
 using System;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     internal static class GlobalCallsFilter
     {

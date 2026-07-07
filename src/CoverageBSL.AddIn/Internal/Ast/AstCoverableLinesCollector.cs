@@ -2,7 +2,7 @@ using OneScript.Language.SyntaxAnalysis.AstNodes;
 using OneScript.Sources;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     /// <summary>
     /// Извлекает строки к покрытию по правилам Coverage41C (<c>LinesToCoverage</c>):

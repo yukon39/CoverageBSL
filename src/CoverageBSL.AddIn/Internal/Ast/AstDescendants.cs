@@ -1,7 +1,7 @@
 using OneScript.Language.SyntaxAnalysis.AstNodes;
 using System.Collections.Generic;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Internal
+namespace com.github.yukon39.CoverageBSL.AddIn.Internal.Ast
 {
     /// <summary>
     /// Обход всех потомков AST (аналог <c>Trees.getDescendants</c> в Coverage41C).
