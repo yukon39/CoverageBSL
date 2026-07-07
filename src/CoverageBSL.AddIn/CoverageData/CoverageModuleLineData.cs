@@ -1,16 +1,10 @@
 namespace com.github.yukon39.CoverageBSL.AddIn.CoverageData
 {
-    internal sealed class CoverageModuleLineData
+    internal sealed class CoverageModuleLineData(int lineNo, bool hasCoverage = false)
     {
-        public CoverageModuleLineData(int lineNo, bool hasCoverage = false)
-        {
-            LineNo = lineNo;
-            HasCoverage = hasCoverage;
-        }
+        public int LineNo { get; } = lineNo;
 
-        public int LineNo { get; }
-
-        public bool HasCoverage { get; private set; }
+        public bool HasCoverage { get; private set; } = hasCoverage;
 
         public void MarkCovered()
             => HasCoverage = true;

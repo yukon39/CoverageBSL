@@ -2,15 +2,11 @@ using System.Collections.Generic;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.CoverageData
 {
-    internal sealed class CoverageModuleData
+    internal sealed class CoverageModuleData(string moduleUrl)
     {
-        private readonly SortedDictionary<int, CoverageModuleLineData> lineInfo =
-            new SortedDictionary<int, CoverageModuleLineData>();
+        private readonly SortedDictionary<int, CoverageModuleLineData> lineInfo = [];
 
-        public CoverageModuleData(string moduleUrl)
-            => ModuleUrl = moduleUrl;
-
-        public string ModuleUrl { get; }
+        public string ModuleUrl { get; } = moduleUrl;
 
         public IEnumerable<CoverageModuleLineData> LineInfo => lineInfo.Values;
 
