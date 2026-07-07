@@ -5,6 +5,7 @@ using OneScript.Language.SyntaxAnalysis;
 using OneScript.Language.SyntaxAnalysis.AstNodes;
 using OneScript.Sources;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
@@ -30,6 +31,9 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         }
 
         private static CoverageLineInfosContextClass ToLineInfoList(IEnumerable<int> lineNumbers)
-            => new CoverageLineInfosContextClass(new CoverageLineData(lineNumbers));
+            => new CoverageLineInfosContextClass(
+                lineNumbers
+                    .Select(lineNo => new PerformanceInfoLine { LineNo = lineNo, Frequency = 0 })
+                    .ToList());
     }
 }
