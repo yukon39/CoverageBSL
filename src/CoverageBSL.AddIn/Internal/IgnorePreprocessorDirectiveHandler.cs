@@ -1,4 +1,3 @@
-using OneScript.Exceptions;
 using OneScript.Language;
 using OneScript.Language.LexicalAnalysis;
 using OneScript.Language.SyntaxAnalysis;
@@ -27,20 +26,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                 }
             }
 
-            lastExtractedLexem = LexemFromNewLine(lexer);
+            lastExtractedLexem = lexer.NextLexem();
             return true;
-        }
-
-        private static Lexem LexemFromNewLine(ILexer lexer)
-        {
-            var lex = lexer.NextLexem();
-
-            if (!lexer.Iterator.OnNewLine)
-            {
-                throw new SyntaxErrorException(lexer.GetErrorPosition(), "Недопустимые символы в директиве");
-            }
-
-            return lex;
         }
     }
 }
