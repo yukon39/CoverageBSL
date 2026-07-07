@@ -1,5 +1,6 @@
 using OneScript.Language.SyntaxAnalysis;
 using OneScript.Language.SyntaxAnalysis.AstNodes;
+using OneScript.Sources;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
@@ -8,11 +9,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
     /// </summary>
     internal static class CoverableLineResolver
     {
-        public static int GetLine(BslSyntaxNode node) => node.Kind switch
+        public static int GetLine(BslSyntaxNode node, SourceCode source) => node.Kind switch
         {
             NodeKind.Assignment => GetAssignmentLine(node),
             NodeKind.MethodCall => GetMethodCallLine(node),
-            NodeKind.ForEachLoop => GetForEachLoopLine((ForEachLoopNode)node),
+            NodeKind.ForEachLoop => GetForEachLoopLine((ForEachLoopNode)node, source),
             NodeKind.GlobalCall => GetGlobalCallLine((CallNode)node),
             _ => node.Location.LineNumber,
         };
@@ -31,18 +32,37 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         private static int GetGlobalCallLine(CallNode call) =>
             call.Identifier?.Location.LineNumber ?? 0;
 
-        private static int GetForEachLoopLine(ForEachLoopNode forEachLoop)
+        private static int GetForEachLoopLine(ForEachLoopNode forEachLoop, SourceCode source)
         {
             var line = forEachLoop.Location.LineNumber;
-            if (forEachLoop.IteratorVariable != null
-                && forEachLoop.IteratorVariable.Location.LineNumber == line)
+            return FindForKeywordLine(source, line) ?? line;
+        }
+
+        private static int? FindForKeywordLine(SourceCode source, int eachLine)
+        {
+            int? forLine = null;
+
+            foreach (var lexem in SourceLexemeEnumerator.Enumerate(source))
             {
-                return line;
+                if (lexem.Location.LineNumber > eachLine)
+                {
+                    break;
+                }
+
+                if (lexem.Token == OneScript.Language.LexicalAnalysis.Token.For)
+                {
+                    forLine = lexem.Location.LineNumber;
+                    continue;
+                }
+
+                if (lexem.Token == OneScript.Language.LexicalAnalysis.Token.Each
+                    && lexem.Location.LineNumber == eachLine)
+                {
+                    return forLine;
+                }
             }
 
-            // In split "Для Каждого" forms the AST location can point to the line
-            // after "Для", while Coverage41C expects the loop header line itself.
-            return line > 1 ? line - 1 : line;
+            return null;
         }
 
         private static int GetMethodCallLine(BslSyntaxNode methodCallNode)

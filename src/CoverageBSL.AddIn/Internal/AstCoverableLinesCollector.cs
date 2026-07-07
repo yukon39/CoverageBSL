@@ -48,7 +48,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     continue;
                 }
 
-                AddLine(CoverableLineResolver.GetLine(node));
+                AddLine(CoverableLineResolver.GetLine(node, source));
             }
 
             return lines;

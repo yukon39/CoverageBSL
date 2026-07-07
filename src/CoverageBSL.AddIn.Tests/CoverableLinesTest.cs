@@ -57,6 +57,27 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
             Assert.That(actual, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void FromSource_ForEachSplitAcrossSeveralLines_UsesForLine()
+        {
+            var source = """
+                Процедура Проверить()
+                    Для
+
+
+                    Каждого Элемент Из Массив
+                    Цикл
+                    КонецЦикла;
+                КонецПроцедуры
+                """;
+
+            var actual = ToLineNumbers(CoverableLinesProvider.FromSource(source, "inline.bsl"));
+
+            Assert.That(actual, Contains.Item(2));
+            Assert.That(actual, Does.Not.Contain(5));
+            Assert.That(actual, Contains.Item(6));
+        }
+
         private static string ResourcePath(string fixtureName) =>
             Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
