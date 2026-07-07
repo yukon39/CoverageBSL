@@ -13,11 +13,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             string workingArea,
             IEnumerable<SourceDirectoryData> sourceDirectories)
         {
-            if (!string.IsNullOrWhiteSpace(moduleId.URL))
-            {
-                return moduleId.URL;
-            }
-
             if (!IsResolvableModuleType(moduleId.ModuleType))
             {
                 return null;
@@ -34,7 +29,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
         private static bool IsResolvableModuleType(string moduleType)
             => string.Equals(moduleType, "ConfigModule", StringComparison.OrdinalIgnoreCase)
-               || string.Equals(moduleType, "ExtensionModule", StringComparison.OrdinalIgnoreCase);
+               || string.Equals(moduleType, "ExtensionModule", StringComparison.OrdinalIgnoreCase)
+               || string.Equals(moduleType, "ExtMDModule", StringComparison.OrdinalIgnoreCase);
 
         private static string ResolveModulePath(
             CoverageModuleIdWrapper moduleId,
@@ -63,15 +59,23 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
         {
             if (string.Equals(moduleId.ModuleType, "ConfigModule", StringComparison.OrdinalIgnoreCase))
             {
-                return string.IsNullOrEmpty(sourceDirectory.ExtensionName);
+                return string.IsNullOrEmpty(sourceDirectory.ExtensionName)
+                    && string.IsNullOrEmpty(sourceDirectory.ModuleUrl);
             }
 
             if (string.Equals(moduleId.ModuleType, "ExtensionModule", StringComparison.OrdinalIgnoreCase))
             {
-                return string.Equals(
-                    sourceDirectory.ExtensionName,
-                    moduleId.ExtensionName,
-                    StringComparison.OrdinalIgnoreCase);
+                return string.IsNullOrEmpty(sourceDirectory.ModuleUrl)
+                    && string.Equals(
+                        sourceDirectory.ExtensionName,
+                        moduleId.ExtensionName,
+                        StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (string.Equals(moduleId.ModuleType, "ExtMDModule", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.IsNullOrEmpty(sourceDirectory.ExtensionName)
+                    && CoverageModuleUrlHelper.Matches(moduleId.URL, sourceDirectory.ModuleUrl);
             }
 
             return false;

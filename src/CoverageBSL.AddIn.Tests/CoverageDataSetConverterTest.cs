@@ -13,12 +13,17 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
     public class CoverageDataSetConverterTest
     {
         private const string ExtensionName = "Расширение1";
+        private const string ExternalModuleUrl = "file://ВнешняяОбработка1.epf";
 
         private static readonly string SourcesPath = TestResourcePaths.SourcesPath;
         private static readonly SourceDirectoryData[] XmlSourceDirectories =
         [
             new(TestResourcePaths.ConfigurationXmlSourcesPath, SourceFilesFormatEnum.XML),
-            new(TestResourcePaths.ExtensionXmlSourcesPath, SourceFilesFormatEnum.XML, ExtensionName)
+            new(TestResourcePaths.ExtensionXmlSourcesPath, SourceFilesFormatEnum.XML, ExtensionName),
+            new(
+                TestResourcePaths.ExternalXmlSourcesPath,
+                SourceFilesFormatEnum.XML,
+                moduleUrl: ExternalModuleUrl)
         ];
 
         [Test]
@@ -50,6 +55,20 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
             Assert.That(extensionManager, Is.Not.Null);
             Assert.That(
                 extensionManager!.LineInfo.Select(line => line.LineNo),
+                Is.EquivalentTo(new[] { 5, 6 }));
+
+            var externalForm = dataSet.Get(
+                "epf/xml/ВнешняяОбработка1/Forms/Форма/Ext/Form/Module.bsl");
+            Assert.That(externalForm, Is.Not.Null);
+            Assert.That(
+                externalForm!.LineInfo.Select(line => line.LineNo),
+                Is.EquivalentTo(new[] { 6, 7, 8 }));
+
+            var externalObject = dataSet.Get(
+                "epf/xml/ВнешняяОбработка1/Ext/ObjectModule.bsl");
+            Assert.That(externalObject, Is.Not.Null);
+            Assert.That(
+                externalObject!.LineInfo.Select(line => line.LineNo),
                 Is.EquivalentTo(new[] { 5, 6 }));
         }
 
@@ -84,6 +103,36 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
         }
 
         [Test]
+        public void BuildModuleKey_ExtMdModule_ResolvesRelativeModulePath()
+        {
+            var moduleId = CreateExternalModuleId(
+                "38e352a5-9e82-4e60-9244-b81cc3eed67e",
+                "32e087ab-1491-49b6-aba7-43571b41ac2b");
+
+            var moduleUrl = CoverageDataSetModuleKeyBuilder.Build(
+                moduleId,
+                SourcesPath,
+                XmlSourceDirectories);
+
+            Assert.That(moduleUrl, Is.EqualTo("epf/xml/ВнешняяОбработка1/Forms/Форма/Ext/Form/Module.bsl"));
+        }
+
+        [Test]
+        public void BuildModuleKey_ExtMdModule_WithoutMatchingSourceDirectory_ReturnsNull()
+        {
+            var moduleId = CreateExternalModuleId(
+                "38e352a5-9e82-4e60-9244-b81cc3eed67e",
+                "32e087ab-1491-49b6-aba7-43571b41ac2b");
+
+            var moduleUrl = CoverageDataSetModuleKeyBuilder.Build(
+                moduleId,
+                SourcesPath,
+                [new(TestResourcePaths.ConfigurationXmlSourcesPath, SourceFilesFormatEnum.XML)]);
+
+            Assert.That(moduleUrl, Is.Null);
+        }
+
+        [Test]
         public void BuildModuleKey_ExtensionModule_WithoutMatchingSourceDirectory_ReturnsNull()
         {
             var moduleId = CreateExtensionModuleId(
@@ -96,20 +145,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 [new(TestResourcePaths.ConfigurationXmlSourcesPath, SourceFilesFormatEnum.XML)]);
 
             Assert.That(moduleUrl, Is.Null);
-        }
-
-        [Test]
-        public void BuildModuleKey_WithUrl_UsesUrl()
-        {
-            var moduleId = CoverageModuleIdWrapper.ScriptConstructor();
-            moduleId.URL = "file://external.epf";
-
-            var moduleUrl = CoverageDataSetModuleKeyBuilder.Build(
-                moduleId,
-                SourcesPath,
-                XmlSourceDirectories);
-
-            Assert.That(moduleUrl, Is.EqualTo("file://external.epf"));
         }
 
         private static CoverageModuleIdWrapper CreateConfigModuleId(string objectId, string propertyId)
@@ -127,6 +162,16 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
             var moduleId = CoverageModuleIdWrapper.ScriptConstructor();
             moduleId.ModuleType = "ExtensionModule";
             moduleId.ExtensionName = ExtensionName;
+            moduleId.ObjectID = objectId;
+            moduleId.PropertyID = propertyId;
+            return moduleId;
+        }
+
+        private static CoverageModuleIdWrapper CreateExternalModuleId(string objectId, string propertyId)
+        {
+            var moduleId = CoverageModuleIdWrapper.ScriptConstructor();
+            moduleId.ModuleType = "ExtMDModule";
+            moduleId.URL = ExternalModuleUrl;
             moduleId.ObjectID = objectId;
             moduleId.PropertyID = propertyId;
             return moduleId;

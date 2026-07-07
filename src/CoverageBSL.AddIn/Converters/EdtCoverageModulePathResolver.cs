@@ -1,11 +1,21 @@
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 {
     internal sealed class EdtCoverageModulePathResolver : CoverageModulePathResolverBase, ICoverageModulePathResolver
     {
+        private static readonly XmlReaderSettings MetadataReaderSettings = new()
+        {
+            IgnoreComments = true,
+            IgnoreWhitespace = true,
+            DtdProcessing = DtdProcessing.Prohibit,
+            CloseInput = true,
+        };
+
         public override SourceFilesFormatEnum Format => SourceFilesFormatEnum.EDT;
 
         public string MetadataFileExtension => ".mdo";
@@ -37,6 +47,38 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 CoverageModuleKind.CommandModule => ResolveCommandPath(fileOrDirectory),
                 _ => null
             };
+        }
+
+        protected override string ResolveExternalModule(CoverageModuleIdWrapper moduleId, string sourcePath)
+        {
+            var kind = moduleId.PropertyID.FromPropertyId();
+
+            return kind switch
+            {
+                CoverageModuleKind.ObjectModule => ResolveExternalObjectModule(sourcePath, moduleId.ObjectID),
+                CoverageModuleKind.FormModule => ResolveExternalFormModule(sourcePath, moduleId.ObjectID),
+                _ => null
+            };
+        }
+
+        private string ResolveExternalObjectModule(string sourcePath, string objectId)
+        {
+            var metadataFile = FindMetadataFile(sourcePath, objectId, ".");
+            return metadataFile == null
+                ? null
+                : Path.Combine(Path.GetDirectoryName(metadataFile)!, "ObjectModule.bsl");
+        }
+
+        private string ResolveExternalFormModule(string sourcePath, string objectId)
+        {
+            return TryFindNestedChildDirectory(
+                sourcePath,
+                objectId,
+                "forms",
+                "Forms",
+                out var formDirectory)
+                ? ResolveFormPath(formDirectory)
+                : null;
         }
 
         public string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
@@ -143,7 +185,17 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
         private string FindFormTarget(string sourcePath, string objectId)
         {
             var directFile = FindNestedChildByUuid(sourcePath, objectId, CoverageModuleDirectories.FormModuleDirectories, "Forms");
-            return directFile ?? FindMetadataFile(sourcePath, objectId, "CommonForms");
+            if (directFile != null)
+            {
+                return directFile;
+            }
+
+            if (TryFindNestedChildDirectory(sourcePath, objectId, "forms", "Forms", out var formDirectory))
+            {
+                return formDirectory;
+            }
+
+            return FindMetadataFile(sourcePath, objectId, "CommonForms");
         }
 
         private string FindCommandTarget(string sourcePath, string objectId)
@@ -155,10 +207,114 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
         private static string ResolveRecordSetPath(string filePath)
             => Path.Combine(Path.GetDirectoryName(filePath)!, "RecordSetModule.bsl");
 
-        private static string ResolveFormPath(string filePath)
-            => Path.Combine(Path.GetDirectoryName(filePath)!, "Module.bsl");
+        private static string ResolveFormPath(string fileOrDirectory)
+        {
+            if (Directory.Exists(fileOrDirectory))
+            {
+                return Path.Combine(fileOrDirectory, "Module.bsl");
+            }
+
+            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "Module.bsl");
+        }
 
         private static string ResolveCommandPath(string filePath)
             => Path.Combine(Path.GetDirectoryName(filePath)!, "CommandModule.bsl");
+
+        private static bool TryFindNestedChildDirectory(
+            string sourceRoot,
+            string objectId,
+            string childElementLocalName,
+            string childDirectorySegment,
+            out string directoryPath)
+        {
+            directoryPath = null;
+            if (!Directory.Exists(sourceRoot))
+            {
+                return false;
+            }
+
+            foreach (var metadataFile in Directory.EnumerateFiles(sourceRoot, "*.mdo", SearchOption.AllDirectories))
+            {
+                if (!TryReadNestedChildName(metadataFile, objectId, childElementLocalName, out var childName))
+                {
+                    continue;
+                }
+
+                var candidatePath = Path.Combine(
+                    Path.GetDirectoryName(metadataFile)!,
+                    childDirectorySegment,
+                    childName);
+                if (!Directory.Exists(candidatePath))
+                {
+                    continue;
+                }
+
+                directoryPath = candidatePath;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryReadNestedChildName(
+            string metadataFilePath,
+            string objectId,
+            string childElementLocalName,
+            out string childName)
+        {
+            childName = null;
+
+            try
+            {
+                using var reader = XmlReader.Create(metadataFilePath, MetadataReaderSettings);
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element
+                        || !string.Equals(reader.LocalName, childElementLocalName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    var uuid = reader.GetAttribute("uuid");
+                    if (!string.Equals(uuid, objectId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (reader.IsEmptyElement)
+                    {
+                        return false;
+                    }
+
+                    while (reader.Read())
+                    {
+                        if (reader.NodeType == XmlNodeType.EndElement
+                            && string.Equals(reader.LocalName, childElementLocalName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            break;
+                        }
+
+                        if (reader.NodeType != XmlNodeType.Element
+                            || !string.Equals(reader.LocalName, "name", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        childName = reader.ReadElementContentAsString();
+                        return !string.IsNullOrEmpty(childName);
+                    }
+                }
+            }
+            catch (XmlException)
+            {
+                return false;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+
+            return false;
+        }
     }
 }

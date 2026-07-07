@@ -40,6 +40,39 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             };
         }
 
+        protected override string ResolveExternalModule(CoverageModuleIdWrapper moduleId, string sourcePath)
+        {
+            var kind = moduleId.PropertyID.FromPropertyId();
+
+            return kind switch
+            {
+                CoverageModuleKind.ObjectModule => ResolveExternalObjectModule(sourcePath, moduleId.ObjectID),
+                CoverageModuleKind.FormModule => ResolveExternalFormModule(sourcePath, moduleId.ObjectID),
+                _ => null
+            };
+        }
+
+        private string ResolveExternalObjectModule(string sourcePath, string objectId)
+        {
+            var metadataFile = FindMetadataFile(sourcePath, objectId, ".");
+            if (metadataFile == null)
+            {
+                return null;
+            }
+
+            return Path.Combine(
+                Path.GetDirectoryName(metadataFile)!,
+                Path.GetFileNameWithoutExtension(metadataFile),
+                "Ext",
+                "ObjectModule.bsl");
+        }
+
+        private string ResolveExternalFormModule(string sourcePath, string objectId)
+        {
+            var metadataFile = FindNestedChildByUuid(sourcePath, objectId, ".", "Forms");
+            return metadataFile == null ? null : ResolveFormPath(metadataFile);
+        }
+
         public string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
         {
             var searchRoot = Path.GetFullPath(Path.Combine(sourcePath, subDirectory));

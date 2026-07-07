@@ -1,3 +1,4 @@
+using com.github.yukon39.CoverageBSL.AddIn.Converters;
 using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using com.github.yukon39.CoverageBSL.AddIn.Utils;
@@ -64,6 +65,34 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             }
 
             sourceDirectories.Add(new SourceDirectoryData(path, format, extensionName));
+        }
+
+        [ContextMethod("AddExternalModuleSourceDirectory", "ДобавитьКаталогИсходныхФайловВнешнегоМодуля")]
+        public void AddExternalModuleSourceDirectory(
+            string moduleUrl,
+            string path,
+            SourceFilesFormatEnum format = SourceFilesFormatEnum.XML)
+        {
+            if (string.IsNullOrWhiteSpace(moduleUrl))
+            {
+                var message = Locale.NStr(
+                    "en = 'External module URL is required';" +
+                    "ru = 'Не указан URL внешнего модуля'");
+                throw new RuntimeException(message);
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                var message = Locale.NStr(
+                    "en = 'Source directory path is required';" +
+                    "ru = 'Не указан путь к каталогу исходных файлов'");
+                throw new RuntimeException(message);
+            }
+
+            sourceDirectories.Add(new SourceDirectoryData(
+                path,
+                format,
+                moduleUrl: CoverageModuleUrlHelper.Normalize(moduleUrl)));
         }
 
         [ContextMethod("BuildCoverableLines", "СформироватьСтрокиКПокрытию")]

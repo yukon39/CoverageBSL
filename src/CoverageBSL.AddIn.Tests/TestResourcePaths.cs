@@ -25,5 +25,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
 
         public static string ExtensionEdtProjectPath =>
             Path.Combine(ResourcesDirectory, "sources", "cfe", "edt");
+
+        public static string ExternalXmlSourcesPath =>
+            Path.Combine(ResourcesDirectory, "sources", "epf", "xml");
+
+        public static string ExternalEdtProjectPath =>
+            Path.Combine(ResourcesDirectory, "sources", "epf", "edt");
     }
 }

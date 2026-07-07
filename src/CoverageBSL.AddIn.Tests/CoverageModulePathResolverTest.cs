@@ -13,6 +13,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
         private static readonly string EdtProjectPath = TestResourcePaths.ConfigurationEdtProjectPath;
         private static readonly string ExtensionXmlProjectPath = TestResourcePaths.ExtensionXmlSourcesPath;
         private static readonly string ExtensionEdtProjectPath = TestResourcePaths.ExtensionEdtProjectPath;
+        private static readonly string ExternalXmlProjectPath = TestResourcePaths.ExternalXmlSourcesPath;
+        private static readonly string ExternalEdtProjectPath = TestResourcePaths.ExternalEdtProjectPath;
 
         [TestCaseSource(nameof(XmlModulePathCases))]
         public void Resolve_Xml_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
@@ -36,6 +38,18 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
         public void Resolve_EdtExtension_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
         {
             AssertModulePath(ExtensionEdtProjectPath, SourceFilesFormatEnum.EDT, "ExtensionModule", objectId, propertyId, expectedRelativePath);
+        }
+
+        [TestCaseSource(nameof(XmlExternalModulePathCases))]
+        public void Resolve_XmlExternal_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
+        {
+            AssertModulePath(ExternalXmlProjectPath, SourceFilesFormatEnum.XML, "ExtMDModule", objectId, propertyId, expectedRelativePath);
+        }
+
+        [TestCaseSource(nameof(EdtExternalModulePathCases))]
+        public void Resolve_EdtExternal_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
+        {
+            AssertModulePath(ExternalEdtProjectPath, SourceFilesFormatEnum.EDT, "ExtMDModule", objectId, propertyId, expectedRelativePath);
         }
 
         private static IEnumerable<TestCaseData> XmlModulePathCases()
@@ -96,6 +110,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "a722a8f2-1ea9-4984-ae17-96eb28b01d15",
                 "32e087ab-1491-49b6-aba7-43571b41ac2b",
                 "CommonForms/Форма/Module.bsl");
+            yield return Case(
+                "0fcc2b09-6188-4573-843d-41e906660823",
+                "32e087ab-1491-49b6-aba7-43571b41ac2b",
+                "Tasks/Задача1/Forms/Форма/Module.bsl");
         }
 
         private static IEnumerable<TestCaseData> XmlExtensionModulePathCases()
@@ -120,6 +138,30 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "fc0be29c-c7ec-4e83-ac62-e1217160fa07",
                 "d5963243-262e-4398-b4d7-fb16d06484f6",
                 "CommonModules/ОбщийМодульСервер/Module.bsl");
+        }
+
+        private static IEnumerable<TestCaseData> XmlExternalModulePathCases()
+        {
+            yield return Case(
+                "630ddfcc-52a6-4f8a-8eb9-417c5d39a7f1",
+                "a637f77f-3840-441d-a1c3-699c8c5cb7e0",
+                "ВнешняяОбработка1/Ext/ObjectModule.bsl");
+            yield return Case(
+                "38e352a5-9e82-4e60-9244-b81cc3eed67e",
+                "32e087ab-1491-49b6-aba7-43571b41ac2b",
+                "ВнешняяОбработка1/Forms/Форма/Ext/Form/Module.bsl");
+        }
+
+        private static IEnumerable<TestCaseData> EdtExternalModulePathCases()
+        {
+            yield return Case(
+                "630ddfcc-52a6-4f8a-8eb9-417c5d39a7f1",
+                "a637f77f-3840-441d-a1c3-699c8c5cb7e0",
+                "ВнешняяОбработка1/ObjectModule.bsl");
+            yield return Case(
+                "38e352a5-9e82-4e60-9244-b81cc3eed67e",
+                "32e087ab-1491-49b6-aba7-43571b41ac2b",
+                "ВнешняяОбработка1/Forms/Форма/Module.bsl");
         }
 
         private static TestCaseData Case(string objectId, string propertyId, string expectedRelativePath)
