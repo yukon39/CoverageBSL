@@ -1,4 +1,4 @@
-using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers;
+using com.github.yukon39.CoverageBSL.AddIn.Converters;
 using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     throw new DirectoryNotFoundException(projectPath);
                 }
 
-                var resolver = ModulePathResolverRegistry.GetRequired(sourceDirectory.Format);
+                var resolver = CoverageModulePathResolver.GetRequired(sourceDirectory.Format);
                 var scanRoot = resolver.GetSourceRoot(projectPath);
                 if (!Directory.Exists(scanRoot))
                 {

@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Edt
 {
-    internal sealed class EdtCoverageModulePathResolver : CoverageModulePathResolverBase, ICoverageModulePathResolver
+    internal sealed class EdtCoverageModulePathResolver : CoverageModulePathResolverBase
     {
         private static readonly XmlReaderSettings MetadataReaderSettings = new()
         {
@@ -19,7 +19,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Ed
 
         public override SourceFilesFormatEnum Format => SourceFilesFormatEnum.EDT;
 
-        public string MetadataFileExtension => ".mdo";
+        protected override string MetadataFileExtension => ".mdo";
 
         public override string GetSourceRoot(string projectPath) => Path.Combine(projectPath, "src");
 
@@ -76,7 +76,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Ed
             return formDirectory == null ? null : ResolveFormPath(formDirectory);
         }
 
-        public string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
+        private string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
         {
             var searchRoot = Path.GetFullPath(Path.Combine(sourcePath, subDirectory));
             if (!Directory.Exists(searchRoot))
@@ -97,7 +97,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Ed
             return MetadataPathHelper.HasExtension(filePath, MetadataFileExtension) ? filePath : null;
         }
 
-        public string FindMetadataFileInDirectories(string sourcePath, string objectId, IEnumerable<string> directories)
+        private string FindMetadataFileInDirectories(string sourcePath, string objectId, IEnumerable<string> directories)
         {
             foreach (var directory in directories)
             {
@@ -109,41 +109,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Ed
             }
 
             return null;
-        }
-
-        public string FindNestedChildByUuid(string sourcePath, string objectId, IEnumerable<string> directories, string childDirectory)
-        {
-            foreach (var directory in directories)
-            {
-                var path = FindNestedChildByUuid(sourcePath, objectId, directory, childDirectory);
-                if (path != null)
-                {
-                    return path;
-                }
-            }
-
-            return null;
-        }
-
-        public string FindNestedChildByUuid(string sourcePath, string objectId, string directory, string childDirectory)
-        {
-            if (!MetadataUuidIndex.TryGetFilePath(sourcePath, MetadataFileExtension, objectId, out var filePath))
-            {
-                return null;
-            }
-
-            if (!MetadataPathHelper.HasExtension(filePath, MetadataFileExtension))
-            {
-                return null;
-            }
-
-            var searchRoot = Path.Combine(sourcePath, directory);
-            if (!MetadataPathHelper.IsUnderDirectory(filePath, searchRoot))
-            {
-                return null;
-            }
-
-            return MetadataPathHelper.ContainsDirectorySegment(filePath, childDirectory) ? filePath : null;
         }
 
         private string FindMetadataPath(string sourcePath, string objectId, CoverageModuleKind kind)
