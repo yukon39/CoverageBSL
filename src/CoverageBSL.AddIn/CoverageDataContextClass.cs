@@ -1,9 +1,11 @@
 ﻿using com.github.yukon39.CoverageBSL.AddIn.Converters;
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
+using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using OneScript.Contexts;
 using OneScript.StandardLibrary.Json;
 using ScriptEngine.Machine.Contexts;
+using System.Collections.Generic;
 
 namespace com.github.yukon39.CoverageBSL.AddIn
 {
@@ -75,7 +77,9 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             writer.WriteEndObject();
         }
 
-        internal CoverageData.CoverageDataSet ToCoverageDataSet()
-            => CoverageDataSetConverter.Convert(this);
+        internal CoverageData.CoverageDataSet ToCoverageDataSet(
+            string workingArea,
+            IEnumerable<SourceDirectoryData> sourceDirectories)
+            => CoverageDataSetConverter.Convert(this, workingArea, sourceDirectories);
     }
 }
