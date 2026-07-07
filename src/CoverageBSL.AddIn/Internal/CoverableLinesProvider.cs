@@ -30,14 +30,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         }
 
         private static CoverageLineInfosContextClass ToLineInfoList(IEnumerable<int> lineNumbers)
-        {
-            var lineInfos = new List<PerformanceInfoLine>();
-            foreach (var lineNo in lineNumbers)
-            {
-                lineInfos.Add(new PerformanceInfoLine { LineNo = lineNo, Frequency = 0 });
-            }
-
-            return new CoverageLineInfosContextClass(lineInfos);
-        }
+            => new CoverageLineInfosContextClass(new CoverageLineData(lineNumbers));
     }
 }

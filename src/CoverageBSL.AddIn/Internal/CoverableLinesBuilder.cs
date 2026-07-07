@@ -1,6 +1,5 @@
+using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using com.github.yukon39.CoverageBSL.Impl;
-using com.github.yukon39.DebugBSL.debugger.debugBaseData;
-using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +11,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         public static ICoverageData Build(string workingArea, IEnumerable<string> sourceDirectories)
         {
             var basePath = ResolveWorkingArea(workingArea);
-            var performanceInfo = new PerformanceInfoMain();
+            var coverageData = new CoverageDataSet();
             var processedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var sourceDirectory in sourceDirectories)
@@ -32,23 +31,12 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     }
 
                     var lineNumbers = CoverableLinesProvider.ExtractCoverableLinesFromFile(fullPath);
-                    var module = new PerformanceInfoModule
-                    {
-                        ModuleID = new BSLModuleIdInternal
-                        {
-                            Type = BSLModuleType.ExtMDModule,
-                            URL = ToModuleUrl(basePath, fullPath)
-                        }
-                    };
-
-                    CoverableLinesPreparer.PrepareModule(module, lineNumbers);
-                    performanceInfo.ModuleData.Add(module);
+                    var module = coverageData.GetOrAdd(ToModuleUrl(basePath, fullPath));
+                    module.AddLines(lineNumbers);
                 }
             }
 
-            var coverageData = new CoverageData();
-            coverageData.Data.Add(performanceInfo);
-            return coverageData;
+            return CoverageDataConverter.ToCoverageData(coverageData);
         }
 
         private static string ResolveWorkingArea(string workingArea)
