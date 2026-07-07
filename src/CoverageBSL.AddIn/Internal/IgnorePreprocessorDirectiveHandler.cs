@@ -17,13 +17,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
         public override bool HandleDirective(ref Lexem lastExtractedLexem, ILexer lexer)
         {
-            while (true)
+            while (lexer.NextLexemOnSameLine().Type != LexemType.EndOfText)
             {
-                var next = lexer.NextLexemOnSameLine();
-                if (next.Type == LexemType.EndOfText)
-                {
-                    break;
-                }
             }
 
             lastExtractedLexem = lexer.NextLexem();

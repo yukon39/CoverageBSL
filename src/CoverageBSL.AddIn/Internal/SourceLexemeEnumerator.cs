@@ -1,6 +1,4 @@
-using OneScript.Language;
 using OneScript.Language.LexicalAnalysis;
-using OneScript.Language.SyntaxAnalysis;
 using OneScript.Sources;
 using System.Collections.Generic;
 
@@ -13,18 +11,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
     {
         public static IEnumerable<Lexem> Enumerate(SourceCode source)
         {
-            var errorSink = new ListErrorSink();
-            var handlers = new PreprocessorHandlers(new IDirectiveHandler[]
-            {
-                new IgnorePreprocessorDirectiveHandler(errorSink)
-            });
-
-            var baseLexer = new DefaultLexer { Iterator = source.CreateIterator() };
-            var lexer = new PreprocessingLexer(baseLexer)
-            {
-                Handlers = handlers,
-                ErrorSink = errorSink
-            };
+            var lexer = PreprocessingLexerFactory.Create(source, out _, out _);
 
             while (true)
             {

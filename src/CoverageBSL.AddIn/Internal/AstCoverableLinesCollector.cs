@@ -13,6 +13,13 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         public static SortedSet<int> Collect(ModuleNode module, SourceCode source)
         {
             var lines = new SortedSet<int>();
+            void AddLine(int line)
+            {
+                if (line > 0)
+                {
+                    lines.Add(line);
+                }
+            }
 
             foreach (var lexem in SourceLexemeEnumerator.Enumerate(source))
             {
@@ -21,11 +28,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     continue;
                 }
 
-                var line = lexem.Location.LineNumber;
-                if (line > 0)
-                {
-                    lines.Add(line);
-                }
+                AddLine(lexem.Location.LineNumber);
             }
 
             if (module == null)
@@ -45,11 +48,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     continue;
                 }
 
-                var line = CoverableLineResolver.GetLine(node);
-                if (line > 0)
-                {
-                    lines.Add(line);
-                }
+                AddLine(CoverableLineResolver.GetLine(node));
             }
 
             return lines;

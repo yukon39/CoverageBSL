@@ -1,7 +1,5 @@
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using com.github.yukon39.DebugBSL.debugger.debugMeasure;
-using OneScript.Language;
-using OneScript.Language.LexicalAnalysis;
 using OneScript.Language.SyntaxAnalysis;
 using OneScript.Language.SyntaxAnalysis.AstNodes;
 using OneScript.Sources;
@@ -25,21 +23,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
         internal static SortedSet<int> ExtractCoverableLines(SourceCode source)
         {
-            var errorSink = new ListErrorSink();
-            var handlers = new PreprocessorHandlers(new IDirectiveHandler[]
-            {
-                new IgnorePreprocessorDirectiveHandler(errorSink)
-            });
-
-            var baseLexer = new DefaultLexer { Iterator = source.CreateIterator() };
-            var lexer = new PreprocessingLexer(baseLexer)
-            {
-                Handlers = handlers,
-                ErrorSink = errorSink
-            };
-
+            var lexer = PreprocessingLexerFactory.Create(source, out var handlers, out var errorSink);
             var module = new DefaultBslParser(lexer, errorSink, handlers).ParseStatefulModule() as ModuleNode;
-
             return AstCoverableLinesCollector.Collect(module, source);
         }
 
