@@ -18,7 +18,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return null;
             }
 
-            var modulePath = ResolveModulePath(moduleId, sourceDirectories);
+            var modulePath = ResolveModulePath(moduleId, workingArea, sourceDirectories);
             if (modulePath == null)
             {
                 return null;
@@ -34,6 +34,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
         private static string ResolveModulePath(
             CoverageModuleIdWrapper moduleId,
+            string workingArea,
             IEnumerable<SourceDirectoryData> sourceDirectories)
         {
             foreach (var sourceDirectory in sourceDirectories)
@@ -43,7 +44,12 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                     continue;
                 }
 
-                var modulePath = CoverageModulePathResolver.Resolve(moduleId, sourceDirectory);
+                var resolvedSourceDirectory = new SourceDirectoryData(
+                    ResolveSourceDirectory(workingArea, sourceDirectory.Path),
+                    sourceDirectory.Format,
+                    sourceDirectory.ExtensionName,
+                    sourceDirectory.ModuleUrl);
+                var modulePath = CoverageModulePathResolver.Resolve(moduleId, resolvedSourceDirectory);
                 if (modulePath != null)
                 {
                     return modulePath;
@@ -51,6 +57,20 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             }
 
             return null;
+        }
+
+        private static string ResolveSourceDirectory(string workingArea, string sourceDirectory)
+        {
+            if (Path.IsPathRooted(sourceDirectory))
+            {
+                return Path.GetFullPath(sourceDirectory);
+            }
+
+            var basePath = string.IsNullOrWhiteSpace(workingArea)
+                ? Directory.GetCurrentDirectory()
+                : Path.GetFullPath(workingArea);
+
+            return Path.GetFullPath(Path.Combine(basePath, sourceDirectory));
         }
 
         private static bool MatchesModuleSource(

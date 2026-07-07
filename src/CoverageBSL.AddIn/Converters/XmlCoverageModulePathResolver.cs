@@ -2,11 +2,20 @@ using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 {
     internal sealed class XmlCoverageModulePathResolver : CoverageModulePathResolverBase, ICoverageModulePathResolver
     {
+        private static readonly XmlReaderSettings MetadataReaderSettings = new()
+        {
+            IgnoreComments = true,
+            IgnoreWhitespace = true,
+            DtdProcessing = DtdProcessing.Prohibit,
+            CloseInput = true,
+        };
+
         public override SourceFilesFormatEnum Format => SourceFilesFormatEnum.XML;
 
         public string MetadataFileExtension => ".xml";
@@ -182,21 +191,127 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
         private string FindCommandTarget(string sourcePath, string objectId)
         {
-            var directFile = FindNestedChildByUuid(sourcePath, objectId, CoverageModuleDirectories.CommandModuleDirectories, "Commands");
-            return directFile ?? FindMetadataFile(sourcePath, objectId, "CommonCommands");
+            var commandDirectory = FindNestedChildDirectory(
+                sourcePath,
+                objectId,
+                CoverageModuleDirectories.CommandModuleDirectories,
+                "Command",
+                "Commands");
+            if (commandDirectory != null)
+            {
+                return commandDirectory;
+            }
+
+            return FindMetadataFile(sourcePath, objectId, "CommonCommands");
+        }
+
+        private string FindNestedChildDirectory(
+            string sourcePath,
+            string objectId,
+            IEnumerable<string> parentDirectories,
+            string childElementLocalName,
+            string childDirectorySegment)
+        {
+            foreach (var parentDirectory in parentDirectories)
+            {
+                var searchRoot = Path.Combine(sourcePath, parentDirectory);
+                if (!Directory.Exists(searchRoot))
+                {
+                    continue;
+                }
+
+                foreach (var metadataFile in Directory.EnumerateFiles(searchRoot, "*.xml", SearchOption.AllDirectories))
+                {
+                    if (!TryReadNestedChildName(metadataFile, objectId, childElementLocalName, out var childName))
+                    {
+                        continue;
+                    }
+
+                    var objectDirectory = Path.Combine(
+                        Path.GetDirectoryName(metadataFile)!,
+                        Path.GetFileNameWithoutExtension(metadataFile));
+                    var candidateDirectory = Path.Combine(objectDirectory, childDirectorySegment, childName);
+                    if (!Directory.Exists(candidateDirectory))
+                    {
+                        continue;
+                    }
+
+                    return candidateDirectory;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool TryReadNestedChildName(
+            string metadataFilePath,
+            string objectId,
+            string childElementLocalName,
+            out string childName)
+        {
+            childName = null;
+
+            try
+            {
+                using var reader = XmlReader.Create(metadataFilePath, MetadataReaderSettings);
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element
+                        || !string.Equals(reader.LocalName, childElementLocalName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    var uuid = reader.GetAttribute("uuid");
+                    if (!string.Equals(uuid, objectId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (reader.IsEmptyElement)
+                    {
+                        return false;
+                    }
+
+                    var elementDepth = reader.Depth;
+                    while (reader.Read())
+                    {
+                        if (reader.NodeType == XmlNodeType.EndElement
+                            && reader.Depth == elementDepth
+                            && string.Equals(reader.LocalName, childElementLocalName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            break;
+                        }
+
+                        if (reader.NodeType != XmlNodeType.Element
+                            || !string.Equals(reader.LocalName, "Name", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        childName = reader.ReadElementContentAsString();
+                        return !string.IsNullOrEmpty(childName);
+                    }
+                }
+            }
+            catch (XmlException)
+            {
+                return false;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+
+            return false;
         }
 
         private static string ResolveRecordSetPath(string filePath)
-        {
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
-            if (string.Equals(fileName, "Recalculation", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(fileName, "Перерасчет1", StringComparison.OrdinalIgnoreCase))
-            {
-                return Path.Combine(Path.GetDirectoryName(filePath)!, "Ext", "RecordSetModule.bsl");
-            }
-
-            return Path.Combine(Path.GetDirectoryName(filePath)!, Path.GetFileNameWithoutExtension(filePath), "Ext", "RecordSetModule.bsl");
-        }
+            => Path.Combine(
+                Path.GetDirectoryName(filePath)!,
+                Path.GetFileNameWithoutExtension(filePath),
+                "Ext",
+                "RecordSetModule.bsl");
 
         private static string ResolveFormPath(string filePath)
             => Path.Combine(
@@ -206,11 +321,18 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 "Form",
                 "Module.bsl");
 
-        private static string ResolveCommandPath(string filePath)
-            => Path.Combine(
-                Path.GetDirectoryName(filePath)!,
-                Path.GetFileNameWithoutExtension(filePath),
+        private static string ResolveCommandPath(string fileOrDirectory)
+        {
+            if (Directory.Exists(fileOrDirectory))
+            {
+                return Path.Combine(fileOrDirectory, "Ext", "CommandModule.bsl");
+            }
+
+            return Path.Combine(
+                Path.GetDirectoryName(fileOrDirectory)!,
+                Path.GetFileNameWithoutExtension(fileOrDirectory),
                 "Ext",
                 "CommandModule.bsl");
+        }
     }
 }

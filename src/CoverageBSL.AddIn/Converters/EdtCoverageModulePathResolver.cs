@@ -71,14 +71,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
         private string ResolveExternalFormModule(string sourcePath, string objectId)
         {
-            return TryFindNestedChildDirectory(
-                sourcePath,
-                objectId,
-                "forms",
-                "Forms",
-                out var formDirectory)
-                ? ResolveFormPath(formDirectory)
-                : null;
+            var formDirectory = FindNestedChildDirectory(sourcePath, objectId, ["."], "forms", "Forms");
+            return formDirectory == null ? null : ResolveFormPath(formDirectory);
         }
 
         public string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
@@ -179,7 +173,12 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return directFile;
             }
 
-            return FindNestedChildByUuid(sourcePath, objectId, "CalculationRegisters", "Recalculations");
+            return FindNestedChildDirectory(
+                sourcePath,
+                objectId,
+                ["CalculationRegisters"],
+                "recalculations",
+                "Recalculations");
         }
 
         private string FindFormTarget(string sourcePath, string objectId)
@@ -190,7 +189,13 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return directFile;
             }
 
-            if (TryFindNestedChildDirectory(sourcePath, objectId, "forms", "Forms", out var formDirectory))
+            var formDirectory = FindNestedChildDirectory(
+                sourcePath,
+                objectId,
+                CoverageModuleDirectories.FormModuleDirectories,
+                "forms",
+                "Forms");
+            if (formDirectory != null)
             {
                 return formDirectory;
             }
@@ -200,12 +205,67 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
         private string FindCommandTarget(string sourcePath, string objectId)
         {
-            var directFile = FindNestedChildByUuid(sourcePath, objectId, CoverageModuleDirectories.CommandModuleDirectories, "Commands");
-            return directFile ?? FindMetadataFile(sourcePath, objectId, "CommonCommands");
+            var commandDirectory = FindNestedChildDirectory(
+                sourcePath,
+                objectId,
+                CoverageModuleDirectories.CommandModuleDirectories,
+                "commands",
+                "Commands");
+            if (commandDirectory != null)
+            {
+                return commandDirectory;
+            }
+
+            return FindMetadataFile(sourcePath, objectId, "CommonCommands");
         }
 
-        private static string ResolveRecordSetPath(string filePath)
-            => Path.Combine(Path.GetDirectoryName(filePath)!, "RecordSetModule.bsl");
+        private string FindNestedChildDirectory(
+            string sourcePath,
+            string objectId,
+            IEnumerable<string> parentDirectories,
+            string childElementLocalName,
+            string childDirectorySegment)
+        {
+            foreach (var parentDirectory in parentDirectories)
+            {
+                var searchRoot = Path.Combine(sourcePath, parentDirectory);
+                if (!Directory.Exists(searchRoot))
+                {
+                    continue;
+                }
+
+                foreach (var metadataFile in Directory.EnumerateFiles(searchRoot, "*.mdo", SearchOption.AllDirectories))
+                {
+                    if (!TryReadNestedChildName(metadataFile, objectId, childElementLocalName, out var childName))
+                    {
+                        continue;
+                    }
+
+                    var candidatePath = Path.Combine(
+                        Path.GetDirectoryName(metadataFile)!,
+                        childDirectorySegment,
+                        childName);
+                    if (!Directory.Exists(candidatePath))
+                    {
+                        continue;
+                    }
+
+                    return candidatePath;
+                }
+            }
+
+            return null;
+        }
+
+        private static string ResolveRecordSetPath(string fileOrDirectory)
+        {
+            if (Directory.Exists(fileOrDirectory))
+            {
+                return Path.Combine(fileOrDirectory, "RecordSetModule.bsl");
+            }
+
+            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "RecordSetModule.bsl");
+        }
 
         private static string ResolveFormPath(string fileOrDirectory)
         {
@@ -217,43 +277,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "Module.bsl");
         }
 
-        private static string ResolveCommandPath(string filePath)
-            => Path.Combine(Path.GetDirectoryName(filePath)!, "CommandModule.bsl");
-
-        private static bool TryFindNestedChildDirectory(
-            string sourceRoot,
-            string objectId,
-            string childElementLocalName,
-            string childDirectorySegment,
-            out string directoryPath)
+        private static string ResolveCommandPath(string fileOrDirectory)
         {
-            directoryPath = null;
-            if (!Directory.Exists(sourceRoot))
+            if (Directory.Exists(fileOrDirectory))
             {
-                return false;
+                return Path.Combine(fileOrDirectory, "CommandModule.bsl");
             }
 
-            foreach (var metadataFile in Directory.EnumerateFiles(sourceRoot, "*.mdo", SearchOption.AllDirectories))
-            {
-                if (!TryReadNestedChildName(metadataFile, objectId, childElementLocalName, out var childName))
-                {
-                    continue;
-                }
-
-                var candidatePath = Path.Combine(
-                    Path.GetDirectoryName(metadataFile)!,
-                    childDirectorySegment,
-                    childName);
-                if (!Directory.Exists(candidatePath))
-                {
-                    continue;
-                }
-
-                directoryPath = candidatePath;
-                return true;
-            }
-
-            return false;
+            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "CommandModule.bsl");
         }
 
         private static bool TryReadNestedChildName(

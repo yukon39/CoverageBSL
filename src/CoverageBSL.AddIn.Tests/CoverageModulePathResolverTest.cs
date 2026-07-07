@@ -71,6 +71,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "9f36fd70-4bf4-47f6-b235-935f73aab43f",
                 "CalculationRegisters/РегистрРасчета1/Ext/RecordSetModule.bsl");
             yield return Case(
+                "3d66b766-54c8-423d-887d-6670cfc1b8cc",
+                "9f36fd70-4bf4-47f6-b235-935f73aab43f",
+                "CalculationRegisters/РегистрРасчета1/Recalculations/Перерасчет1/Ext/RecordSetModule.bsl");
+            yield return Case(
                 "52895f8c-2982-4f1d-bfb0-75b3dd5db3d3",
                 "d5963243-262e-4398-b4d7-fb16d06484f6",
                 "CommonModules/ОбщийМодульВызовСервера/Ext/Module.bsl");
@@ -82,6 +86,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "0fcc2b09-6188-4573-843d-41e906660823",
                 "32e087ab-1491-49b6-aba7-43571b41ac2b",
                 "Tasks/Задача1/Forms/Форма/Ext/Form/Module.bsl");
+            yield return Case(
+                "c8dc1e16-1c5d-49e2-a4a6-e4a0626f8221",
+                "078a6af8-d22c-4248-9c33-7e90075a3d2c",
+                "ExchangePlans/ПланОбмена1/Commands/Команда1/Ext/CommandModule.bsl");
+            yield return Case(
+                "4df936d5-34c4-4685-9821-04e311146955",
+                "078a6af8-d22c-4248-9c33-7e90075a3d2c",
+                "CommonCommands/ОбщаяКоманда1/Ext/CommandModule.bsl");
         }
 
         private static IEnumerable<TestCaseData> EdtModulePathCases()
@@ -103,6 +115,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "9f36fd70-4bf4-47f6-b235-935f73aab43f",
                 "CalculationRegisters/РегистрРасчета1/RecordSetModule.bsl");
             yield return Case(
+                "3d66b766-54c8-423d-887d-6670cfc1b8cc",
+                "9f36fd70-4bf4-47f6-b235-935f73aab43f",
+                "CalculationRegisters/РегистрРасчета1/Recalculations/Перерасчет1/RecordSetModule.bsl");
+            yield return Case(
                 "52895f8c-2982-4f1d-bfb0-75b3dd5db3d3",
                 "d5963243-262e-4398-b4d7-fb16d06484f6",
                 "CommonModules/ОбщийМодульВызовСервера/Module.bsl");
@@ -114,6 +130,14 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "0fcc2b09-6188-4573-843d-41e906660823",
                 "32e087ab-1491-49b6-aba7-43571b41ac2b",
                 "Tasks/Задача1/Forms/Форма/Module.bsl");
+            yield return Case(
+                "c8dc1e16-1c5d-49e2-a4a6-e4a0626f8221",
+                "078a6af8-d22c-4248-9c33-7e90075a3d2c",
+                "ExchangePlans/ПланОбмена1/Commands/Команда1/CommandModule.bsl");
+            yield return Case(
+                "4df936d5-34c4-4685-9821-04e311146955",
+                "078a6af8-d22c-4248-9c33-7e90075a3d2c",
+                "CommonCommands/ОбщаяКоманда1/CommandModule.bsl");
         }
 
         private static IEnumerable<TestCaseData> XmlExtensionModulePathCases()
