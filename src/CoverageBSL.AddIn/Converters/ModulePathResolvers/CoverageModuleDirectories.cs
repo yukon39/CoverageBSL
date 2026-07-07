@@ -1,4 +1,4 @@
-namespace com.github.yukon39.CoverageBSL.AddIn.Converters
+namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers
 {
     internal static class CoverageModuleDirectories
     {

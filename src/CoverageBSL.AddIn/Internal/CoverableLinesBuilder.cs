@@ -1,4 +1,4 @@
-using com.github.yukon39.CoverageBSL.AddIn.Converters;
+using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers;
 using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using System;
 using System.Collections.Generic;
@@ -9,13 +9,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
     internal static class CoverableLinesBuilder
     {
-        private static readonly IReadOnlyDictionary<SourceFilesFormatEnum, ICoverageModulePathResolver> Resolvers =
-            new Dictionary<SourceFilesFormatEnum, ICoverageModulePathResolver>
-            {
-                [SourceFilesFormatEnum.XML] = new XmlCoverageModulePathResolver(),
-                [SourceFilesFormatEnum.EDT] = new EdtCoverageModulePathResolver()
-            };
-
         public static CoverageDataSet Build(string workingArea, IEnumerable<SourceDirectoryData> sourceDirectories)
         {
             var basePath = ResolveWorkingArea(workingArea);
@@ -30,11 +23,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     throw new DirectoryNotFoundException(projectPath);
                 }
 
-                if (!Resolvers.TryGetValue(sourceDirectory.Format, out var resolver))
-                {
-                    throw new NotSupportedException($"Unsupported source files format: {sourceDirectory.Format}");
-                }
-
+                var resolver = ModulePathResolverRegistry.GetRequired(sourceDirectory.Format);
                 var scanRoot = resolver.GetSourceRoot(projectPath);
                 if (!Directory.Exists(scanRoot))
                 {

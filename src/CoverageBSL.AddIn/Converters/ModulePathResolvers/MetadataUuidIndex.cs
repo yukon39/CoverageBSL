@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Converters
+namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers
 {
     internal static class MetadataUuidIndex
     {

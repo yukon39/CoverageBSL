@@ -1,4 +1,7 @@
 using com.github.yukon39.CoverageBSL.AddIn.Converters;
+using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers;
+using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Edt;
+using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Xml;
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using NUnit.Framework;

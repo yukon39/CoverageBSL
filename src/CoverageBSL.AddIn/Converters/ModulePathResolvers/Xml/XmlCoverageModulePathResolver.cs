@@ -1,12 +1,13 @@
+using com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers;
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Converters
+namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers.Xml
 {
-    internal sealed class EdtCoverageModulePathResolver : CoverageModulePathResolverBase, ICoverageModulePathResolver
+    internal sealed class XmlCoverageModulePathResolver : CoverageModulePathResolverBase, ICoverageModulePathResolver
     {
         private static readonly XmlReaderSettings MetadataReaderSettings = new()
         {
@@ -16,11 +17,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             CloseInput = true,
         };
 
-        public override SourceFilesFormatEnum Format => SourceFilesFormatEnum.EDT;
+        public override SourceFilesFormatEnum Format => SourceFilesFormatEnum.XML;
 
-        public string MetadataFileExtension => ".mdo";
+        public string MetadataFileExtension => ".xml";
 
-        public override string GetSourceRoot(string projectPath) => Path.Combine(projectPath, "src");
+        public override string GetSourceRoot(string projectPath) => projectPath;
 
         protected override string ResolveConfigModule(CoverageModuleIdWrapper moduleId, string sourcePath)
         {
@@ -33,16 +34,16 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
 
             return kind switch
             {
-                CoverageModuleKind.ManagedApplicationModule => Path.Combine(sourcePath, "Configuration", "ManagedApplicationModule.bsl"),
-                CoverageModuleKind.SessionModule => Path.Combine(sourcePath, "Configuration", "SessionModule.bsl"),
-                CoverageModuleKind.ExternalConnectionModule => Path.Combine(sourcePath, "Configuration", "ExternalConnectionModule.bsl"),
-                CoverageModuleKind.OrdinaryApplicationModule => Path.Combine(sourcePath, "Configuration", "OrdinaryApplicationModule.bsl"),
-                CoverageModuleKind.CommonModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "Module.bsl"),
-                CoverageModuleKind.ManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "ManagerModule.bsl"),
-                CoverageModuleKind.ObjectModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "ObjectModule.bsl"),
+                CoverageModuleKind.ManagedApplicationModule => Path.Combine(sourcePath, "Ext", "ManagedApplicationModule.bsl"),
+                CoverageModuleKind.SessionModule => Path.Combine(sourcePath, "Ext", "SessionModule.bsl"),
+                CoverageModuleKind.ExternalConnectionModule => Path.Combine(sourcePath, "Ext", "ExternalConnectionModule.bsl"),
+                CoverageModuleKind.OrdinaryApplicationModule => Path.Combine(sourcePath, "Ext", "OrdinaryApplicationModule.bsl"),
+                CoverageModuleKind.CommonModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, Path.GetFileNameWithoutExtension(fileOrDirectory), "Ext", "Module.bsl"),
+                CoverageModuleKind.ManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, Path.GetFileNameWithoutExtension(fileOrDirectory), "Ext", "ManagerModule.bsl"),
+                CoverageModuleKind.ObjectModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, Path.GetFileNameWithoutExtension(fileOrDirectory), "Ext", "ObjectModule.bsl"),
                 CoverageModuleKind.RecordSetModule => ResolveRecordSetPath(fileOrDirectory),
-                CoverageModuleKind.ValueManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "ValueManagerModule.bsl"),
-                CoverageModuleKind.SettingsManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "ManagerModule.bsl"),
+                CoverageModuleKind.ValueManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, Path.GetFileNameWithoutExtension(fileOrDirectory), "Ext", "ValueManagerModule.bsl"),
+                CoverageModuleKind.SettingsManagerModule => Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, Path.GetFileNameWithoutExtension(fileOrDirectory), "Ext", "ManagerModule.bsl"),
                 CoverageModuleKind.FormModule => ResolveFormPath(fileOrDirectory),
                 CoverageModuleKind.CommandModule => ResolveCommandPath(fileOrDirectory),
                 _ => null
@@ -64,15 +65,22 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
         private string ResolveExternalObjectModule(string sourcePath, string objectId)
         {
             var metadataFile = FindMetadataFile(sourcePath, objectId, ".");
-            return metadataFile == null
-                ? null
-                : Path.Combine(Path.GetDirectoryName(metadataFile)!, "ObjectModule.bsl");
+            if (metadataFile == null)
+            {
+                return null;
+            }
+
+            return Path.Combine(
+                Path.GetDirectoryName(metadataFile)!,
+                Path.GetFileNameWithoutExtension(metadataFile),
+                "Ext",
+                "ObjectModule.bsl");
         }
 
         private string ResolveExternalFormModule(string sourcePath, string objectId)
         {
-            var formDirectory = FindNestedChildDirectory(sourcePath, objectId, ["."], "forms", "Forms");
-            return formDirectory == null ? null : ResolveFormPath(formDirectory);
+            var metadataFile = FindNestedChildByUuid(sourcePath, objectId, ".", "Forms");
+            return metadataFile == null ? null : ResolveFormPath(metadataFile);
         }
 
         public string FindMetadataFile(string sourcePath, string objectId, string subDirectory)
@@ -88,7 +96,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return null;
             }
 
-            if (!MetadataPathHelper.IsUnderDirectory(filePath, searchRoot))
+            if (!MetadataPathHelper.IsDirectChild(filePath, searchRoot))
             {
                 return null;
             }
@@ -173,34 +181,13 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return directFile;
             }
 
-            return FindNestedChildDirectory(
-                sourcePath,
-                objectId,
-                ["CalculationRegisters"],
-                "recalculations",
-                "Recalculations");
+            return FindNestedChildByUuid(sourcePath, objectId, "CalculationRegisters", "Recalculations");
         }
 
         private string FindFormTarget(string sourcePath, string objectId)
         {
             var directFile = FindNestedChildByUuid(sourcePath, objectId, CoverageModuleDirectories.FormModuleDirectories, "Forms");
-            if (directFile != null)
-            {
-                return directFile;
-            }
-
-            var formDirectory = FindNestedChildDirectory(
-                sourcePath,
-                objectId,
-                CoverageModuleDirectories.FormModuleDirectories,
-                "forms",
-                "Forms");
-            if (formDirectory != null)
-            {
-                return formDirectory;
-            }
-
-            return FindMetadataFile(sourcePath, objectId, "CommonForms");
+            return directFile ?? FindMetadataFile(sourcePath, objectId, "CommonForms");
         }
 
         private string FindCommandTarget(string sourcePath, string objectId)
@@ -209,7 +196,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 sourcePath,
                 objectId,
                 CoverageModuleDirectories.CommandModuleDirectories,
-                "commands",
+                "Command",
                 "Commands");
             if (commandDirectory != null)
             {
@@ -234,57 +221,27 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                     continue;
                 }
 
-                foreach (var metadataFile in Directory.EnumerateFiles(searchRoot, "*.mdo", SearchOption.AllDirectories))
+                foreach (var metadataFile in Directory.EnumerateFiles(searchRoot, "*.xml", SearchOption.AllDirectories))
                 {
                     if (!TryReadNestedChildName(metadataFile, objectId, childElementLocalName, out var childName))
                     {
                         continue;
                     }
 
-                    var candidatePath = Path.Combine(
+                    var objectDirectory = Path.Combine(
                         Path.GetDirectoryName(metadataFile)!,
-                        childDirectorySegment,
-                        childName);
-                    if (!Directory.Exists(candidatePath))
+                        Path.GetFileNameWithoutExtension(metadataFile));
+                    var candidateDirectory = Path.Combine(objectDirectory, childDirectorySegment, childName);
+                    if (!Directory.Exists(candidateDirectory))
                     {
                         continue;
                     }
 
-                    return candidatePath;
+                    return candidateDirectory;
                 }
             }
 
             return null;
-        }
-
-        private static string ResolveRecordSetPath(string fileOrDirectory)
-        {
-            if (Directory.Exists(fileOrDirectory))
-            {
-                return Path.Combine(fileOrDirectory, "RecordSetModule.bsl");
-            }
-
-            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "RecordSetModule.bsl");
-        }
-
-        private static string ResolveFormPath(string fileOrDirectory)
-        {
-            if (Directory.Exists(fileOrDirectory))
-            {
-                return Path.Combine(fileOrDirectory, "Module.bsl");
-            }
-
-            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "Module.bsl");
-        }
-
-        private static string ResolveCommandPath(string fileOrDirectory)
-        {
-            if (Directory.Exists(fileOrDirectory))
-            {
-                return Path.Combine(fileOrDirectory, "CommandModule.bsl");
-            }
-
-            return Path.Combine(Path.GetDirectoryName(fileOrDirectory)!, "CommandModule.bsl");
         }
 
         private static bool TryReadNestedChildName(
@@ -317,16 +274,18 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                         return false;
                     }
 
+                    var elementDepth = reader.Depth;
                     while (reader.Read())
                     {
                         if (reader.NodeType == XmlNodeType.EndElement
+                            && reader.Depth == elementDepth
                             && string.Equals(reader.LocalName, childElementLocalName, StringComparison.OrdinalIgnoreCase))
                         {
                             break;
                         }
 
                         if (reader.NodeType != XmlNodeType.Element
-                            || !string.Equals(reader.LocalName, "name", StringComparison.OrdinalIgnoreCase))
+                            || !string.Equals(reader.LocalName, "Name", StringComparison.OrdinalIgnoreCase))
                         {
                             continue;
                         }
@@ -346,6 +305,35 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             }
 
             return false;
+        }
+
+        private static string ResolveRecordSetPath(string filePath)
+            => Path.Combine(
+                Path.GetDirectoryName(filePath)!,
+                Path.GetFileNameWithoutExtension(filePath),
+                "Ext",
+                "RecordSetModule.bsl");
+
+        private static string ResolveFormPath(string filePath)
+            => Path.Combine(
+                Path.GetDirectoryName(filePath)!,
+                Path.GetFileNameWithoutExtension(filePath),
+                "Ext",
+                "Form",
+                "Module.bsl");
+
+        private static string ResolveCommandPath(string fileOrDirectory)
+        {
+            if (Directory.Exists(fileOrDirectory))
+            {
+                return Path.Combine(fileOrDirectory, "Ext", "CommandModule.bsl");
+            }
+
+            return Path.Combine(
+                Path.GetDirectoryName(fileOrDirectory)!,
+                Path.GetFileNameWithoutExtension(fileOrDirectory),
+                "Ext",
+                "CommandModule.bsl");
         }
     }
 }

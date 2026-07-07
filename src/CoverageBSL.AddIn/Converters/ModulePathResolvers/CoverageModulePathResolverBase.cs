@@ -1,7 +1,7 @@
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using System;
 
-namespace com.github.yukon39.CoverageBSL.AddIn.Converters
+namespace com.github.yukon39.CoverageBSL.AddIn.Converters.ModulePathResolvers
 {
     internal abstract class CoverageModulePathResolverBase
     {
