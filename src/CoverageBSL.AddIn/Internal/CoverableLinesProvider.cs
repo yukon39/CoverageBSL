@@ -27,9 +27,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         {
             var errorSink = new ListErrorSink();
             var conditional = new ConditionalDirectiveHandler(errorSink);
-            conditional.Define("Клиент");
 
-            var resolved = PreprocessorSourceResolver.Resolve(source, conditional);
+            var resolved = PreprocessorSourceResolver.Resolve(source);
             var handlers = new PreprocessorHandlers(new IDirectiveHandler[]
             {
                 conditional,
