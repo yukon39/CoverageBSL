@@ -26,19 +26,21 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         internal static SortedSet<int> ExtractCoverableLines(SourceCode source)
         {
             var errorSink = new ListErrorSink();
-            var conditional = new ConditionalDirectiveHandler(errorSink);
-
-            var resolved = PreprocessorSourceResolver.Resolve(source);
             var handlers = new PreprocessorHandlers(new IDirectiveHandler[]
             {
-                conditional,
-                new RegionDirectiveHandler(errorSink)
+                new IgnorePreprocessorDirectiveHandler(errorSink)
             });
 
-            var lexer = new DefaultLexer { Iterator = resolved.CreateIterator() };
+            var baseLexer = new DefaultLexer { Iterator = source.CreateIterator() };
+            var lexer = new PreprocessingLexer(baseLexer)
+            {
+                Handlers = handlers,
+                ErrorSink = errorSink
+            };
+
             var module = new DefaultBslParser(lexer, errorSink, handlers).ParseStatefulModule() as ModuleNode;
 
-            return AstCoverableLinesCollector.Collect(module, resolved);
+            return AstCoverableLinesCollector.Collect(module, source);
         }
 
         private static CoverageLineInfosContextClass ToLineInfoList(IEnumerable<int> lineNumbers)

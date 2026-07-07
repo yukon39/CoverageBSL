@@ -10,11 +10,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
     /// </summary>
     internal static class AstCoverableLinesCollector
     {
-        public static SortedSet<int> Collect(ModuleNode module, SourceCode resolvedSource)
+        public static SortedSet<int> Collect(ModuleNode module, SourceCode source)
         {
             var lines = new SortedSet<int>();
 
-            foreach (var lexem in SourceLexemeEnumerator.Enumerate(resolvedSource))
+            foreach (var lexem in SourceLexemeEnumerator.Enumerate(source))
             {
                 if (!CoverableLinesRules.TerminalTokens.Contains(lexem.Token))
                 {
