@@ -11,11 +11,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
     internal static class CoverableLinesProvider
     {
-        private static readonly HashSet<string> KnownModuleAnnotations = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase)
-        {
-            "НаСервере", "НаКлиенте", "AtServer", "AtClient"
-        };
-
         public static CoverageLineInfosContextClass FromFile(string sourcePath) =>
             FromSourceCode(SourceCodeBuilder.Create().FromFile(sourcePath).Build());
 
@@ -38,8 +33,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
             var handlers = new PreprocessorHandlers(new IDirectiveHandler[]
             {
                 conditional,
-                new RegionDirectiveHandler(errorSink),
-                new SingleWordModuleAnnotationHandler(KnownModuleAnnotations, errorSink)
+                new RegionDirectiveHandler(errorSink)
             });
 
             var lexer = new DefaultLexer { Iterator = resolved.CreateIterator() };
