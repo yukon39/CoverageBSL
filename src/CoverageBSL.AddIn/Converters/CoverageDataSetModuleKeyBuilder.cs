@@ -18,7 +18,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 return moduleId.URL;
             }
 
-            if (!string.Equals(moduleId.ModuleType, "ConfigModule", StringComparison.OrdinalIgnoreCase))
+            if (!IsResolvableModuleType(moduleId.ModuleType))
             {
                 return null;
             }
@@ -32,12 +32,21 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             return ToModuleUrl(workingArea, modulePath);
         }
 
+        private static bool IsResolvableModuleType(string moduleType)
+            => string.Equals(moduleType, "ConfigModule", StringComparison.OrdinalIgnoreCase)
+               || string.Equals(moduleType, "ExtensionModule", StringComparison.OrdinalIgnoreCase);
+
         private static string ResolveModulePath(
             CoverageModuleIdWrapper moduleId,
             IEnumerable<SourceDirectoryData> sourceDirectories)
         {
             foreach (var sourceDirectory in sourceDirectories)
             {
+                if (!MatchesModuleSource(moduleId, sourceDirectory))
+                {
+                    continue;
+                }
+
                 var modulePath = CoverageModulePathResolver.Resolve(moduleId, sourceDirectory);
                 if (modulePath != null)
                 {
@@ -46,6 +55,26 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
             }
 
             return null;
+        }
+
+        private static bool MatchesModuleSource(
+            CoverageModuleIdWrapper moduleId,
+            SourceDirectoryData sourceDirectory)
+        {
+            if (string.Equals(moduleId.ModuleType, "ConfigModule", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.IsNullOrEmpty(sourceDirectory.ExtensionName);
+            }
+
+            if (string.Equals(moduleId.ModuleType, "ExtensionModule", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Equals(
+                    sourceDirectory.ExtensionName,
+                    moduleId.ExtensionName,
+                    StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
         }
 
         private static string ToModuleUrl(string workingArea, string filePath)

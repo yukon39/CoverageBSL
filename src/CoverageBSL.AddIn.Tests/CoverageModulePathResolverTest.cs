@@ -11,17 +11,31 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
     {
         private static readonly string XmlProjectPath = TestResourcePaths.ConfigurationXmlSourcesPath;
         private static readonly string EdtProjectPath = TestResourcePaths.ConfigurationEdtProjectPath;
+        private static readonly string ExtensionXmlProjectPath = TestResourcePaths.ExtensionXmlSourcesPath;
+        private static readonly string ExtensionEdtProjectPath = TestResourcePaths.ExtensionEdtProjectPath;
 
         [TestCaseSource(nameof(XmlModulePathCases))]
         public void Resolve_Xml_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
         {
-            AssertModulePath(XmlProjectPath, SourceFilesFormatEnum.XML, objectId, propertyId, expectedRelativePath);
+            AssertModulePath(XmlProjectPath, SourceFilesFormatEnum.XML, "ConfigModule", objectId, propertyId, expectedRelativePath);
         }
 
         [TestCaseSource(nameof(EdtModulePathCases))]
         public void Resolve_Edt_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
         {
-            AssertModulePath(EdtProjectPath, SourceFilesFormatEnum.EDT, objectId, propertyId, expectedRelativePath);
+            AssertModulePath(EdtProjectPath, SourceFilesFormatEnum.EDT, "ConfigModule", objectId, propertyId, expectedRelativePath);
+        }
+
+        [TestCaseSource(nameof(XmlExtensionModulePathCases))]
+        public void Resolve_XmlExtension_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
+        {
+            AssertModulePath(ExtensionXmlProjectPath, SourceFilesFormatEnum.XML, "ExtensionModule", objectId, propertyId, expectedRelativePath);
+        }
+
+        [TestCaseSource(nameof(EdtExtensionModulePathCases))]
+        public void Resolve_EdtExtension_ReturnsExpectedModulePath(string objectId, string propertyId, string expectedRelativePath)
+        {
+            AssertModulePath(ExtensionEdtProjectPath, SourceFilesFormatEnum.EDT, "ExtensionModule", objectId, propertyId, expectedRelativePath);
         }
 
         private static IEnumerable<TestCaseData> XmlModulePathCases()
@@ -84,17 +98,42 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "CommonForms/Форма/Module.bsl");
         }
 
+        private static IEnumerable<TestCaseData> XmlExtensionModulePathCases()
+        {
+            yield return Case(
+                "de483c0a-d17d-4fb6-be3e-573d4045ff79",
+                "d1b64a2c-8078-4982-8190-8f81aefda192",
+                "DataProcessors/Расш1_Обработка1/Ext/ManagerModule.bsl");
+            yield return Case(
+                "fc0be29c-c7ec-4e83-ac62-e1217160fa07",
+                "d5963243-262e-4398-b4d7-fb16d06484f6",
+                "CommonModules/ОбщийМодульСервер/Ext/Module.bsl");
+        }
+
+        private static IEnumerable<TestCaseData> EdtExtensionModulePathCases()
+        {
+            yield return Case(
+                "de483c0a-d17d-4fb6-be3e-573d4045ff79",
+                "d1b64a2c-8078-4982-8190-8f81aefda192",
+                "DataProcessors/Расш1_Обработка1/ManagerModule.bsl");
+            yield return Case(
+                "fc0be29c-c7ec-4e83-ac62-e1217160fa07",
+                "d5963243-262e-4398-b4d7-fb16d06484f6",
+                "CommonModules/ОбщийМодульСервер/Module.bsl");
+        }
+
         private static TestCaseData Case(string objectId, string propertyId, string expectedRelativePath)
             => new TestCaseData(objectId, propertyId, expectedRelativePath);
 
         private static void AssertModulePath(
             string projectPath,
             SourceFilesFormatEnum format,
+            string moduleType,
             string objectId,
             string propertyId,
             string expectedRelativePath)
         {
-            var moduleId = CreateModuleId(objectId, propertyId);
+            var moduleId = CreateModuleId(moduleType, objectId, propertyId);
             var actualPath = CoverageModulePathResolver.Resolve(
                 moduleId,
                 new SourceDirectoryData(projectPath, format));
@@ -110,10 +149,10 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 Is.EqualTo(Path.GetFullPath(expectedPath)));
         }
 
-        private static CoverageModuleIdWrapper CreateModuleId(string objectId, string propertyId)
+        private static CoverageModuleIdWrapper CreateModuleId(string moduleType, string objectId, string propertyId)
         {
             var moduleId = CoverageModuleIdWrapper.ScriptConstructor();
-            moduleId.ModuleType = "ConfigModule";
+            moduleId.ModuleType = moduleType;
             moduleId.ObjectID = objectId;
             moduleId.PropertyID = propertyId;
             return moduleId;

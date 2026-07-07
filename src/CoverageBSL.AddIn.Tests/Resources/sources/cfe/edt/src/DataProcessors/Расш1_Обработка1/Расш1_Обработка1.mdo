@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="de483c0a-d17d-4fb6-be3e-573d4045ff79">
+  <producedTypes>
+    <objectType typeId="fa8e59ab-da52-4470-bd86-414861291fb1" valueTypeId="d29c60a0-1706-45a3-8dc6-b85523a7f2d5"/>
+    <managerType typeId="910a0188-6b19-4cb3-926c-b39bd3382980" valueTypeId="cc431c6a-3cf0-4e08-b82c-0563af5fe481"/>
+  </producedTypes>
+  <name>Расш1_Обработка1</name>
+  <useStandardCommands>true</useStandardCommands>
+</mdclass:DataProcessor>

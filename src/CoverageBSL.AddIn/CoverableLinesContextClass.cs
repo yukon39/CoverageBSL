@@ -41,6 +41,31 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             sourceDirectories.Add(new SourceDirectoryData(path, format));
         }
 
+        [ContextMethod("AddExtensionSourceDirectory", "ДобавитьКаталогИсходныхФайловРасширения")]
+        public void AddExtensionSourceDirectory(
+            string extensionName,
+            string path,
+            SourceFilesFormatEnum format = SourceFilesFormatEnum.XML)
+        {
+            if (string.IsNullOrWhiteSpace(extensionName))
+            {
+                var message = Locale.NStr(
+                    "en = 'Extension name is required';" +
+                    "ru = 'Не указано имя расширения'");
+                throw new RuntimeException(message);
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                var message = Locale.NStr(
+                    "en = 'Source directory path is required';" +
+                    "ru = 'Не указан путь к каталогу исходных файлов'");
+                throw new RuntimeException(message);
+            }
+
+            sourceDirectories.Add(new SourceDirectoryData(path, format, extensionName));
+        }
+
         [ContextMethod("BuildCoverableLines", "СформироватьСтрокиКПокрытию")]
         public void BuildCoverableLines()
         {
