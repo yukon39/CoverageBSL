@@ -1,5 +1,4 @@
 using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
-using com.github.yukon39.CoverageBSL.Impl;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +7,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
     internal static class CoverableLinesBuilder
     {
-        public static ICoverageData Build(string workingArea, IEnumerable<string> sourceDirectories)
+        public static CoverageDataSet Build(string workingArea, IEnumerable<string> sourceDirectories)
         {
             var basePath = ResolveWorkingArea(workingArea);
             var coverageData = new CoverageDataSet();
@@ -36,7 +35,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                 }
             }
 
-            return CoverageDataConverter.ToCoverageData(coverageData);
+            return coverageData;
         }
 
         private static string ResolveWorkingArea(string workingArea)

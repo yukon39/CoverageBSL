@@ -1,4 +1,4 @@
-using com.github.yukon39.CoverageBSL.AddIn.Debugger;
+using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using com.github.yukon39.CoverageBSL.AddIn.Utils;
 using OneScript.Commons;
@@ -15,6 +15,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
     {
         private readonly string workingArea;
         private readonly List<string> sourceDirectories = [];
+        private CoverageDataSet coverageData = new CoverageDataSet();
 
         private CoverableLinesContextClass(string workingArea)
             => this.workingArea = workingArea ?? string.Empty;
@@ -40,8 +41,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn
             sourceDirectories.Add(path);
         }
 
-        [ContextMethod("Build", "Сформировать")]
-        public CoverageDataContextClass Build()
+        [ContextMethod("BuildCoverableLines", "СформироватьСтрокиКПокрытию")]
+        public void BuildCoverableLines()
         {
             if (sourceDirectories.Count == 0)
             {
@@ -53,8 +54,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
 
             try
             {
-                var coverageData = CoverableLinesBuilder.Build(workingArea, sourceDirectories);
-                return new CoverageDataContextClass(coverageData);
+                coverageData = CoverableLinesBuilder.Build(workingArea, sourceDirectories);
             }
             catch (Exception e)
             {
@@ -67,11 +67,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         }
 
         [ContextMethod("FromFile", "ИзФайла")]
-        public CoverageLineInfosContextClass FromFile(string sourcePath)
+        public void FromFile(string sourcePath)
         {
             try
             {
-                return CoverableLinesProvider.FromFile(sourcePath);
+                coverageData.GetOrAdd(sourcePath).AddLines(CoverableLinesProvider.FromFile(sourcePath));
             }
             catch (Exception e)
             {
@@ -84,11 +84,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         }
 
         [ContextMethod("FromSource", "ИзИсточника")]
-        public CoverageLineInfosContextClass FromSource(string source, string location)
+        public void FromSource(string source, string location)
         {
             try
             {
-                return CoverableLinesProvider.FromSource(source, location);
+                coverageData.GetOrAdd(location).AddLines(CoverableLinesProvider.FromSource(source, location));
             }
             catch (Exception e)
             {

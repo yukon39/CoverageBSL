@@ -1,4 +1,3 @@
-using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -84,15 +83,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Tests
                 "Resources",
                 fixtureName);
 
-        private static int[] ToLineNumbers(CoverageLineInfosContextClass coverableLines)
-        {
-            var lineNumbers = new List<int>();
-            foreach (CoverageLineInfoWrapper lineInfo in coverableLines)
-            {
-                lineNumbers.Add(lineInfo.LineNo);
-            }
-
-            return lineNumbers.ToArray();
-        }
+        private static int[] ToLineNumbers(IEnumerable<int> coverableLines)
+            => new List<int>(coverableLines).ToArray();
     }
 }
