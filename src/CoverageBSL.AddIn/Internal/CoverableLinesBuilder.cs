@@ -7,7 +7,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
     internal static class CoverableLinesBuilder
     {
-        public static CoverageDataSet Build(string workingArea, IEnumerable<string> sourceDirectories)
+        public static CoverageDataSet Build(string workingArea, IEnumerable<SourceDirectoryData> sourceDirectories)
         {
             var basePath = ResolveWorkingArea(workingArea);
             var coverageData = new CoverageDataSet();
@@ -15,7 +15,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
             foreach (var sourceDirectory in sourceDirectories)
             {
-                var directoryPath = ResolveSourceDirectory(basePath, sourceDirectory);
+                var directoryPath = ResolveSourceDirectory(basePath, sourceDirectory.Path);
                 if (!Directory.Exists(directoryPath))
                 {
                     throw new DirectoryNotFoundException(directoryPath);

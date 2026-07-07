@@ -14,7 +14,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
     public class CoverableLinesContextClass : AutoContext<CoverableLinesContextClass>
     {
         private readonly string workingArea;
-        private readonly List<string> sourceDirectories = [];
+        private readonly List<SourceDirectoryData> sourceDirectories = [];
         private CoverageDataSet coverageData = new CoverageDataSet();
 
         private CoverableLinesContextClass(string workingArea)
@@ -28,7 +28,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         public string WorkingArea => workingArea;
 
         [ContextMethod("AddSourceDirectory", "ДобавитьКаталогИсходныхФайлов")]
-        public void AddSourceDirectory(string path)
+        public void AddSourceDirectory(string path, SourceFilesFormatEnum format = SourceFilesFormatEnum.XML)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -38,7 +38,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
                 throw new RuntimeException(message);
             }
 
-            sourceDirectories.Add(path);
+            sourceDirectories.Add(new SourceDirectoryData(path, format));
         }
 
         [ContextMethod("BuildCoverableLines", "СформироватьСтрокиКПокрытию")]
