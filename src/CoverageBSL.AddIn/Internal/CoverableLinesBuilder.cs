@@ -1,12 +1,21 @@
+using com.github.yukon39.CoverageBSL.AddIn.Converters;
 using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 {
     internal static class CoverableLinesBuilder
     {
+        private static readonly IReadOnlyDictionary<SourceFilesFormatEnum, ICoverageModulePathResolver> Resolvers =
+            new Dictionary<SourceFilesFormatEnum, ICoverageModulePathResolver>
+            {
+                [SourceFilesFormatEnum.XML] = new XmlCoverageModulePathResolver(),
+                [SourceFilesFormatEnum.EDT] = new EdtCoverageModulePathResolver()
+            };
+
         public static CoverageDataSet Build(string workingArea, IEnumerable<SourceDirectoryData> sourceDirectories)
         {
             var basePath = ResolveWorkingArea(workingArea);
@@ -15,13 +24,24 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
 
             foreach (var sourceDirectory in sourceDirectories)
             {
-                var directoryPath = ResolveSourceDirectory(basePath, sourceDirectory.Path);
-                if (!Directory.Exists(directoryPath))
+                var projectPath = ResolveSourceDirectory(basePath, sourceDirectory.Path);
+                if (!Directory.Exists(projectPath))
                 {
-                    throw new DirectoryNotFoundException(directoryPath);
+                    throw new DirectoryNotFoundException(projectPath);
                 }
 
-                foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*.bsl", SearchOption.AllDirectories))
+                if (!Resolvers.TryGetValue(sourceDirectory.Format, out var resolver))
+                {
+                    throw new NotSupportedException($"Unsupported source files format: {sourceDirectory.Format}");
+                }
+
+                var scanRoot = resolver.GetSourceRoot(projectPath);
+                if (!Directory.Exists(scanRoot))
+                {
+                    throw new DirectoryNotFoundException(scanRoot);
+                }
+
+                foreach (var filePath in Directory.EnumerateFiles(scanRoot, "*.bsl", SearchOption.AllDirectories))
                 {
                     var fullPath = Path.GetFullPath(filePath);
                     if (!processedFiles.Add(fullPath))
@@ -30,6 +50,11 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
                     }
 
                     var lineNumbers = CoverableLinesProvider.ExtractCoverableLinesFromFile(fullPath);
+                    if (!lineNumbers.Any())
+                    {
+                        continue;
+                    }
+
                     var module = coverageData.GetOrAdd(ToModuleUrl(basePath, fullPath));
                     module.AddLines(lineNumbers);
                 }
