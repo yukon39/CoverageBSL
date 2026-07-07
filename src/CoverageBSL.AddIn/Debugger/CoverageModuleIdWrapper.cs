@@ -82,6 +82,45 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteEndObject();
         }
 
+        [ContextMethod("DeserializeJSON", "ДесериализоватьJSON")]
+        public void DeserializeJson(JSONReader reader)
+        {
+            JsonReaderHelper.ReadExpected(reader, JSONValueTypeEnum.ObjectStart);
+
+            while (reader.Read())
+            {
+                if (reader.CurrentValueType == JSONValueTypeEnum.ObjectEnd)
+                {
+                    return;
+                }
+
+                var propertyName = JsonReaderHelper.ReadPropertyName(reader);
+                switch (propertyName)
+                {
+                    case nameof(ModuleType):
+                        ModuleType = JsonReaderHelper.ReadString(reader);
+                        break;
+                    case nameof(URL):
+                        URL = JsonReaderHelper.ReadString(reader);
+                        break;
+                    case nameof(ExtensionName):
+                        ExtensionName = JsonReaderHelper.ReadString(reader);
+                        break;
+                    case nameof(ObjectID):
+                        ObjectID = JsonReaderHelper.ReadString(reader);
+                        break;
+                    case nameof(PropertyID):
+                        PropertyID = JsonReaderHelper.ReadString(reader);
+                        break;
+                    default:
+                        JsonReaderHelper.SkipValue(reader);
+                        break;
+                }
+            }
+
+            throw new JSONReaderException("Unexpected end of JSON while reading module id");
+        }
+
         public object UnderlyingObject
         {
             get => moduleId;

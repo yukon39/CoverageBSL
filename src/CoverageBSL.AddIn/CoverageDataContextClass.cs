@@ -31,6 +31,35 @@ namespace com.github.yukon39.CoverageBSL.AddIn
         [ContextProperty("Data", "Данные")]
         public CoverageModuleInfoList Data { get; private set; }
 
+        [ContextMethod("DeserializeJSON", "ДесериализоватьJSON")]
+        public void DeserializeJson(JSONReader reader)
+        {
+            JsonReaderHelper.ReadExpected(reader, JSONValueTypeEnum.ObjectStart);
+            Data = new CoverageModuleInfoList();
+
+            while (reader.Read())
+            {
+                if (reader.CurrentValueType == JSONValueTypeEnum.ObjectEnd)
+                {
+                    return;
+                }
+
+                var propertyName = JsonReaderHelper.ReadPropertyName(reader);
+                switch (propertyName)
+                {
+                    case nameof(TotalDurability):
+                        TotalDurability = JsonReaderHelper.ReadInt64(reader);
+                        break;
+                    case nameof(Data):
+                        Data.DeserializeJson(reader);
+                        break;
+                    default:
+                        JsonReaderHelper.SkipValue(reader);
+                        break;
+                }
+            }
+        }
+
         [ContextMethod("SerializeJSON", "СериализоватьJSON")]
         public void SerializeJson(JSONWriter writer)
         {

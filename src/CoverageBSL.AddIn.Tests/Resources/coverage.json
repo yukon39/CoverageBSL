@@ -1,0 +1,2485 @@
+{
+    "TotalDurability": 9407954,
+    "Data": [
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "854f7300-9d83-4358-a8ae-eb33c9a42bbe",
+                "PropertyID": "3e58c91f-9aaa-4f42-8999-4baf33907b75"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 47,
+                    "PureDurability": 47
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "40d90f01-6080-49b4-a575-ceeabeb4c1b1",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 41,
+                    "PureDurability": 41
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 39,
+                    "PureDurability": 39
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "40d90f01-6080-49b4-a575-ceeabeb4c1b1",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 88,
+                    "PureDurability": 88
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "0fcc2b09-6188-4573-843d-41e906660823",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 51,
+                    "PureDurability": 51
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "f8a46f0f-16e8-4373-bf4e-c2dd13728eb0",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 54,
+                    "PureDurability": 54
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "f8a46f0f-16e8-4373-bf4e-c2dd13728eb0",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 107,
+                    "PureDurability": 107
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 64,
+                    "PureDurability": 64
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "de7b6e19-305b-4dc7-b761-9762afaadae2",
+                "PropertyID": "9b7bbbae-9771-46f2-9e4d-2489e0ffc702"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 82,
+                    "PureDurability": 82
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "53bc831c-d7d7-4927-8899-c4256dee0525",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 74,
+                    "PureDurability": 74
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "7c278227-dd7d-4c99-894b-d6c0dd386102",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "0fd19627-21e5-4e97-ac01-fef0d40c39b1",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 41,
+                    "PureDurability": 41
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "5d51a22b-7208-4fb0-9196-b3c028523c48",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 120,
+                    "PureDurability": 120
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "24fc973d-34c1-4eae-847f-f00a20a2fa69",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "24fc973d-34c1-4eae-847f-f00a20a2fa69",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 61,
+                    "PureDurability": 61
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "923d1448-436c-4d3d-b835-17210184b0a4",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 88,
+                    "PureDurability": 88
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 89,
+                    "PureDurability": 89
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "923d1448-436c-4d3d-b835-17210184b0a4",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 41,
+                    "PureDurability": 41
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "02c82149-2a35-4f87-b89b-bc3c37061092",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "3bf89955-e598-45e7-aabf-9a7f63a888b1",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 171,
+                    "PureDurability": 171
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "3bf89955-e598-45e7-aabf-9a7f63a888b1",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "02981f5c-e666-4c89-b16d-f93c6c53add1",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 205,
+                    "PureDurability": 205
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 234,
+                    "PureDurability": 234
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "34f63163-237c-4744-bea4-36da8dc1f95a",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 41,
+                    "PureDurability": 41
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "34f63163-237c-4744-bea4-36da8dc1f95a",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "2ce1d363-f445-4db6-b7b7-998e41073ca5",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 79,
+                    "PureDurability": 79
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "57f3e963-98fc-4481-9f63-b12253f979ab",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "57f3e963-98fc-4481-9f63-b12253f979ab",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 82,
+                    "PureDurability": 82
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 69,
+                    "PureDurability": 69
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "cd995a65-2174-4bf2-bdca-f642f8853bab",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 62,
+                    "PureDurability": 62
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 51,
+                    "PureDurability": 51
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "3d66b766-54c8-423d-887d-6670cfc1b8cc",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "6643f567-5b51-44f4-bb39-526a3f2b72a0",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "de591479-02f1-45e0-aa7a-8fbed21098d6",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 67,
+                    "PureDurability": 67
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "de591479-02f1-45e0-aa7a-8fbed21098d6",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "4404cd81-7559-48e1-ad7b-3d32f7bb1951",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 98,
+                    "PureDurability": 98
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "258e0f88-cfd2-42e0-b7ea-4998cddae1e1",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "258e0f88-cfd2-42e0-b7ea-4998cddae1e1",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 49,
+                    "PureDurability": 49
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "52895f8c-2982-4f1d-bfb0-75b3dd5db3d3",
+                "PropertyID": "d5963243-262e-4398-b4d7-fb16d06484f6"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 549266,
+                    "PureDurability": 10953
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "5e802e95-b163-4858-ac68-a7bcbcbf456b",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 38,
+                    "PureDurability": 38
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 37,
+                    "PureDurability": 37
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "226f2e9e-d260-43ed-86f7-8065e01f3b31",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 198,
+                    "PureDurability": 198
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 59,
+                    "PureDurability": 59
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "9f217d9f-f7fe-4b3f-8cba-3f430ad8f323",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 37,
+                    "PureDurability": 37
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "49b2fc9f-b033-4af3-97cc-5fd11e174f97",
+                "PropertyID": "0c8cad23-bf8c-468e-b49e-12f1927c048b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "b9a7ffa4-168f-4af2-a416-65a82e3ce3c9",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 47,
+                    "PureDurability": 47
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 69,
+                    "PureDurability": 69
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "2e2e1aa7-3a88-4658-b630-3afc4423a77c",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 99,
+                    "PureDurability": 99
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 153,
+                    "PureDurability": 153
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "3d93c6a8-0bd7-46a5-b14d-cb231540c15d",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 57,
+                    "PureDurability": 57
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "ea1342aa-cd56-4334-b0cd-9ac30c3bf2a9",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 2,
+                    "Durability": 91,
+                    "PureDurability": 91
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 2,
+                    "Durability": 83,
+                    "PureDurability": 83
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "0db152ad-7b71-42e1-bfe2-225bdf76612a",
+                "PropertyID": "9f36fd70-4bf4-47f6-b235-935f73aab43f"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 53,
+                    "PureDurability": 53
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "8bbe4bc3-d291-4200-a218-d225aec2dc96",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "8bbe4bc3-d291-4200-a218-d225aec2dc96",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 47,
+                    "PureDurability": 47
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "0e82e1c5-828d-46af-a9c2-5edc838bdc9a",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 39,
+                    "PureDurability": 39
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "0e82e1c5-828d-46af-a9c2-5edc838bdc9a",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 118,
+                    "PureDurability": 118
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 152,
+                    "PureDurability": 152
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "475efbc7-1228-4b19-8a39-bf7867a2f824",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 95,
+                    "PureDurability": 95
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 96,
+                    "PureDurability": 96
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "b4d88be7-0788-47b0-a682-913075a7e30f",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "b4d88be7-0788-47b0-a682-913075a7e30f",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 65,
+                    "PureDurability": 65
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "934b32ea-1a0a-4b47-b71b-f10246bea67c",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 180,
+                    "PureDurability": 180
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "71c337eb-f5e5-4e21-861a-6c114f5394c0",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "4c7385ec-ed4d-41a4-b90d-88b00948b639",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 165,
+                    "PureDurability": 165
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "4c7385ec-ed4d-41a4-b90d-88b00948b639",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 70,
+                    "PureDurability": 70
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 70,
+                    "PureDurability": 70
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "4130a6f0-4c97-4ba5-be76-a70e86dbd569",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 57,
+                    "PureDurability": 57
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 82,
+                    "PureDurability": 82
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "a722a8f2-1ea9-4984-ae17-96eb28b01d15",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 84,
+                    "PureDurability": 84
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "1467e4fa-d3fe-44da-b03a-312f24b338e0",
+                "PropertyID": "d5963243-262e-4398-b4d7-fb16d06484f6"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 84004,
+                    "PureDurability": 251
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 414829,
+                    "PureDurability": 157
+                },
+                {
+                    "LineNo": 8,
+                    "Frequency": 1,
+                    "Durability": 32945,
+                    "PureDurability": 288
+                },
+                {
+                    "LineNo": 9,
+                    "Frequency": 1,
+                    "Durability": 5527,
+                    "PureDurability": 103
+                },
+                {
+                    "LineNo": 11,
+                    "Frequency": 1,
+                    "Durability": 921,
+                    "PureDurability": 111
+                },
+                {
+                    "LineNo": 13,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 21,
+                    "Frequency": 1,
+                    "Durability": 4000,
+                    "PureDurability": 3882
+                },
+                {
+                    "LineNo": 22,
+                    "Frequency": 1,
+                    "Durability": 2699,
+                    "PureDurability": 2587
+                },
+                {
+                    "LineNo": 23,
+                    "Frequency": 1,
+                    "Durability": 4063,
+                    "PureDurability": 3941
+                },
+                {
+                    "LineNo": 24,
+                    "Frequency": 1,
+                    "Durability": 15927,
+                    "PureDurability": 15662
+                },
+                {
+                    "LineNo": 25,
+                    "Frequency": 1,
+                    "Durability": 2998,
+                    "PureDurability": 2829
+                },
+                {
+                    "LineNo": 26,
+                    "Frequency": 1,
+                    "Durability": 2745,
+                    "PureDurability": 2589
+                },
+                {
+                    "LineNo": 27,
+                    "Frequency": 1,
+                    "Durability": 3288,
+                    "PureDurability": 3153
+                },
+                {
+                    "LineNo": 28,
+                    "Frequency": 1,
+                    "Durability": 3106,
+                    "PureDurability": 2962
+                },
+                {
+                    "LineNo": 29,
+                    "Frequency": 1,
+                    "Durability": 3168,
+                    "PureDurability": 2951
+                },
+                {
+                    "LineNo": 30,
+                    "Frequency": 1,
+                    "Durability": 2720,
+                    "PureDurability": 2528
+                },
+                {
+                    "LineNo": 31,
+                    "Frequency": 1,
+                    "Durability": 4959,
+                    "PureDurability": 4708
+                },
+                {
+                    "LineNo": 32,
+                    "Frequency": 1,
+                    "Durability": 9593,
+                    "PureDurability": 9439
+                },
+                {
+                    "LineNo": 33,
+                    "Frequency": 1,
+                    "Durability": 4981,
+                    "PureDurability": 4845
+                },
+                {
+                    "LineNo": 34,
+                    "Frequency": 1,
+                    "Durability": 3145,
+                    "PureDurability": 2994
+                },
+                {
+                    "LineNo": 35,
+                    "Frequency": 1,
+                    "Durability": 4098,
+                    "PureDurability": 3972
+                },
+                {
+                    "LineNo": 36,
+                    "Frequency": 1,
+                    "Durability": 2532,
+                    "PureDurability": 2413
+                },
+                {
+                    "LineNo": 37,
+                    "Frequency": 1,
+                    "Durability": 3050,
+                    "PureDurability": 2926
+                },
+                {
+                    "LineNo": 38,
+                    "Frequency": 1,
+                    "Durability": 3106,
+                    "PureDurability": 2958
+                },
+                {
+                    "LineNo": 40,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 44,
+                    "Frequency": 1,
+                    "Durability": 5933,
+                    "PureDurability": 5579
+                },
+                {
+                    "LineNo": 45,
+                    "Frequency": 1,
+                    "Durability": 6518,
+                    "PureDurability": 6338
+                },
+                {
+                    "LineNo": 46,
+                    "Frequency": 1,
+                    "Durability": 340681,
+                    "PureDurability": 340488
+                },
+                {
+                    "LineNo": 47,
+                    "Frequency": 1,
+                    "Durability": 5490,
+                    "PureDurability": 5195
+                },
+                {
+                    "LineNo": 48,
+                    "Frequency": 1,
+                    "Durability": 1314,
+                    "PureDurability": 1013
+                },
+                {
+                    "LineNo": 49,
+                    "Frequency": 1,
+                    "Durability": 10476,
+                    "PureDurability": 9925
+                },
+                {
+                    "LineNo": 50,
+                    "Frequency": 1,
+                    "Durability": 15774,
+                    "PureDurability": 15555
+                },
+                {
+                    "LineNo": 51,
+                    "Frequency": 1,
+                    "Durability": 21136,
+                    "PureDurability": 20298
+                },
+                {
+                    "LineNo": 52,
+                    "Frequency": 1,
+                    "Durability": 6884,
+                    "PureDurability": 6707
+                },
+                {
+                    "LineNo": 53,
+                    "Frequency": 1,
+                    "Durability": 368,
+                    "PureDurability": 239
+                },
+                {
+                    "LineNo": 55,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 59,
+                    "Frequency": 1,
+                    "Durability": 7217,
+                    "PureDurability": 6960
+                },
+                {
+                    "LineNo": 60,
+                    "Frequency": 1,
+                    "Durability": 5504,
+                    "PureDurability": 5066
+                },
+                {
+                    "LineNo": 61,
+                    "Frequency": 1,
+                    "Durability": 6086,
+                    "PureDurability": 5864
+                },
+                {
+                    "LineNo": 62,
+                    "Frequency": 1,
+                    "Durability": 5991,
+                    "PureDurability": 5811
+                },
+                {
+                    "LineNo": 63,
+                    "Frequency": 1,
+                    "Durability": 4008,
+                    "PureDurability": 3749
+                },
+                {
+                    "LineNo": 64,
+                    "Frequency": 1,
+                    "Durability": 3764,
+                    "PureDurability": 3586
+                },
+                {
+                    "LineNo": 66,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 69,
+                    "Frequency": 1,
+                    "Durability": 5339,
+                    "PureDurability": 5053
+                },
+                {
+                    "LineNo": 70,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 74,
+                    "Frequency": 1,
+                    "Durability": 120,
+                    "PureDurability": 120
+                },
+                {
+                    "LineNo": 75,
+                    "Frequency": 1,
+                    "Durability": 54,
+                    "PureDurability": 54
+                },
+                {
+                    "LineNo": 76,
+                    "Frequency": 1,
+                    "Durability": 45,
+                    "PureDurability": 45
+                },
+                {
+                    "LineNo": 77,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                },
+                {
+                    "LineNo": 78,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 79,
+                    "Frequency": 1,
+                    "Durability": 47,
+                    "PureDurability": 47
+                },
+                {
+                    "LineNo": 81,
+                    "Frequency": 1,
+                    "Durability": 119,
+                    "PureDurability": 119
+                },
+                {
+                    "LineNo": 82,
+                    "Frequency": 1,
+                    "Durability": 130,
+                    "PureDurability": 130
+                },
+                {
+                    "LineNo": 83,
+                    "Frequency": 1,
+                    "Durability": 57,
+                    "PureDurability": 57
+                },
+                {
+                    "LineNo": 84,
+                    "Frequency": 1,
+                    "Durability": 73,
+                    "PureDurability": 73
+                },
+                {
+                    "LineNo": 86,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtensionModule",
+                "URL": "",
+                "ExtensionName": "Расширение1",
+                "ObjectID": "de483c0a-d17d-4fb6-be3e-573d4045ff79",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 52,
+                    "PureDurability": 52
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtensionModule",
+                "URL": "",
+                "ExtensionName": "Расширение1",
+                "ObjectID": "fc0be29c-c7ec-4e83-ac62-e1217160fa07",
+                "PropertyID": "d5963243-262e-4398-b4d7-fb16d06484f6"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 3395,
+                    "PureDurability": 3248
+                },
+                {
+                    "LineNo": 9,
+                    "Frequency": 1,
+                    "Durability": 59,
+                    "PureDurability": 59
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "c8dc1e16-1c5d-49e2-a4a6-e4a0626f8221",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 47,
+                    "PureDurability": 47
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "de7b6e19-305b-4dc7-b761-9762afaadae2",
+                "PropertyID": "d22e852a-cf8a-4f77-8ccb-3548e7792bea"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 8851645,
+                    "PureDurability": 43910
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 921,
+                    "PureDurability": 921
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "5f73ab1d-8248-4032-a2ad-f422a92cca3c",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "2f511c22-b00e-4730-84eb-fe6f3c3976d9",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "a0b06c2a-fced-4b5a-b64c-2fc9dfa00653",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 79,
+                    "PureDurability": 79
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 75,
+                    "PureDurability": 75
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "84a9292c-455e-44fa-b9a3-d806d9be2621",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 41,
+                    "PureDurability": 41
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "24553351-651a-49f4-ac17-463661961fb0",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 40,
+                    "PureDurability": 40
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "2d1bc054-1e88-49d9-b0e1-2a160e690652",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 79,
+                    "PureDurability": 79
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "2834a667-29c2-4f4c-9393-88e4da34ee10",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 73,
+                    "PureDurability": 73
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 49,
+                    "PureDurability": 49
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "d3da6472-4f9d-4591-890a-bb1a27d8abe8",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 48,
+                    "PureDurability": 48
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 76,
+                    "PureDurability": 76
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "b3680775-e621-4dc9-aaf4-8b08ae2fbeba",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "c26d2180-affb-4ef4-b5df-c6d820be061d",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 730,
+                    "PureDurability": 730
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "72b7908b-2127-4ebb-9ddd-216e1eda6eb4",
+                "PropertyID": "d5963243-262e-4398-b4d7-fb16d06484f6"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 7942584,
+                    "PureDurability": 158
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 172819,
+                    "PureDurability": 849
+                },
+                {
+                    "LineNo": 9,
+                    "Frequency": 1,
+                    "Durability": 681887,
+                    "PureDurability": 132526
+                },
+                {
+                    "LineNo": 11,
+                    "Frequency": 1,
+                    "Durability": 10388,
+                    "PureDurability": 10388
+                },
+                {
+                    "LineNo": 19,
+                    "Frequency": 1,
+                    "Durability": 521185,
+                    "PureDurability": 520846
+                },
+                {
+                    "LineNo": 20,
+                    "Frequency": 1,
+                    "Durability": 401019,
+                    "PureDurability": 400702
+                },
+                {
+                    "LineNo": 21,
+                    "Frequency": 1,
+                    "Durability": 371010,
+                    "PureDurability": 370709
+                },
+                {
+                    "LineNo": 22,
+                    "Frequency": 1,
+                    "Durability": 359474,
+                    "PureDurability": 359013
+                },
+                {
+                    "LineNo": 23,
+                    "Frequency": 1,
+                    "Durability": 412641,
+                    "PureDurability": 412397
+                },
+                {
+                    "LineNo": 24,
+                    "Frequency": 1,
+                    "Durability": 546372,
+                    "PureDurability": 545722
+                },
+                {
+                    "LineNo": 25,
+                    "Frequency": 1,
+                    "Durability": 399733,
+                    "PureDurability": 399330
+                },
+                {
+                    "LineNo": 26,
+                    "Frequency": 1,
+                    "Durability": 411579,
+                    "PureDurability": 411261
+                },
+                {
+                    "LineNo": 27,
+                    "Frequency": 1,
+                    "Durability": 359166,
+                    "PureDurability": 358929
+                },
+                {
+                    "LineNo": 28,
+                    "Frequency": 1,
+                    "Durability": 568330,
+                    "PureDurability": 567846
+                },
+                {
+                    "LineNo": 29,
+                    "Frequency": 1,
+                    "Durability": 368908,
+                    "PureDurability": 368654
+                },
+                {
+                    "LineNo": 30,
+                    "Frequency": 1,
+                    "Durability": 404075,
+                    "PureDurability": 403680
+                },
+                {
+                    "LineNo": 31,
+                    "Frequency": 1,
+                    "Durability": 395316,
+                    "PureDurability": 394947
+                },
+                {
+                    "LineNo": 32,
+                    "Frequency": 1,
+                    "Durability": 379011,
+                    "PureDurability": 378761
+                },
+                {
+                    "LineNo": 33,
+                    "Frequency": 1,
+                    "Durability": 400927,
+                    "PureDurability": 400498
+                },
+                {
+                    "LineNo": 34,
+                    "Frequency": 1,
+                    "Durability": 458092,
+                    "PureDurability": 457755
+                },
+                {
+                    "LineNo": 35,
+                    "Frequency": 1,
+                    "Durability": 430710,
+                    "PureDurability": 430430
+                },
+                {
+                    "LineNo": 36,
+                    "Frequency": 1,
+                    "Durability": 396238,
+                    "PureDurability": 395865
+                },
+                {
+                    "LineNo": 37,
+                    "Frequency": 1,
+                    "Durability": 358550,
+                    "PureDurability": 358295
+                },
+                {
+                    "LineNo": 39,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                },
+                {
+                    "LineNo": 43,
+                    "Frequency": 1,
+                    "Durability": 11172,
+                    "PureDurability": 98
+                },
+                {
+                    "LineNo": 44,
+                    "Frequency": 1,
+                    "Durability": 9163,
+                    "PureDurability": 101
+                },
+                {
+                    "LineNo": 45,
+                    "Frequency": 1,
+                    "Durability": 12192,
+                    "PureDurability": 108
+                },
+                {
+                    "LineNo": 46,
+                    "Frequency": 1,
+                    "Durability": 7848,
+                    "PureDurability": 110
+                },
+                {
+                    "LineNo": 47,
+                    "Frequency": 1,
+                    "Durability": 9719,
+                    "PureDurability": 172
+                },
+                {
+                    "LineNo": 48,
+                    "Frequency": 1,
+                    "Durability": 9061,
+                    "PureDurability": 328
+                },
+                {
+                    "LineNo": 49,
+                    "Frequency": 1,
+                    "Durability": 11563,
+                    "PureDurability": 95
+                },
+                {
+                    "LineNo": 50,
+                    "Frequency": 1,
+                    "Durability": 9998,
+                    "PureDurability": 86
+                },
+                {
+                    "LineNo": 51,
+                    "Frequency": 1,
+                    "Durability": 9146,
+                    "PureDurability": 88
+                },
+                {
+                    "LineNo": 52,
+                    "Frequency": 1,
+                    "Durability": 9937,
+                    "PureDurability": 87
+                },
+                {
+                    "LineNo": 53,
+                    "Frequency": 1,
+                    "Durability": 12829,
+                    "PureDurability": 91
+                },
+                {
+                    "LineNo": 54,
+                    "Frequency": 1,
+                    "Durability": 9457,
+                    "PureDurability": 92
+                },
+                {
+                    "LineNo": 55,
+                    "Frequency": 1,
+                    "Durability": 7329,
+                    "PureDurability": 91
+                },
+                {
+                    "LineNo": 56,
+                    "Frequency": 1,
+                    "Durability": 7876,
+                    "PureDurability": 90
+                },
+                {
+                    "LineNo": 57,
+                    "Frequency": 1,
+                    "Durability": 7421,
+                    "PureDurability": 90
+                },
+                {
+                    "LineNo": 58,
+                    "Frequency": 1,
+                    "Durability": 8176,
+                    "PureDurability": 92
+                },
+                {
+                    "LineNo": 59,
+                    "Frequency": 1,
+                    "Durability": 8030,
+                    "PureDurability": 96
+                },
+                {
+                    "LineNo": 60,
+                    "Frequency": 1,
+                    "Durability": 10932,
+                    "PureDurability": 151
+                },
+                {
+                    "LineNo": 62,
+                    "Frequency": 1,
+                    "Durability": 84,
+                    "PureDurability": 84
+                },
+                {
+                    "LineNo": 65,
+                    "Frequency": 18,
+                    "Durability": 167462,
+                    "PureDurability": 163097
+                },
+                {
+                    "LineNo": 66,
+                    "Frequency": 18,
+                    "Durability": 1548,
+                    "PureDurability": 1548
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "66a0908d-9e0b-4f56-9610-6036a95e882a",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 43,
+                    "PureDurability": 43
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "9ac5afa1-99da-4ffe-93cc-c237f76e5f32",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "f558b7c6-3024-468e-b000-a510b3d1921e",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 49,
+                    "PureDurability": 49
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 56,
+                    "PureDurability": 56
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "4df936d5-34c4-4685-9821-04e311146955",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "999c8fe1-1c9f-4334-84f7-80b2355d3c07",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 46,
+                    "PureDurability": 46
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 71,
+                    "PureDurability": 71
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "911a9cef-4849-462e-a7be-ed7fe3bb6bcc",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 53,
+                    "PureDurability": 53
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 42,
+                    "PureDurability": 42
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ConfigModule",
+                "URL": "",
+                "ExtensionName": "",
+                "ObjectID": "16bedcfe-b4b3-41a5-827f-bc9d11be683e",
+                "PropertyID": "078a6af8-d22c-4248-9c33-7e90075a3d2c"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 51,
+                    "PureDurability": 51
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtensionModule",
+                "URL": "",
+                "ExtensionName": "Расширение1",
+                "ObjectID": "de483c0a-d17d-4fb6-be3e-573d4045ff79",
+                "PropertyID": "d1b64a2c-8078-4982-8190-8f81aefda192"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 81,
+                    "PureDurability": 81
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 44,
+                    "PureDurability": 44
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtensionModule",
+                "URL": "",
+                "ExtensionName": "Расширение1",
+                "ObjectID": "fc0be29c-c7ec-4e83-ac62-e1217160fa07",
+                "PropertyID": "d5963243-262e-4398-b4d7-fb16d06484f6"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 34,
+                    "PureDurability": 34
+                },
+                {
+                    "LineNo": 9,
+                    "Frequency": 1,
+                    "Durability": 32,
+                    "PureDurability": 32
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtMDModule",
+                "URL": "file://ВнешняяОбработка1.epf",
+                "ExtensionName": "",
+                "ObjectID": "38e352a5-9e82-4e60-9244-b81cc3eed67e",
+                "PropertyID": "32e087ab-1491-49b6-aba7-43571b41ac2b"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 27,
+                    "PureDurability": 27
+                },
+                {
+                    "LineNo": 7,
+                    "Frequency": 1,
+                    "Durability": 24,
+                    "PureDurability": 24
+                },
+                {
+                    "LineNo": 8,
+                    "Frequency": 1,
+                    "Durability": 50,
+                    "PureDurability": 50
+                }
+            ]
+        },
+        {
+            "ModuleId": {
+                "ModuleType": "ExtMDModule",
+                "URL": "file://ВнешняяОбработка1.epf",
+                "ExtensionName": "",
+                "ObjectID": "630ddfcc-52a6-4f8a-8eb9-417c5d39a7f1",
+                "PropertyID": "a637f77f-3840-441d-a1c3-699c8c5cb7e0"
+            },
+            "LineInfo": [
+                {
+                    "LineNo": 5,
+                    "Frequency": 1,
+                    "Durability": 36,
+                    "PureDurability": 36
+                },
+                {
+                    "LineNo": 6,
+                    "Frequency": 1,
+                    "Durability": 34,
+                    "PureDurability": 34
+                }
+            ]
+        }
+    ]
+}

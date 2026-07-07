@@ -70,6 +70,42 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             writer.WriteEndObject();
         }
 
+        [ContextMethod("DeserializeJSON", "ДесериализоватьJSON")]
+        public void DeserializeJson(JSONReader reader)
+        {
+            JsonReaderHelper.EnsureValueType(reader, JSONValueTypeEnum.ObjectStart);
+
+            while (reader.Read())
+            {
+                if (reader.CurrentValueType == JSONValueTypeEnum.ObjectEnd)
+                {
+                    return;
+                }
+
+                var propertyName = JsonReaderHelper.ReadPropertyName(reader);
+                switch (propertyName)
+                {
+                    case nameof(LineNo):
+                        LineNo = JsonReaderHelper.ReadInt32(reader);
+                        break;
+                    case nameof(Frequency):
+                        Frequency = JsonReaderHelper.ReadInt32(reader);
+                        break;
+                    case nameof(Durability):
+                        Durability = JsonReaderHelper.ReadInt64(reader);
+                        break;
+                    case nameof(PureDurability):
+                        PureDurability = JsonReaderHelper.ReadInt64(reader);
+                        break;
+                    default:
+                        JsonReaderHelper.SkipValue(reader);
+                        break;
+                }
+            }
+
+            throw new JSONReaderException("Unexpected end of JSON while reading line info");
+        }
+
         public object UnderlyingObject
         {
             get => lineInfo;

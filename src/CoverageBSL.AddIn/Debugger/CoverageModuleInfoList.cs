@@ -1,4 +1,5 @@
-﻿using com.github.yukon39.DebugBSL.debugger.debugMeasure;
+﻿using com.github.yukon39.CoverageBSL.AddIn.Utils;
+using com.github.yukon39.DebugBSL.debugger.debugMeasure;
 using OneScript.Contexts;
 using OneScript.StandardLibrary.Json;
 using ScriptEngine.Machine;
@@ -39,6 +40,24 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Debugger
             moduleInfos.ForEach(x => x.SerializeJson(writer));
 
             writer.WriteEndArray();
+        }
+
+        [ContextMethod("DeserializeJSON", "ДесериализоватьJSON")]
+        public void DeserializeJson(JSONReader reader)
+        {
+            JsonReaderHelper.ReadExpected(reader, JSONValueTypeEnum.ArrayStart);
+
+            while (reader.Read())
+            {
+                if (reader.CurrentValueType == JSONValueTypeEnum.ArrayEnd)
+                {
+                    return;
+                }
+
+                var moduleInfo = CoverageModuleInfoContextClass.ScriptConstructor();
+                moduleInfo.DeserializeJson(reader);
+                Add(moduleInfo);
+            }
         }
 
         public override IEnumerator<IValue> GetEnumerator()
