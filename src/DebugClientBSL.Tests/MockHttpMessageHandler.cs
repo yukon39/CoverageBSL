@@ -11,12 +11,15 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
 {
     class MockHttpMessageHandler : HttpMessageHandler
     {
-        private readonly Queue<HttpResponseMessage> responses = new Queue<HttpResponseMessage>();
+        private readonly Queue<Task<HttpResponseMessage>> responses = new Queue<Task<HttpResponseMessage>>();
 
         private readonly Queue<HttpRequestMessage> requests = new Queue<HttpRequestMessage>();
 
         public void Enqueue(HttpResponseMessage responseMessage)
-            => responses.Enqueue(responseMessage);
+            => responses.Enqueue(Task.FromResult(responseMessage));
+
+        public void EnqueueCanceled()
+            => responses.Enqueue(Task.FromCanceled<HttpResponseMessage>(new CancellationToken(true)));
 
         public void Enqueue(HttpStatusCode statusCode, IRDBGResponse response)
         {
@@ -26,14 +29,33 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             Enqueue(responseMessage);
         }
 
-        public HttpRequestMessage Dequeue() =>
-            requests.Dequeue();
+        public int RequestCount
+        {
+            get
+            {
+                lock (requests)
+                {
+                    return requests.Count;
+                }
+            }
+        }
+
+        public HttpRequestMessage Dequeue()
+        {
+            lock (requests)
+            {
+                return requests.Dequeue();
+            }
+        }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            requests.Enqueue(request);
+            lock (requests)
+            {
+                requests.Enqueue(request);
+            }
             var response = responses.Dequeue();
-            return Task.FromResult(response);
+            return response;
         }
 
 

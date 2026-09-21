@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using com.github.yukon39.DebugBSL.Client.Data;
@@ -28,7 +29,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         {
             Executor = executor;
             Context = SessionContext.NewInstance(infobaseAlias, debugSession);
-            PingTimer = new Timer(async (e) => { await Loop(); });
+            PingTimer = new Timer(PingTimerCallback);
 
             TargetsManager = NewEntityManager<DebuggerClientTargetsManager>(Executor, Context);
             MeasureManager = NewEntityManager<DebuggerClientMeasureManager>(Executor, Context);
@@ -91,23 +92,34 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             var request = Context.NewSessionRequest<RDBGDetachDebugUIRequest>();
 
             await PingSemaphore.WaitAsync();
-            var response = await Executor.ExecuteAsync<RDBGDetachDebugUIResponse>(request, requestParameters);
-            var result = response.Result;
+            try
+            {
+                var response = await Executor.ExecuteAsync<RDBGDetachDebugUIResponse>(request, requestParameters);
+                var result = response.Result;
 
-            Attached = false;
-            StopTimer();
-            PingSemaphore.Release();
+                //Logger.LogDebug("Debug detach result is {result}", Result);
 
-            //Logger.LogDebug("Debug detach result is {result}", Result);
-
-            return result;
+                return result;
+            }
+            finally
+            {
+                Attached = false;
+                StopTimer();
+                PingSemaphore.Release();
+            }
         }
 
         public async Task PingAsync()
         {
             await PingSemaphore.WaitAsync();
-            await InvokeByPingAsync();
-            PingSemaphore.Release();
+            try
+            {
+                await InvokeByPingAsync();
+            }
+            finally
+            {
+                PingSemaphore.Release();
+            }
         }
 
         public async Task<bool> PingAsync(TimeSpan timeSpan)
@@ -115,8 +127,14 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             var result = await PingSemaphore.WaitAsync(timeSpan);
             if (result)
             {
-                await InvokeByPingAsync();
-                PingSemaphore.Release();
+                try
+                {
+                    await InvokeByPingAsync();
+                }
+                finally
+                {
+                    PingSemaphore.Release();
+                }
             }
             return result;
         }
@@ -141,10 +159,41 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         private async Task Loop()
         {
             var result = await PingSemaphore.WaitAsync(TimeSpan.FromMilliseconds(500));
-            if (Attached && result)
+            if (!result)
             {
-                await InvokeByPingAsync();
+                return;
+            }
+
+            try
+            {
+                if (Attached)
+                {
+                    await InvokeByPingAsync();
+                }
+            }
+            finally
+            {
                 PingSemaphore.Release();
+            }
+        }
+
+        private async void PingTimerCallback(object state)
+        {
+            try
+            {
+                await Loop();
+            }
+            catch (OperationCanceledException)
+            {
+                // A pending ping can be canceled when the debug target or session is stopped.
+            }
+            catch (HttpRequestException)
+            {
+                // The debug server can close the connection while the session is stopping.
+            }
+            catch (ObjectDisposedException)
+            {
+                // The timer callback can finish after the session has been disposed.
             }
         }
 
@@ -173,10 +222,12 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             PingTimer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
         private void StopTimer() =>
-            PingTimer.Change(TimeSpan.Zero, TimeSpan.Zero);
+            PingTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
         public void Dispose()
         {
+            Attached = false;
+            StopTimer();
             PingTimer.Dispose();
             PingSemaphore.Dispose();
         }

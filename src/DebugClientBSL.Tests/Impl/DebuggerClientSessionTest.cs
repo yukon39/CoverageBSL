@@ -24,7 +24,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            var session = Create(messageHandler, sessionId);
+            using var session = Create(messageHandler, sessionId);
             var password = "test";
 
             // when
@@ -50,7 +50,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            var session = Create(messageHandler, sessionId);
+            using var session = Create(messageHandler, sessionId);
 
             // when
             var result = await session.DetachAsync();
@@ -74,7 +74,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            var session = Create(messageHandler, sessionId);
+            using var session = Create(messageHandler, sessionId);
 
             // when
             await session.PingAsync();
@@ -95,7 +95,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             var messageHandler = new MockHttpMessageHandler();
             messageHandler.Enqueue(HttpStatusCode.OK, response);
 
-            var session = Create(messageHandler, sessionId);
+            using var session = Create(messageHandler, sessionId);
             var timeSpan = TimeSpan.FromTicks(1);
 
             // when
@@ -108,7 +108,64 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             Assert.That(request.RequestUri.ToString(), Is.EqualTo(requestUri));
         }
 
-        private static IDebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
+        [Test]
+        public async Task TestPingAsyncReleasesSemaphoreWhenRequestIsCanceled()
+        {
+            // given
+            var sessionId = Guid.NewGuid();
+            var response = new RDBGPingDebugUIResponse();
+
+            var messageHandler = new MockHttpMessageHandler();
+            messageHandler.EnqueueCanceled();
+            messageHandler.Enqueue(HttpStatusCode.OK, response);
+
+            using var session = Create(messageHandler, sessionId);
+
+            // when
+            Assert.ThrowsAsync<TaskCanceledException>(async () => await session.PingAsync());
+            var result = await session.PingAsync(TimeSpan.FromSeconds(1));
+
+            // then
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task TestTimerIgnoresCanceledPing()
+        {
+            // given
+            var sessionId = Guid.NewGuid();
+            var attachResponse = new RDBGAttachDebugUIResponse()
+            {
+                Result = AttachDebugUIResult.Registered
+            };
+            var detachResponse = new RDBGDetachDebugUIResponse()
+            {
+                Result = true
+            };
+
+            var messageHandler = new MockHttpMessageHandler();
+            messageHandler.Enqueue(HttpStatusCode.OK, attachResponse);
+            messageHandler.EnqueueCanceled();
+            messageHandler.Enqueue(HttpStatusCode.OK, detachResponse);
+
+            using var session = Create(messageHandler, sessionId);
+            await session.AttachAsync("test".ToCharArray(), new DebuggerOptions());
+
+            // when
+            var waitUntil = DateTime.UtcNow.AddSeconds(5);
+            while (messageHandler.RequestCount < 2 && DateTime.UtcNow < waitUntil)
+            {
+                await Task.Delay(25);
+            }
+
+            var result = await session.DetachAsync();
+
+            // then
+            Assert.That(messageHandler.RequestCount, Is.EqualTo(3));
+            Assert.That(result, Is.True);
+        }
+
+        private static DebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)
         {
             var executor = messageHandler.CreateExecutor();
             return DebuggerClientSession.NewInstance(executor, "testAlias", sessionId);
