@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using com.github.yukon39.DebugBSL.Client.Data;
@@ -17,7 +17,10 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         private readonly DebuggerClientExecutor Executor;
         private readonly DebuggerClientTargetsManager TargetsManager;
         private readonly DebuggerClientMeasureManager MeasureManager;
-        private bool Attached = false;
+        private volatile bool Attached = false;
+        private bool Stopping = false;
+        private bool Disposed = false;
+        private readonly object StateSync = new object();
         private readonly Timer PingTimer;
         private readonly SemaphoreSlim PingSemaphore = new SemaphoreSlim(1, 1);
 
@@ -72,12 +75,18 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             //Logger.LogDebug("Debug attach result is {result}", Result);
 
-            lock (this)
+            lock (StateSync)
             {
+                if (Disposed)
+                {
+                    throw new ObjectDisposedException(nameof(DebuggerClientSession));
+                }
+
                 Attached = result.Equals(AttachDebugUIResult.Registered);
 
                 if (Attached)
                 {
+                    Stopping = false;
                     StartTimer();
                 }
             }
@@ -91,6 +100,7 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
 
             var request = Context.NewSessionRequest<RDBGDetachDebugUIRequest>();
 
+            StopSession();
             await PingSemaphore.WaitAsync();
             try
             {
@@ -103,8 +113,6 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             }
             finally
             {
-                Attached = false;
-                StopTimer();
                 PingSemaphore.Release();
             }
         }
@@ -183,18 +191,27 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
             {
                 await Loop();
             }
-            catch (OperationCanceledException)
+            catch (Exception exception)
             {
-                // A pending ping can be canceled when the debug target or session is stopped.
+                HandlePingTimerException(exception);
             }
-            catch (HttpRequestException)
+        }
+
+        private void HandlePingTimerException(Exception exception)
+        {
+            lock (StateSync)
             {
-                // The debug server can close the connection while the session is stopping.
+                if (Stopping || Disposed)
+                {
+                    return;
+                }
+
+                Stopping = true;
+                Attached = false;
+                StopTimer();
             }
-            catch (ObjectDisposedException)
-            {
-                // The timer callback can finish after the session has been disposed.
-            }
+
+            Trace.TraceError("Background debugger ping failed: {0}", exception);
         }
 
         private async Task InvokeByPingAsync() =>
@@ -224,11 +241,37 @@ namespace com.github.yukon39.DebugBSL.Client.Impl
         private void StopTimer() =>
             PingTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
+        private void StopSession()
+        {
+            lock (StateSync)
+            {
+                if (Disposed)
+                {
+                    throw new ObjectDisposedException(nameof(DebuggerClientSession));
+                }
+
+                Stopping = true;
+                Attached = false;
+                StopTimer();
+            }
+        }
+
         public void Dispose()
         {
-            Attached = false;
-            StopTimer();
-            PingTimer.Dispose();
+            lock (StateSync)
+            {
+                if (Disposed)
+                {
+                    return;
+                }
+
+                Disposed = true;
+                Stopping = true;
+                Attached = false;
+                StopTimer();
+                PingTimer.Dispose();
+            }
+
             PingSemaphore.Dispose();
         }
     }

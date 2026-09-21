@@ -130,7 +130,7 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
         }
 
         [Test]
-        public async Task TestTimerIgnoresCanceledPing()
+        public async Task TestTimerHandlesCanceledPing()
         {
             // given
             var sessionId = Guid.NewGuid();
@@ -152,17 +152,27 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             await session.AttachAsync("test".ToCharArray(), new DebuggerOptions());
 
             // when
-            var waitUntil = DateTime.UtcNow.AddSeconds(5);
-            while (messageHandler.RequestCount < 2 && DateTime.UtcNow < waitUntil)
-            {
-                await Task.Delay(25);
-            }
-
+            var pingReceived = await messageHandler.WaitForRequestCountAsync(2, TimeSpan.FromSeconds(5));
             var result = await session.DetachAsync();
 
             // then
+            Assert.That(pingReceived, Is.True);
             Assert.That(messageHandler.RequestCount, Is.EqualTo(3));
             Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void TestDisposeCanBeCalledTwice()
+        {
+            // given
+            var session = Create(new MockHttpMessageHandler(), Guid.NewGuid());
+
+            // when / then
+            Assert.DoesNotThrow(() =>
+            {
+                session.Dispose();
+                session.Dispose();
+            });
         }
 
         private static DebuggerClientSession Create(MockHttpMessageHandler messageHandler, Guid sessionId)

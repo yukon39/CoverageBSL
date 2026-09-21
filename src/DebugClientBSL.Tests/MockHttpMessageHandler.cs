@@ -15,11 +15,13 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
 
         private readonly Queue<HttpRequestMessage> requests = new Queue<HttpRequestMessage>();
 
+        private readonly SemaphoreSlim requestAdded = new SemaphoreSlim(0);
+
         public void Enqueue(HttpResponseMessage responseMessage)
-            => responses.Enqueue(Task.FromResult(responseMessage));
+            => Enqueue(Task.FromResult(responseMessage));
 
         public void EnqueueCanceled()
-            => responses.Enqueue(Task.FromCanceled<HttpResponseMessage>(new CancellationToken(true)));
+            => Enqueue(Task.FromCanceled<HttpResponseMessage>(new CancellationToken(true)));
 
         public void Enqueue(HttpStatusCode statusCode, IRDBGResponse response)
         {
@@ -48,16 +50,40 @@ namespace com.github.yukon39.DebugBSL.Client.Tests
             }
         }
 
+        public async Task<bool> WaitForRequestCountAsync(int count, TimeSpan timeout)
+        {
+            while (RequestCount < count)
+            {
+                if (!await requestAdded.WaitAsync(timeout))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             lock (requests)
             {
                 requests.Enqueue(request);
             }
-            var response = responses.Dequeue();
-            return response;
+            requestAdded.Release();
+
+            lock (responses)
+            {
+                return responses.Dequeue();
+            }
         }
 
+        private void Enqueue(Task<HttpResponseMessage> response)
+        {
+            lock (responses)
+            {
+                responses.Enqueue(response);
+            }
+        }
 
         public DebuggerClientExecutor CreateExecutor()
         {
