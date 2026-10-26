@@ -123,9 +123,9 @@ dotnet test src/CoverageBSL.sln -c Release
 ```
 
 - **DebugBSL.Tests** — round-trip XML (эталонные файлы в `debugger/**/*.xml`), 16 тестов.
-- **DebugClientBSL.Tests** — `MockHttpMessageHandler` для HTTP-слоя, 20 тестов.
+- **DebugClientBSL.Tests** — `MockHttpMessageHandler` для HTTP-слоя, 23 теста.
 - **CoverageBSL.AddIn.Tests** — извлечение строк к покрытию из AST BSL по правилам Coverage41C (`Resources/*.bsl`), 11 тестов.
-- Итого **47 тестов** (`net8.0`).
+- Итого **50 тестов** (`net8.0`).
 
 При добавлении новых DTO добавляйте XML-фикстуры и тесты сериализации в DebugBSL.Tests.
 
