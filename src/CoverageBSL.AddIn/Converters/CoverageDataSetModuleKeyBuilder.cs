@@ -1,3 +1,4 @@
+using com.github.yukon39.CoverageBSL.AddIn.CoverageData;
 using com.github.yukon39.CoverageBSL.AddIn.Debugger;
 using com.github.yukon39.CoverageBSL.AddIn.Internal;
 using System;
@@ -107,7 +108,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Converters
                 ? Directory.GetCurrentDirectory()
                 : Path.GetFullPath(workingArea);
 
-            return Path.GetRelativePath(basePath, Path.GetFullPath(filePath)).Replace('\\', '/');
+            return CoverageDataSet.NormalizeModuleUrl(
+                Path.GetRelativePath(basePath, Path.GetFullPath(filePath)));
         }
     }
 }

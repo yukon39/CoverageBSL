@@ -13,7 +13,7 @@ namespace com.github.yukon39.CoverageBSL.AddIn
 
         [ScriptConstructor]
         public static CoverageManagerWrapper ScriptConstructor(string debuggerURI) =>
-            new CoverageManagerWrapper(debuggerURI);
+            new(debuggerURI);
 
         private CoverageManagerWrapper(string debuggerURI) =>
             manager = CoverageFactory.NewManager(debuggerURI);

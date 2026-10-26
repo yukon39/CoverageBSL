@@ -87,7 +87,7 @@ DebugBSL                   ← модели XML-запросов/ответов 
 | Класс (en / ru) | Методы |
 |-----------------|--------|
 | `CoverageManager` / `МенеджерПокрытия` | `TestConnection`, `APIVersion`, `NewCoverageSession` |
-| `CoverableLines` / `СтрокиКПокрытию` | `WorkingArea`, `AddSourceDirectory`, `Build`, `FromFile`, `FromSource` |
+| `CoverableLines` / `СтрокиКПокрытию` | `WorkingArea`, `AddSourceDirectory`, `Build`, `FromFile`, `FromSource`, `WriteToFile`, `ReadFromFile` |
 | `CoverageSession` / `СессияПокрытия` | `Attach`, `Detach`, `StartCoverageCapture`, `StopCoverageCapture` |
 | `CoverageData` / `ДанныеПокрытия` | `TotalDurability`, `Data`, `SerializeJSON` |
 
@@ -185,6 +185,7 @@ CoverageBSL/
 | Ошибка attach / auto-attach | `CoverageSession.AttachAsync`, `DebuggerClientTargetsManager` |
 | Проблема загрузки в OneScript | `package-loader.os`, версии `OneScript.StandardLibrary` в `.csproj` |
 | Сериализация JSON из BSL | `CoverageDataContextClass.SerializeJson`, `CoverageModuleInfoList` |
+| Сохранение `CoverageDataSet` | `CoverableLinesContextClass.WriteToFile` / `ReadFromFile`, форматы `CoverageDataFormatEnum` (`RAW`, `GenericCoverage`) |
 | Строки к покрытию (исполняемые строки модуля) | `CoverableLinesContextClass`, `CoverableLinesBuilder`, `CoverableLinesProvider`, `AstCoverableLinesCollector` (AddIn/Internal) |
 
 ## Ограничения и контекст

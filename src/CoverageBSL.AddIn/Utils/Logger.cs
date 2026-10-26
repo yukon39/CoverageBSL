@@ -7,10 +7,8 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Utils
 {
     public class Logger
     {
-        public static void Error(string message)
-        {
-            SystemLogger.Write(string.Format("[ERROR] {0}", message));
-        }
+        public static void Error(string message) 
+            => SystemLogger.Write(string.Format("[ERROR] {0}", message));
 
         public static void Error(string message, Exception e)
         {

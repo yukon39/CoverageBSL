@@ -153,5 +153,39 @@ namespace com.github.yukon39.CoverageBSL.AddIn
                 throw RuntimeExceptionFactory.NewException(message, e);
             }
         }
+
+        [ContextMethod("WriteToFile", "ЗаписатьВФайл")]
+        public void WriteToFile(string filePath, CoverageDataFormatEnum format)
+        {
+            try
+            {
+                coverageData.WriteToFile(filePath, format);
+            }
+            catch (Exception e)
+            {
+                var message = Locale.NStr(
+                    "en = 'Write coverage data error';" +
+                    "ru = 'Ошибка записи данных покрытия'");
+                Logger.Error(message, e);
+                throw RuntimeExceptionFactory.NewException(message, e);
+            }
+        }
+
+        [ContextMethod("ReadFromFile", "ПрочитатьИзФайла")]
+        public void ReadFromFile(string filePath, CoverageDataFormatEnum format)
+        {
+            try
+            {
+                coverageData = CoverageDataSet.ReadFromFile(filePath, format);
+            }
+            catch (Exception e)
+            {
+                var message = Locale.NStr(
+                    "en = 'Read coverage data error';" +
+                    "ru = 'Ошибка чтения данных покрытия'");
+                Logger.Error(message, e);
+                throw RuntimeExceptionFactory.NewException(message, e);
+            }
+        }
     }
 }

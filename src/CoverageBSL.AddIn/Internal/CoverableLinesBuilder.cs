@@ -73,6 +73,6 @@ namespace com.github.yukon39.CoverageBSL.AddIn.Internal
         }
 
         private static string ToModuleUrl(string basePath, string filePath)
-            => Path.GetRelativePath(basePath, filePath).Replace('\\', '/');
+            => CoverageDataSet.NormalizeModuleUrl(Path.GetRelativePath(basePath, filePath));
     }
 }
